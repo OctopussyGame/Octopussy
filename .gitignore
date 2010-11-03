@@ -1,6 +1,7 @@
 *.suo
 *.user
 _ReSharper.*
+*.vs10x
 
 bin
 obj
