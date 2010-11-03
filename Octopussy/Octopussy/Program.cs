@@ -10,7 +10,7 @@ namespace Octopussy
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game game = new Game())
+            using (MainGame game = new MainGame())
             {
                 game.Run();
             }

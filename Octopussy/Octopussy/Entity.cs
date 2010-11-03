@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Octopussy
 {
-    class Entity : DrawableGameComponent, IAudioEmitter
+    class Entity : IAudioEmitter
     {
         #region Fields
 
@@ -138,18 +138,23 @@ namespace Octopussy
         Vector4 ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
         float shininess = .3f;
         float specularPower = 4.0f;
+
+        GameplayScreen screen;
+
+        GameTime gameTime;
         
         #endregion
 
         #region Initialization
 
-        public Entity(Game game, string modelName, Boolean isUsingBumpMap = false)
-            : base(game)
+        public Entity(GameplayScreen screen, string modelName, Boolean isUsingBumpMap = false)
         {
-            if (game == null)
-                throw new ArgumentNullException("game");
+            if (screen == null)
+                throw new ArgumentNullException("screen");
             if (modelName == null)
                 throw new ArgumentNullException("modelName");
+
+            this.screen = screen;
 
             this.modelName = modelName;
             this.isUsingBumpMap = isUsingBumpMap;
@@ -164,9 +169,9 @@ namespace Octopussy
         /// <summary>
         /// Load your graphics content.
         /// </summary>
-        protected override void LoadContent()
+        public void LoadContent()
         {
-            model = Game.Content.Load<Model>(modelName);
+            model = screen.ScreenManager.Game.Content.Load<Model>(modelName);
 
             if (isUsingBumpMap)
             {
@@ -188,7 +193,7 @@ namespace Octopussy
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
-        protected override void UnloadContent()
+        public void UnloadContent()
         {
             
         }
@@ -197,18 +202,18 @@ namespace Octopussy
 
         #region Interaction
 
-        public void TurnLeft(GameTime gameTime) 
+        public void TurnLeft(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             rotation += time * rotationSpeed;
-            computeRotation(gameTime);
+            ComputeRotation(gameTime);
         }
 
         public void TurnRight(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             rotation -= time * rotationSpeed;
-            computeRotation(gameTime);
+            ComputeRotation(gameTime);
         }
 
         public void Accellerate(GameTime gameTime)
@@ -229,12 +234,12 @@ namespace Octopussy
             float vz = ((float)Math.Sin(rotation) * (projectileSpeed));
 
             //((Octopussy.Game)Game).audioManager.Play3DSound("sounds/shot", false, this);
-            ((Octopussy.Game)Game).addProjectile(new Projectile(new Vector3(position.X, 90, position.Z), new Vector3(-vz, 0, -vx), ((Octopussy.Game)Game).explosionParticles,
-                                               ((Octopussy.Game)Game).explosionSmokeParticles,
-                                               ((Octopussy.Game)Game).projectileTrailParticles));
+            screen.AddProjectile(new Projectile(new Vector3(position.X, 90, position.Z), new Vector3(-vz, 0, -vx), screen.explosionParticles,
+                                               screen.explosionSmokeParticles,
+                                               screen.projectileTrailParticles));
         }
 
-        private void computeRotation(GameTime gameTime)
+        private void ComputeRotation(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (MathHelper.ToDegrees(rotation) > 360)
@@ -243,23 +248,18 @@ namespace Octopussy
                 rotation = 0;
         }
 
-        private void computeSpeed(GameTime gameTime)
+        private void ComputeSpeed(GameTime gameTime)
         {
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // Apply friction to speed
-            if (speed > 0)
-            {
+            if (speed > 0) {
                 speed -= time * friction;
-                if (speed - friction < 0)
-                {
+                if (speed - friction < 0) {
                     speed = 0;
                 }
-            }
-            else if (speed < 0)
-            {
+            } else if (speed < 0) {
                 speed += time * friction;
-                if (speed + friction > 0)
-                {
+                if (speed + friction > 0) {
                     speed = 0;
                 }
             }
@@ -279,47 +279,43 @@ namespace Octopussy
 
         #region Update
 
-        public void HandleInput(GameTime gameTime, KeyboardState lastKeyboardState, GamePadState lastGamePadState, 
+        public void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
                          KeyboardState currentKeyboardState, GamePadState currentGamePadState)
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            var gameTime = this.gameTime; // this needs rewrite
 
             // Check for input to rotate left and right.
-            if (currentKeyboardState.IsKeyDown(Keys.Left))
-            {
+            if (currentKeyboardState.IsKeyDown(Keys.Left)) {
                 TurnLeft(gameTime);
             }
-            if (currentKeyboardState.IsKeyDown(Keys.Right))
-            {
+            if (currentKeyboardState.IsKeyDown(Keys.Right)) {
                 TurnRight(gameTime);
             }
 
             // Check for input to adjust speed.
-            if (currentKeyboardState.IsKeyDown(Keys.Up))
-            {
+            if (currentKeyboardState.IsKeyDown(Keys.Up)) {
                 Accellerate(gameTime);
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Down))
-            {
+            if (currentKeyboardState.IsKeyDown(Keys.Down)) {
                 Decellerate(gameTime);
             }
 
             if ((currentKeyboardState.IsKeyDown(Keys.Space) &&
-                 lastKeyboardState.IsKeyUp(Keys.Space)))
-            {
+                 lastKeyboardState.IsKeyUp(Keys.Space))) {
                 Shoot();
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
+            this.gameTime = gameTime;
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            computeSpeed(gameTime);
+            ComputeSpeed(gameTime);
 
             position.X -= ((float)Math.Sin(rotation) * (time * speed));
             position.Z -= ((float)Math.Cos(rotation) * (time * speed));
-            
+
             forward.X = ((float)Math.Sin(rotation) * (100));
             forward.Z = ((float)Math.Cos(rotation) * (100));
         }
@@ -328,49 +324,40 @@ namespace Octopussy
 
         #region Draw
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
-            Matrix view = ((Octopussy.Game)Game).ViewMatrix;
-            Matrix projection = ((Octopussy.Game)Game).ProjectionMatrix;
+            Matrix view = screen.ViewMatrix;
+            Matrix projection = screen.ProjectionMatrix;
 
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
-            GraphicsDevice device = Game.GraphicsDevice;
+            GraphicsDevice device = screen.ScreenManager.Game.GraphicsDevice;
             device.BlendState = BlendState.Opaque;
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
             Matrix rotationMatrix;
             Matrix positionMatrix = Matrix.CreateTranslation(position.X, position.Y, position.Z);
-            if (rotateInTime)
-            {
+            if (rotateInTime) {
                 rotationMatrix = Matrix.CreateRotationY(time * timeRotationSpeed);
-            }
-            else
-            {
+            } else {
                 rotationMatrix = Matrix.CreateRotationY(rotation);
             }
 
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                if (isUsingBumpMap)
-                {
-                    foreach (EffectMaterial effect in mesh.Effects)
-                    {
+            foreach (ModelMesh mesh in model.Meshes) {
+                if (isUsingBumpMap) {
+                    foreach (EffectMaterial effect in mesh.Effects) {
                         Matrix world = transforms[mesh.ParentBone.Index] * rotationMatrix;
                         world *= positionMatrix;
 
                         effect.Parameters["World"].SetValue(world);
                         effect.Parameters["View"].SetValue(view);
                         effect.Parameters["Projection"].SetValue(projection);
-                        effect.Parameters["LightPosition"].SetValue(((Octopussy.Game)Game).lightPosition);
+                        effect.Parameters["LightPosition"].SetValue(screen.lightPosition);
                     }
-                }
-                else
-                {
-                    foreach (BasicEffect effect in mesh.Effects)
-                    {
+                } else {
+                    foreach (BasicEffect effect in mesh.Effects) {
                         Matrix world = transforms[mesh.ParentBone.Index] * rotationMatrix;
                         world *= positionMatrix;
 
