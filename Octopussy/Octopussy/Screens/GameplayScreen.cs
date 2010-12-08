@@ -410,15 +410,16 @@ namespace Octopussy
             // because we don't want the text to be affected by the postprocessing.
             DrawOverlayText();
 
-            DrawHUD();
+            DrawHUD(gameTime);
         }
 
         private int lifes = 0;
 
-        private void DrawHUD()
+        private void DrawHUD(GameTime time)
         {
-            lifes = (lifes + 1) % 11;
-            var huds = new Rectangle[]
+            //time.
+            lifes = ((int)time.TotalGameTime.TotalSeconds) % 11;
+            var huds = new []
                            {
                                new Rectangle(53, 60, 549, 60),
                                new Rectangle(53, 140, 549, 60),
@@ -438,13 +439,15 @@ namespace Octopussy
 
             spriteBatch.Begin();
             var locationHP = new Vector2(20, 20);
-            var locationBullets = new Vector2(580, 18);
-            var locationWeapon = new Vector2(670, 22);
+            var locationBullets = new Vector2(630, 18);
+            var locationNumBullets = new Vector2(670, 29);
+            var locationWeapon = new Vector2(770, 22);
             var origin = new Vector2(0, 0);
+
             spriteBatch.Draw(hud, locationHP, huds[lifes], Color.White, 0, origin, 1, SpriteEffects.None, 0); // HP bar
 
             spriteBatch.Draw(hud, locationBullets, bullets, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Bullets
-            spriteBatch.DrawString(spriteFont, "55", new Vector2(620, 29), Color.Black, 0, origin, 2, SpriteEffects.None, 0);
+            spriteBatch.DrawString(spriteFont, "55", locationNumBullets, Color.Black, 0, origin, 2, SpriteEffects.None, 0);
 
             spriteBatch.Draw(hud, locationWeapon, weapon, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Weapon
 
