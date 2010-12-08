@@ -148,20 +148,20 @@ namespace Octopussy
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // start at Y = 175; each X value is generated per entry
-            Vector2 position = new Vector2(0f, 175f);
+            Vector2 position = new Vector2(200f, 320f);
 
             // update each menu entry's location in turn
             for (int i = 0; i < menuEntries.Count; i++) {
                 MenuEntry menuEntry = menuEntries[i];
 
-                // each entry is to be centered horizontally
+                /*// each entry is to be centered horizontally
                 position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
                 else
-                    position.X += transitionOffset * 512;
-
+                    position.X += transitionOffset * 512;*/
+                
                 // set the entry's position
                 menuEntry.Position = position;
 
@@ -217,7 +217,7 @@ namespace Octopussy
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
+            /*Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 300);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;
@@ -225,7 +225,7 @@ namespace Octopussy
             titlePosition.Y -= transitionOffset * 100;
 
             spriteBatch.DrawString(font, menuTitle, titlePosition, titleColor, 0,
-                                   titleOrigin, titleScale, SpriteEffects.None, 0);
+                                   titleOrigin, titleScale, SpriteEffects.None, 0);*/
 
             spriteBatch.End();
         }

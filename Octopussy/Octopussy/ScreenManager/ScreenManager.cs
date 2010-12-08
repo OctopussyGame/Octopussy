@@ -36,6 +36,7 @@ namespace Octopussy
 
         SpriteBatch spriteBatch;
         SpriteFont font;
+        SpriteFont selectionFont;
         Texture2D blankTexture;
 
         bool isInitialized;
@@ -64,6 +65,11 @@ namespace Octopussy
         public SpriteFont Font
         {
             get { return font; }
+        }
+
+        public SpriteFont SelectionFont
+        {
+            get { return selectionFont; }
         }
 
 
@@ -116,7 +122,8 @@ namespace Octopussy
             ContentManager content = Game.Content;
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = content.Load<SpriteFont>("fonts/menufont");
+            font = content.Load<SpriteFont>("fonts/mfont");
+            selectionFont = content.Load<SpriteFont>("fonts/glowfont");
             blankTexture = content.Load<Texture2D>("images/blank");
 
             // Tell each of the screens to load their content.

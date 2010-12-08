@@ -100,6 +100,8 @@ namespace Octopussy
 
         List<Entity> entites = new List<Entity>();
 
+        private GameMode mode;
+
         #endregion
 
         #region Initialization
@@ -108,10 +110,12 @@ namespace Octopussy
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen()
+        public GameplayScreen(GameMode mode)
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
+
+            this.mode = mode;
         }
         #endregion
 

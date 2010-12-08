@@ -114,12 +114,6 @@ namespace Octopussy
         /// </summary>
         public virtual void Update(MenuScreen screen, bool isSelected, GameTime gameTime)
         {
-            // there is no such thing as a selected item on Windows Phone, so we always
-            // force isSelected to be false
-#if WINDOWS_PHONE
-            isSelected = false;
-#endif
-
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
             // popping to the new state.
@@ -137,12 +131,6 @@ namespace Octopussy
         /// </summary>
         public virtual void Draw(MenuScreen screen, bool isSelected, GameTime gameTime)
         {
-            // there is no such thing as a selected item on Windows Phone, so we always
-            // force isSelected to be false
-#if WINDOWS_PHONE
-            isSelected = false;
-#endif
-
             // Draw the selected entry in yellow, otherwise white.
             Color color = isSelected ? Color.Yellow : Color.White;
 
@@ -151,7 +139,7 @@ namespace Octopussy
 
             float pulsate = (float)Math.Sin(time * 6) + 1;
 
-            float scale = 1 + pulsate * 0.05f * selectionFade;
+            float scale = 1 +pulsate * 0.05f * selectionFade;
 
             // Modify the alpha to fade text out during transitions.
             color *= screen.TransitionAlpha;
@@ -159,12 +147,19 @@ namespace Octopussy
             // Draw text, centered on the middle of each line.
             ScreenManager screenManager = screen.ScreenManager;
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
-            SpriteFont font = screenManager.Font;
+            SpriteFont font = isSelected ? screenManager.SelectionFont : screenManager.Font;
 
+            if (isSelected)
+            {
+                font.Spacing = -38;
+                position.X -= 18.5f;
+            }
+                
+            
             Vector2 origin = new Vector2(0, font.LineSpacing / 2);
 
             spriteBatch.DrawString(font, text, position, color, 0,
-                                   origin, scale, SpriteEffects.None, 0);
+                                  origin, scale, SpriteEffects.None, 0);
         }
 
 

@@ -112,6 +112,7 @@
     <Compile Include="BloomComponent.cs" />
     <Compile Include="BloomSettings.cs" />
     <Compile Include="DebugShapeRenderer.cs" />
+    <Compile Include="GameMode.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="IAudioEmitter.cs" />

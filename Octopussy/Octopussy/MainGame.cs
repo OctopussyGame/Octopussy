@@ -39,6 +39,11 @@ namespace Octopussy
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
 
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 1024;
+
+            graphics.ApplyChanges();
+
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
 

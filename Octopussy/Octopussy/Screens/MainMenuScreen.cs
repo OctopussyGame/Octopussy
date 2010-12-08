@@ -28,17 +28,21 @@ namespace Octopussy
             : base("Main Menu")
         {
             // Create our menu entries.
-            MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
-            MenuEntry optionsMenuEntry = new MenuEntry("Options");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+            var campaignMenuEntry = new MenuEntry("Kampan");
+            var singlePlayerMenuEntry = new MenuEntry("Hra jednoho hrace");
+            var multiPlayerMenuEntry = new MenuEntry("Hra vice hracu");
+            var optionsMenuEntry = new MenuEntry("Nastaveni");
+            var exitMenuEntry = new MenuEntry("Konec");
 
             // Hook up menu event handlers.
-            playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
-            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
-            exitMenuEntry.Selected += OnCancel;
+            campaignMenuEntry.Selected += PlayGameMenuEntrySelected;
+            singlePlayerMenuEntry.Selected += OptionsMenuEntrySelected;
+            multiPlayerMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
-            MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(campaignMenuEntry);
+            MenuEntries.Add(singlePlayerMenuEntry);
+            MenuEntries.Add(multiPlayerMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
@@ -54,8 +58,7 @@ namespace Octopussy
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               new GameplayScreen());
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(GameMode.SinglePlayer));
         }
 
 
@@ -73,9 +76,9 @@ namespace Octopussy
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Are you sure you want to exit this sample?";
+            const string message = "Jsi si jisty, ze chces ukoncit hru?";
 
-            MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
+            var confirmExitMessageBox = new MessageBoxScreen(message);
 
             confirmExitMessageBox.Accepted += ConfirmExitMessageBoxAccepted;
 
