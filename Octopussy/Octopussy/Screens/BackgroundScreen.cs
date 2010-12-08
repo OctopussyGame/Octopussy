@@ -56,6 +56,9 @@ namespace Octopussy
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             backgroundTexture = content.Load<Texture2D>("images/background");
+
+            var audio = new MenuAudioManager(ScreenManager.Game);
+            ScreenManager.Game.Components.Add(audio);
         }
 
 

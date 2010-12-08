@@ -114,6 +114,7 @@
     <Compile Include="DebugShapeRenderer.cs" />
     <Compile Include="GameMode.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="MenuAudioManager.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="IAudioEmitter.cs" />
     <Compile Include="Entity.cs" />

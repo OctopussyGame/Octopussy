@@ -44,6 +44,7 @@ namespace Octopussy
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
         Texture2D background;
+        Texture2D hud;
 
         Entity model, rio, tank;
 
@@ -177,6 +178,7 @@ namespace Octopussy
 
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
             spriteFont = ScreenManager.Game.Content.Load<SpriteFont>("fonts/hudFont");
+            hud = ScreenManager.Game.Content.Load<Texture2D>("images/hud");
             background = ScreenManager.Game.Content.Load<Texture2D>("images/sunset");
             grid = ScreenManager.Game.Content.Load<Model>("models/grid/grid");
 
@@ -407,6 +409,46 @@ namespace Octopussy
             // Display some text over the top. Note how we draw this after the bloom,
             // because we don't want the text to be affected by the postprocessing.
             DrawOverlayText();
+
+            DrawHUD();
+        }
+
+        private int lifes = 0;
+
+        private void DrawHUD()
+        {
+            lifes = (lifes + 1) % 11;
+            var huds = new Rectangle[]
+                           {
+                               new Rectangle(53, 60, 549, 60),
+                               new Rectangle(53, 140, 549, 60),
+                               new Rectangle(53, 220, 549, 60),
+                               new Rectangle(53, 300, 549, 60),
+                               new Rectangle(53, 380, 549, 60),
+                               new Rectangle(53, 460, 549, 60),
+                               new Rectangle(53, 540, 549, 60),
+                               new Rectangle(53, 620, 549, 60),
+                               new Rectangle(53, 700, 549, 60),
+                               new Rectangle(53, 780, 549, 60),
+                               new Rectangle(53, 860, 549, 60)
+                           };
+
+            var weapon = new Rectangle(844, 52, 110, 70);
+            var bullets = new Rectangle(708, 51, 29, 70); 
+
+            spriteBatch.Begin();
+            var locationHP = new Vector2(20, 20);
+            var locationBullets = new Vector2(580, 18);
+            var locationWeapon = new Vector2(670, 22);
+            var origin = new Vector2(0, 0);
+            spriteBatch.Draw(hud, locationHP, huds[lifes], Color.White, 0, origin, 1, SpriteEffects.None, 0); // HP bar
+
+            spriteBatch.Draw(hud, locationBullets, bullets, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Bullets
+            spriteBatch.DrawString(spriteFont, "55", new Vector2(620, 29), Color.Black, 0, origin, 2, SpriteEffects.None, 0);
+
+            spriteBatch.Draw(hud, locationWeapon, weapon, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Weapon
+
+            spriteBatch.End();
         }
 
         /// <summary>
