@@ -35,9 +35,15 @@ namespace Octopussy
             var exitMenuEntry = new MenuEntry("Konec");
 
             // Hook up menu event handlers.
-            campaignMenuEntry.Selected += PlayGameMenuEntrySelected;
-            singlePlayerMenuEntry.Selected += OptionsMenuEntrySelected;
-            multiPlayerMenuEntry.Selected += OnCancel;
+            campaignMenuEntry.Selected += (sender, e) => LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+                                                                            new GameplayScreen(GameMode.SinglePlayer));
+            singlePlayerMenuEntry.Selected += (sender, e) => LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+                                                                            new GameplayScreen(GameMode.SinglePlayer));
+            multiPlayerMenuEntry.Selected += (sender, e) => ScreenManager.AddScreen(
+                                                                            new MultiPlayerMenuScreen(), e.PlayerIndex);
+            optionsMenuEntry.Selected += (sender, e) => ScreenManager.AddScreen(
+                                                                            new OptionsMenuScreen(), e.PlayerIndex);
+            exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(campaignMenuEntry);
@@ -51,26 +57,7 @@ namespace Octopussy
         #endregion
 
         #region Handle Input
-
-
-        /// <summary>
-        /// Event handler for when the Play Game menu entry is selected.
-        /// </summary>
-        void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(GameMode.SinglePlayer));
-        }
-
-
-        /// <summary>
-        /// Event handler for when the Options menu entry is selected.
-        /// </summary>
-        void OptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            ScreenManager.AddScreen(new OptionsMenuScreen(), e.PlayerIndex);
-        }
-
-
+        
         /// <summary>
         /// When the user cancels the main menu, ask if they want to exit the sample.
         /// </summary>

@@ -156,10 +156,10 @@ namespace Octopussy
         public bool IsMenuSelect(PlayerIndex? controllingPlayer,
                                  out PlayerIndex playerIndex)
         {
-            return IsNewKeyPress(Keys.Space, controllingPlayer, out playerIndex) ||
-                   IsNewKeyPress(Keys.Enter, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.A, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
+            return //IsNewKeyPress(Keys.Space, controllingPlayer, out playerIndex) ||
+                IsNewKeyPress(Keys.Enter, controllingPlayer, out playerIndex);
+                   //IsNewButtonPress(Buttons.A, controllingPlayer, out playerIndex) ||
+                  // IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
         }
 
 
@@ -172,9 +172,9 @@ namespace Octopussy
         public bool IsMenuCancel(PlayerIndex? controllingPlayer,
                                  out PlayerIndex playerIndex)
         {
-            return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.B, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex);// ||
+                   //IsNewButtonPress(Buttons.B, controllingPlayer, out playerIndex) ||
+                   //IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex);
         }
 
 

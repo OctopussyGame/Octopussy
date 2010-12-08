@@ -54,8 +54,7 @@ namespace Octopussy
         /// </summary>
         public MessageBoxScreen(string message, bool includeUsageText)
         {
-            const string usageText = "\nA button, Space, Enter = ok" +
-                                     "\nB button, Esc = cancel";
+            const string usageText = "\nZmackni enter pro ok nebo esc pro cancel.";
 
             if (includeUsageText)
                 this.message = message + usageText;

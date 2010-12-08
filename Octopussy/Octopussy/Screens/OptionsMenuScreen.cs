@@ -22,26 +22,18 @@ namespace Octopussy
     {
         #region Fields
 
-        MenuEntry ungulateMenuEntry;
-        MenuEntry languageMenuEntry;
-        MenuEntry frobnicateMenuEntry;
-        MenuEntry elfMenuEntry;
+        
 
-        enum Ungulate
-        {
-            BactrianCamel,
-            Dromedary,
-            Llama,
-        }
-
-        static Ungulate currentUngulate = Ungulate.Dromedary;
-
-        static string[] languages = { "C#", "French", "Deoxyribonucleic acid" };
-        static int currentLanguage = 0;
-
-        static bool frobnicate = true;
-
-        static int elf = 23;
+        MenuEntry turnLeftMenuEntry;
+        MenuEntry stepBackMenuEntry;
+        MenuEntry stepForwardMenuEntry;
+        MenuEntry turnRightMenuEntry;
+        MenuEntry shootMenuEntry;
+        MenuEntry changeWeaponMenuEntry;
+        MenuEntry specialAbilityMenuEntry;
+        MenuEntry pickWeaponMenuEntry;
+        MenuEntry pauseMenuEntry;
+        MenuEntry helpMenuEntry;
 
         #endregion
 
@@ -54,96 +46,37 @@ namespace Octopussy
         public OptionsMenuScreen()
             : base("Options")
         {
-            // Create our menu entries.
-            ungulateMenuEntry = new MenuEntry(string.Empty);
-            languageMenuEntry = new MenuEntry(string.Empty);
-            frobnicateMenuEntry = new MenuEntry(string.Empty);
-            elfMenuEntry = new MenuEntry(string.Empty);
+            turnLeftMenuEntry = new MenuEntry("A - otoceni vlevo");
+            stepBackMenuEntry = new MenuEntry("S - krok dozadu (zvysit rychlost pohybu vzad)");
+            stepForwardMenuEntry = new MenuEntry("W - krok vpred (zvysit rychlost pohybu dopredu)");
+            turnRightMenuEntry = new MenuEntry("D - otoceni vpravo");
+            shootMenuEntry = new MenuEntry("Space - vystrel ci provedeni akce s momentalne drzenou zbrani");
+            changeWeaponMenuEntry = new MenuEntry("Shift - zmeni zbran (cyklicky)");
+            specialAbilityMenuEntry = new MenuEntry("F - spusteni bonusove specialni schopnosti");
+            pickWeaponMenuEntry = new MenuEntry("E - sebrani nove zbrane, nebo interakce s prostredim");
+            pauseMenuEntry = new MenuEntry("ESC - vyvola in-game menu a zapauzuje hru");
+            helpMenuEntry = new MenuEntry("F1  - napoveda");
 
-            SetMenuEntryText();
-
-            MenuEntry back = new MenuEntry("Back");
-
-            // Hook up menu event handlers.
-            ungulateMenuEntry.Selected += UngulateMenuEntrySelected;
-            languageMenuEntry.Selected += LanguageMenuEntrySelected;
-            frobnicateMenuEntry.Selected += FrobnicateMenuEntrySelected;
-            elfMenuEntry.Selected += ElfMenuEntrySelected;
+            var back = new MenuEntry("Zpet");
+            
             back.Selected += OnCancel;
 
             // Add entries to the menu.
-            MenuEntries.Add(ungulateMenuEntry);
-            MenuEntries.Add(languageMenuEntry);
-            MenuEntries.Add(frobnicateMenuEntry);
-            MenuEntries.Add(elfMenuEntry);
+            MenuEntries.Add(turnLeftMenuEntry);
+            MenuEntries.Add(stepBackMenuEntry);
+            MenuEntries.Add(stepForwardMenuEntry);
+            MenuEntries.Add(turnRightMenuEntry);
+            MenuEntries.Add(shootMenuEntry);
+            MenuEntries.Add(changeWeaponMenuEntry);
+            MenuEntries.Add(specialAbilityMenuEntry);
+            MenuEntries.Add(pickWeaponMenuEntry);
+            MenuEntries.Add(pauseMenuEntry);
+            MenuEntries.Add(helpMenuEntry);
             MenuEntries.Add(back);
         }
 
 
-        /// <summary>
-        /// Fills in the latest values for the options screen menu text.
-        /// </summary>
-        void SetMenuEntryText()
-        {
-            ungulateMenuEntry.Text = "Preferred ungulate: " + currentUngulate;
-            languageMenuEntry.Text = "Language: " + languages[currentLanguage];
-            frobnicateMenuEntry.Text = "Frobnicate: " + (frobnicate ? "on" : "off");
-            elfMenuEntry.Text = "elf: " + elf;
-        }
-
-
         #endregion
 
-        #region Handle Input
-
-
-        /// <summary>
-        /// Event handler for when the Ungulate menu entry is selected.
-        /// </summary>
-        void UngulateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            currentUngulate++;
-
-            if (currentUngulate > Ungulate.Llama)
-                currentUngulate = 0;
-
-            SetMenuEntryText();
-        }
-
-
-        /// <summary>
-        /// Event handler for when the Language menu entry is selected.
-        /// </summary>
-        void LanguageMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            currentLanguage = (currentLanguage + 1) % languages.Length;
-
-            SetMenuEntryText();
-        }
-
-
-        /// <summary>
-        /// Event handler for when the Frobnicate menu entry is selected.
-        /// </summary>
-        void FrobnicateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            frobnicate = !frobnicate;
-
-            SetMenuEntryText();
-        }
-
-
-        /// <summary>
-        /// Event handler for when the Elf menu entry is selected.
-        /// </summary>
-        void ElfMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            elf++;
-
-            SetMenuEntryText();
-        }
-
-
-        #endregion
     }
 }

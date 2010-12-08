@@ -29,8 +29,8 @@ namespace Octopussy
             : base("Paused")
         {
             // Create our menu entries.
-            MenuEntry resumeGameMenuEntry = new MenuEntry("Resume Game");
-            MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
+            MenuEntry resumeGameMenuEntry = new MenuEntry("Vratit se do hry");
+            MenuEntry quitGameMenuEntry = new MenuEntry("Opustit hru");
 
             // Hook up menu event handlers.
             resumeGameMenuEntry.Selected += OnCancel;
@@ -52,7 +52,7 @@ namespace Octopussy
         /// </summary>
         void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            const string message = "Are you sure you want to quit this game?";
+            const string message = "Jsi si jisty, ze chces opustit hru?";
 
             MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen(message);
 
