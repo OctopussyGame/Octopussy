@@ -24,7 +24,7 @@ namespace Octopussy
     /// placeholder to get the idea across: you'll probably want to
     /// put some more interesting gameplay in here!
     /// </summary>
-    class GameplayScreen : GameScreen
+    public class GameplayScreen : GameScreen
     {
         #region Fields
 
@@ -46,7 +46,8 @@ namespace Octopussy
         Texture2D background;
         Texture2D hud;
 
-        Entity model, rio, tank;
+        private Player playerOne;
+        private Player playerTwo;
 
         Model grid;
 
@@ -153,20 +154,17 @@ namespace Octopussy
             ScreenManager.Game.Components.Add(fireParticles);
 
             // Load entities
-            model = new Entity(this, "models/lizard/lizard", true);
-            model.RotateInTime = true;
-            tank = new Entity(this, "models/popelnice/popelnice");
-            tank.Position = new Vector3(400, 0, -400);
-            tank.RotateInTime = true;
-            rio = new Entity(this, "models/popelnice/popelnice");
-            rio.Position = new Vector3(200, 0, 200);
+            //model = new Entity(this, "models/lizard/lizard", true);
+            //model.RotateInTime = true;
+            playerOne = new Player(this, "models/popelnice/popelnice");
+            playerOne.Position = new Vector3(400, 0, -400);
+            //tank.RotateInTime = true;
+            playerTwo = new Player(this, "models/popelnice/popelnice");
+            playerTwo.Position = new Vector3(200, 0, 200);
 
-            entites.Add(model);
-            entites.Add(tank);
-            entites.Add(rio);
-
-            fpsCameraPosition = rio.EyePosition;
-
+            entites.Add(playerOne);
+            entites.Add(playerTwo);
+            
             // Components registration
             bloom = new BloomComponent(ScreenManager.Game);
             ScreenManager.Game.Components.Add(bloom);
@@ -352,7 +350,7 @@ namespace Octopussy
 
             // Set camera
             float aspectRatio = (float)viewport.Width / (float)viewport.Height;
-            if (fpsCamera) {
+            /*if (fpsCamera) {
                 // FPS camera
                 Matrix rotationMatrix = Matrix.CreateRotationY(rio.Rotation);
                 Vector3 transformedReference = Vector3.Transform(Vector3.Forward, rotationMatrix);
@@ -365,7 +363,7 @@ namespace Octopussy
                 projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                                                                         aspectRatio,
                                                                         1, 10000);
-            } else {
+            } else*/ {
                 // Movable, zoomable and rotateable camera
                 view = Matrix.CreateTranslation(0, -25, 0) *
                               Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
@@ -519,7 +517,7 @@ namespace Octopussy
                 return;
             }
 
-            rio.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+            playerOne.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
 
             // Switch to the next bloom settings preset?
             if ((currentGamePadState.Buttons.A == ButtonState.Pressed &&

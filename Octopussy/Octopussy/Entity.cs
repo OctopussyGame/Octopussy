@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Octopussy
 {
-    class Entity : IAudioEmitter
+    public class Entity : IAudioEmitter
     {
         #region Fields
 
@@ -139,7 +139,7 @@ namespace Octopussy
         float shininess = .3f;
         float specularPower = 4.0f;
 
-        GameplayScreen screen;
+        protected GameplayScreen screen;
 
         GameTime gameTime;
         
