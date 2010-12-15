@@ -169,7 +169,7 @@ namespace Octopussy
         /// <summary>
         /// Load your graphics content.
         /// </summary>
-        public void LoadContent()
+        public virtual void LoadContent()
         {
             model = screen.ScreenManager.Game.Content.Load<Model>(modelName);
 
@@ -193,7 +193,7 @@ namespace Octopussy
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
-        public void UnloadContent()
+        public virtual void UnloadContent()
         {
             
         }
@@ -279,7 +279,7 @@ namespace Octopussy
 
         #region Update
 
-        public void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
+        public virtual void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
                          KeyboardState currentKeyboardState, GamePadState currentGamePadState)
         {
             var gameTime = this.gameTime; // this needs rewrite
@@ -307,7 +307,7 @@ namespace Octopussy
             }
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             this.gameTime = gameTime;
             float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -324,7 +324,7 @@ namespace Octopussy
 
         #region Draw
 
-        public void Draw(GameTime gameTime)
+        public virtual void Draw(GameTime gameTime)
         {
             Matrix view = screen.ViewMatrix;
             Matrix projection = screen.ProjectionMatrix;

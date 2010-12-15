@@ -1,0 +1,82 @@
+písmo je Tahoma, Arial...
+-------------------------------
+
+settings.png - políèka
+
+u forward: W=453,302; výška je výška písma, šíøka šíøka písma
+           I=574,302
+
+u backward: S=453,358
+            K=574,358
+
+u left: A=453,417
+        J=574,417
+
+u right: D=453,480
+         L=574,480
+
+u shoot: Lshift=453,555  - u kláves menší písmo
+         Pshift=574,555
+
+
+
+---------------------------------
+back pozice na obrázkách = 240,662, šíøka: 78 ,výška: 54
+
+
+ok pozice na obrázkách = 685,656, šíøka:79, výška:68
+
+
+-------------------------------------------
+
+newgame.png - políèka
+
+Janicka - 474,303 - výška a šíøka podle písma
+
+Tkanicka - 474, 367
+
+---------------------------------------------
+
+main-quit.png 
+
+pozice v obrázku quit:
+
+zaèátek textu - do you want to quit? 361, 304
+
+no - 408,367; šíøka=79; výška=68
+yes - 507,367; šíøka=94; výška=68
+
+
+
+
+
+pozice v obrázku main:
+new-game = 387,292
+new-game-active = 343,292
+settings= 402,360
+settings-active = 359,360
+quit=434,433
+quit-active=390,433
+
+
+
+-------------------------
+
+
+polozky.png
+
+
+back = 23,25 šíøka: 78 ,výška: 54
+back-active = 170,25 šíøka: 78 ,výška: 54
+ok=23,95 šíøka: 79 ,výška: 68
+ok-active=174,95 šíøka: 79 ,výška: 68
+no=27,178 šíøka: 79 ,výška: 68
+no-active=177,178 šíøka: 79 ,výška: 68
+yes=28,255 šíøka: 94 ,výška: 68
+yes-active=178,255 šíøka: 94 ,výška: 68
+newgame= 296,17 šíøka: 220 ,výška: 68
+newgame-active=542,17 šíøka: 307 ,výška: 68
+settings=293,93 šíøka: 79 ,výška: 68
+settings-active=542,93 šíøka: 79 ,výška: 68
+quit=293,180 šíøka: 79 ,výška: 68
+quit-active=542,180 šíøka: 79 ,výška: 68

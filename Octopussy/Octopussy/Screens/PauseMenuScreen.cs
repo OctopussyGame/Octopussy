@@ -37,8 +37,8 @@ namespace Octopussy
             quitGameMenuEntry.Selected += QuitGameMenuEntrySelected;
 
             // Add entries to the menu.
-            MenuEntries.Add(resumeGameMenuEntry);
-            MenuEntries.Add(quitGameMenuEntry);
+           /* MenuEntries.Add(resumeGameMenuEntry);
+            MenuEntries.Add(quitGameMenuEntry); */
         }
 
 
@@ -69,8 +69,7 @@ namespace Octopussy
         /// </summary>
         void ConfirmQuitMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
-                                                           new MainMenuScreen());
+            LoadingScreen.Load(ScreenManager, false, null, new MainMenuScreen());
         }
 
 

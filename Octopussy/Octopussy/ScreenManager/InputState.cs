@@ -189,6 +189,7 @@ namespace Octopussy
 
             return IsNewKeyPress(Keys.Up, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.DPadUp, controllingPlayer, out playerIndex) ||
+                   IsNewKeyPress(Keys.Left, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
         }
 
@@ -204,6 +205,7 @@ namespace Octopussy
 
             return IsNewKeyPress(Keys.Down, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.DPadDown, controllingPlayer, out playerIndex) ||
+                   IsNewKeyPress(Keys.Right, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
         }
 

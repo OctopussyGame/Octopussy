@@ -26,8 +26,8 @@ namespace Octopussy
     {
         #region Fields
 
-        List<MenuEntry> menuEntries = new List<MenuEntry>();
-        int selectedEntry = 0;
+        List<ImageMenuEntry> menuEntries = new List<ImageMenuEntry>();
+        private int selectedEntry = 0;
         string menuTitle;
 
         #endregion
@@ -39,11 +39,16 @@ namespace Octopussy
         /// Gets the list of menu entries, so derived classes can add
         /// or change the menu contents.
         /// </summary>
-        protected IList<MenuEntry> MenuEntries
+        protected IList<ImageMenuEntry> MenuEntries
         {
             get { return menuEntries; }
         }
 
+        public int SelectedEntry
+        {
+            get { return selectedEntry; }
+            set { selectedEntry = value; }
+        }
 
         #endregion
 
@@ -75,18 +80,18 @@ namespace Octopussy
         {
             // Move to the previous menu entry?
             if (input.IsMenuUp(ControllingPlayer)) {
-                selectedEntry--;
+                SelectedEntry--;
 
-                if (selectedEntry < 0)
-                    selectedEntry = menuEntries.Count - 1;
+                if (SelectedEntry < 0)
+                    SelectedEntry = menuEntries.Count - 1;
             }
 
             // Move to the next menu entry?
             if (input.IsMenuDown(ControllingPlayer)) {
-                selectedEntry++;
+                SelectedEntry++;
 
-                if (selectedEntry >= menuEntries.Count)
-                    selectedEntry = 0;
+                if (SelectedEntry >= menuEntries.Count)
+                    SelectedEntry = 0;
             }
 
             // Accept or cancel the menu? We pass in our ControllingPlayer, which may
@@ -97,7 +102,7 @@ namespace Octopussy
             PlayerIndex playerIndex;
 
             if (input.IsMenuSelect(ControllingPlayer, out playerIndex)) {
-                OnSelectEntry(selectedEntry, playerIndex);
+                OnSelectEntry(SelectedEntry, playerIndex);
             } else if (input.IsMenuCancel(ControllingPlayer, out playerIndex)) {
                 OnCancel(playerIndex);
             }
@@ -152,15 +157,15 @@ namespace Octopussy
 
             // update each menu entry's location in turn
             for (int i = 0; i < menuEntries.Count; i++) {
-                MenuEntry menuEntry = menuEntries[i];
+                ImageMenuEntry menuEntry = menuEntries[i];
 
-                /*// each entry is to be centered horizontally
+                // each entry is to be centered horizontally
                 position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
                 else
-                    position.X += transitionOffset * 512;*/
+                    position.X += transitionOffset * 512;
                 
                 // set the entry's position
                 menuEntry.Position = position;
@@ -181,7 +186,7 @@ namespace Octopussy
 
             // Update each nested MenuEntry object.
             for (int i = 0; i < menuEntries.Count; i++) {
-                bool isSelected = IsActive && (i == selectedEntry);
+                bool isSelected = IsActive && (i == SelectedEntry);
 
                 menuEntries[i].Update(this, isSelected, gameTime);
             }
@@ -204,9 +209,9 @@ namespace Octopussy
 
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++) {
-                MenuEntry menuEntry = menuEntries[i];
+                ImageMenuEntry menuEntry = menuEntries[i];
 
-                bool isSelected = IsActive && (i == selectedEntry);
+                bool isSelected = IsActive && (i == SelectedEntry);
 
                 menuEntry.Draw(this, isSelected, gameTime);
             }
@@ -214,10 +219,10 @@ namespace Octopussy
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes
             // the movement slow down as it nears the end).
-            float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
+            /*float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen
-            /*Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 300);
+            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 300);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;

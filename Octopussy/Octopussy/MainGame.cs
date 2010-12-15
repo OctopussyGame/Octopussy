@@ -22,6 +22,7 @@ namespace Octopussy
 
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
+        private PreferenceManager preferenceManager;
 
         #endregion
 
@@ -40,18 +41,26 @@ namespace Octopussy
             graphics = new GraphicsDeviceManager(this);
 
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            // graphics.IsFullScreen = true;
 
             graphics.ApplyChanges();
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
 
+            PreferenceManager = new PreferenceManager();
+
             Components.Add(screenManager);
 
             // Activate the first screens.
-            screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+        }
+
+        public PreferenceManager PreferenceManager
+        {
+            get { return preferenceManager; }
+            set { preferenceManager = value; }
         }
 
         /// <summary>

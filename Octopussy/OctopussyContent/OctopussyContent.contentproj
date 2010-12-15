@@ -197,13 +197,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="test.spritefont">
-      <Name>test</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="fonts\glowfont.png">
       <Name>glowfont</Name>
       <Importer>TextureImporter</Importer>
@@ -218,6 +211,35 @@
   <ItemGroup>
     <Compile Include="images\HUD.png">
       <Name>HUD</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\HUD-novy.png">
+      <Name>HUD-novy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\menu\main-quit.png">
+      <Name>main-quit</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\menu\newgame.png">
+      <Name>newgame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\menu\polozky.png">
+      <Name>polozky</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\menu\settings.png">
+      <Name>settings</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

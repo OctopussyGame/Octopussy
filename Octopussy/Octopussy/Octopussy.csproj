@@ -116,6 +116,7 @@
     <Compile Include="MainGame.cs" />
     <Compile Include="MenuAudioManager.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PreferenceManager.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="IAudioEmitter.cs" />
     <Compile Include="Entity.cs" />
@@ -133,8 +134,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="ParticleSystems\SmokePlumeParticleSystem.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
-    <Compile Include="Screens\BackgroundScreen.cs" />
-    <Compile Include="Screens\MultiPlayerMenuScreen.cs" />
+    <Compile Include="Screens\QuitMenuScreen.cs" />
+    <Compile Include="Screens\ImageMenuEntry.cs" />
+    <Compile Include="Screens\NewGameMenuScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
