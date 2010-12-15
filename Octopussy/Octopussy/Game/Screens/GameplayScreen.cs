@@ -50,7 +50,7 @@ namespace Octopussy.Game.Screens
 
         private BloomComponent bloom;
         //private int bloomSettingsIndex;
-        private float cameraArc = -80;
+        private float cameraArc = -90;
         private float cameraDistance = 2000;
         private float cameraRotation = 0;
         private GamePadState currentGamePadState;
