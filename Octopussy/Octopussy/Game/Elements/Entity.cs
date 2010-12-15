@@ -47,9 +47,10 @@ namespace Octopussy.Game.Elements
         private Vector3 _forward;
         private Vector3 _position;
         private Boolean _isBoundToHeightMap;
+        private Boolean _moved;
         private float _alpha;
-        private float _friction = 0.001f;
-        private float _movementSpeed = 0.01f;
+        private float _friction = 0.01f;
+        private float _movementSpeed = 0.02f;
         private float _rotation;
         private float _rotationX;
         private float _speed;
@@ -202,6 +203,7 @@ namespace Octopussy.Game.Elements
             if (modelName == null)
                 throw new ArgumentNullException("modelName");
 
+            this._moved = true;
             this._screen = screen;
 
             this._modelName = modelName;
@@ -260,6 +262,7 @@ namespace Octopussy.Game.Elements
         public void TurnLeft(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
+            this._moved = true;
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             _rotation += time * RotationSpeed;
             ComputeRotation(gameTime);
@@ -269,7 +272,8 @@ namespace Octopussy.Game.Elements
         public void TurnRight(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            this._moved = true;
+            var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _rotation -= time * RotationSpeed;
             ComputeRotation(gameTime);
         }
@@ -278,7 +282,8 @@ namespace Octopussy.Game.Elements
         public void Accellerate(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            this._moved = true;
+            var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _speed += time * _movementSpeed;
         }
 
@@ -286,7 +291,8 @@ namespace Octopussy.Game.Elements
         public void Decellerate(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            this._moved = true;
+            var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _speed -= time * _movementSpeed;
         }
 
@@ -294,6 +300,7 @@ namespace Octopussy.Game.Elements
         public void Stop(GameTime gameTime)
         // ReSharper restore MemberCanBeProtected.Global
         {
+            this._moved = true;
             _speed = 0;
         }
 
@@ -438,6 +445,11 @@ namespace Octopussy.Game.Elements
 
         public virtual void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
+            if (!this._moved)
+            {
+                return;
+            }
+
             this._gameTime = gameTime;
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -477,6 +489,7 @@ namespace Octopussy.Game.Elements
                 _forward.Z = ((float)Math.Cos(_rotation) * (100));
                 _orientation = Matrix.CreateRotationY(_rotation);
             }
+            this._moved = false;
         }
 
         #endregion
