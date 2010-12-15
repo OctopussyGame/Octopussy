@@ -1,23 +1,27 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // ScreenManager.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
-using System;
-using System.Diagnostics;
+
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Octopussy.Managers.SoundManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ScreenManager
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen
@@ -29,26 +33,23 @@ namespace Octopussy
     {
         #region Fields
 
-        List<GameScreen> screens = new List<GameScreen>();
-        List<GameScreen> screensToUpdate = new List<GameScreen>();
+        private readonly AudioManager audioManager;
+        private readonly InputState input = new InputState();
+        private readonly List<GameScreen> screens = new List<GameScreen>();
+        private readonly List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputState input = new InputState();
+        private Texture2D blankTexture;
+        private SpriteFont font;
 
-        SpriteBatch spriteBatch;
-        SpriteFont font;
-        SpriteFont selectionFont;
-        Texture2D blankTexture;
+        private bool isInitialized;
+        private SpriteFont selectionFont;
+        private SpriteBatch spriteBatch;
 
-        private AudioManager audioManager;
-
-        bool isInitialized;
-
-        bool traceEnabled;
+        private bool traceEnabled;
 
         #endregion
 
         #region Properties
-
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -95,19 +96,18 @@ namespace Octopussy
 
         #region Initialization
 
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
-        public ScreenManager(Game game)
+        public ScreenManager(Microsoft.Xna.Framework.Game game)
             : base(game)
         {
             // we must set EnabledGestures before we can query for them, but
             // we don't assume the game wants to read them.
             TouchPanel.EnabledGestures = GestureType.None;
 
-            audioManager = new AudioManager(this.Game);
-            this.Game.Components.Add(audioManager);
+            audioManager = new AudioManager(Game);
+            Game.Components.Add(audioManager);
         }
 
 
@@ -136,7 +136,8 @@ namespace Octopussy
             blankTexture = content.Load<Texture2D>("images/blank");
 
             // Tell each of the screens to load their content.
-            foreach (GameScreen screen in screens) {
+            foreach (GameScreen screen in screens)
+            {
                 screen.LoadContent();
             }
         }
@@ -148,16 +149,15 @@ namespace Octopussy
         protected override void UnloadContent()
         {
             // Tell each of the screens to unload their content.
-            foreach (GameScreen screen in screens) {
+            foreach (GameScreen screen in screens)
+            {
                 screen.UnloadContent();
             }
         }
 
-
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Allows each screen to run logic.
@@ -178,7 +178,8 @@ namespace Octopussy
             bool coveredByOtherScreen = false;
 
             // Loop as long as there are screens waiting to be updated.
-            while (screensToUpdate.Count > 0) {
+            while (screensToUpdate.Count > 0)
+            {
                 // Pop the topmost screen off the waiting list.
                 GameScreen screen = screensToUpdate[screensToUpdate.Count - 1];
 
@@ -188,10 +189,12 @@ namespace Octopussy
                 screen.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
                 if (screen.ScreenState == ScreenState.TransitionOn ||
-                    screen.ScreenState == ScreenState.Active) {
+                    screen.ScreenState == ScreenState.Active)
+                {
                     // If this is the first active screen we came across,
                     // give it a chance to handle input.
-                    if (!otherScreenHasFocus) {
+                    if (!otherScreenHasFocus)
+                    {
                         screen.HandleInput(input);
 
                         otherScreenHasFocus = true;
@@ -213,9 +216,9 @@ namespace Octopussy
         /// <summary>
         /// Prints a list of all the screens, for debugging.
         /// </summary>
-        void TraceScreens()
+        private void TraceScreens()
         {
-            List<string> screenNames = new List<string>();
+            var screenNames = new List<string>();
 
             foreach (GameScreen screen in screens)
                 screenNames.Add(screen.GetType().Name);
@@ -229,7 +232,8 @@ namespace Octopussy
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            foreach (GameScreen screen in screens) {
+            foreach (GameScreen screen in screens)
+            {
                 if (screen.ScreenState == ScreenState.Hidden)
                     continue;
 
@@ -237,11 +241,9 @@ namespace Octopussy
             }
         }
 
-
         #endregion
 
         #region Public Methods
-
 
         /// <summary>
         /// Adds a new screen to the screen manager.
@@ -253,7 +255,8 @@ namespace Octopussy
             screen.IsExiting = false;
 
             // If we have a graphics device, tell the screen to load content.
-            if (isInitialized) {
+            if (isInitialized)
+            {
                 screen.LoadContent();
             }
 
@@ -273,7 +276,8 @@ namespace Octopussy
         public void RemoveScreen(GameScreen screen)
         {
             // If we have a graphics device, tell the screen to unload content.
-            if (isInitialized) {
+            if (isInitialized)
+            {
                 screen.UnloadContent();
             }
 
@@ -282,7 +286,8 @@ namespace Octopussy
 
             // if there is a screen still in the manager, update TouchPanel
             // to respond to gestures that screen is interested in.
-            if (screens.Count > 0) {
+            if (screens.Count > 0)
+            {
                 TouchPanel.EnabledGestures = screens[screens.Count - 1].EnabledGestures;
             }
         }
@@ -311,11 +316,10 @@ namespace Octopussy
 
             spriteBatch.Draw(blankTexture,
                              new Rectangle(0, 0, viewport.Width, viewport.Height),
-                             Color.Black * alpha);
+                             Color.Black*alpha);
 
             spriteBatch.End();
         }
-
 
         #endregion
     }

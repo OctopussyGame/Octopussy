@@ -1,18 +1,22 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // ParticleEmitter.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ParticlesManager
 {
     /// <summary>
     /// Helper for objects that want to leave particles behind them as they
@@ -39,13 +43,12 @@ namespace Octopussy
     {
         #region Fields
 
-        ParticleSystem particleSystem;
-        float timeBetweenParticles;
-        Vector3 previousPosition;
-        float timeLeftOver;
+        private readonly ParticleSystem particleSystem;
+        private readonly float timeBetweenParticles;
+        private Vector3 previousPosition;
+        private float timeLeftOver;
 
         #endregion
-
 
         /// <summary>
         /// Constructs a new particle emitter object.
@@ -55,8 +58,8 @@ namespace Octopussy
         {
             this.particleSystem = particleSystem;
 
-            timeBetweenParticles = 1.0f / particlesPerSecond;
-            
+            timeBetweenParticles = 1.0f/particlesPerSecond;
+
             previousPosition = initialPosition;
         }
 
@@ -71,17 +74,17 @@ namespace Octopussy
                 throw new ArgumentNullException("gameTime");
 
             // Work out how much time has passed since the previous update.
-            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var elapsedTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             if (elapsedTime > 0)
             {
                 // Work out how fast we are moving.
-                Vector3 velocity = (newPosition - previousPosition) / elapsedTime;
+                Vector3 velocity = (newPosition - previousPosition)/elapsedTime;
 
                 // If we had any time left over that we didn't use during the
                 // previous update, add that to the current elapsed time.
                 float timeToSpend = timeLeftOver + elapsedTime;
-                
+
                 // Counter for looping over the time interval.
                 float currentTime = -timeLeftOver;
 
@@ -94,7 +97,7 @@ namespace Octopussy
                     // Work out the optimal position for this particle. This will produce
                     // evenly spaced particles regardless of the object speed, particle
                     // creation frequency, or game update rate.
-                    float mu = currentTime / elapsedTime;
+                    float mu = currentTime/elapsedTime;
 
                     Vector3 position = Vector3.Lerp(previousPosition, newPosition, mu);
 

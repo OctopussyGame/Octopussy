@@ -1,103 +1,102 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // IAudioEmitter.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-#endregion 
+using Octopussy.Game.Screens;
+using Octopussy.Managers.SoundManager;
 
-namespace Octopussy
+#endregion
+
+namespace Octopussy.Game.Elements
 {
     public class Entity : IAudioEmitter
     {
         #region Fields
+
+        private readonly Vector4 _ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
+        private readonly Boolean _isUsingAlpha;
+        private readonly Boolean _isUsingBumpMap;
+        private readonly Vector4 _lightColor = new Vector4(1, 1, 1, 1);
+        private readonly string _modelName;
+        private float _alpha;
+        private const float EyeHeight = 100;
+        private Vector3 _forward;
+        private float _friction = 0.001f;
+        private GameTime _gameTime;
+        private const float MaxMovementSpeed = 0.9f;
+        private Model _model;
+        private float _movementSpeed = 0.01f;
+        private Vector3 _position;
+        private const float ProjectileSpeed = 500;
+        private float _rotation;
+        private const float RotationSpeed = 0.005f;
+        private float _rotationX;
+        private readonly GameplayScreen _screen;
+        private const float Shininess = .3f;
+        private const float SpecularPower = 4.0f;
+        private float _speed;
+        private const float TimeRotationSpeed = 0.42f;
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
         /// </summary>
         public Vector3 EyePosition
         {
-            get { Vector3 eyePosition = position; eyePosition.Y = eyeHeight; return eyePosition; }
+            get
+            {
+                Vector3 eyePosition = _position;
+                eyePosition.Y = EyeHeight;
+                return eyePosition;
+            }
         }
-        /// <summary>
-        /// Gets or sets the 3D position of the entity.
-        /// </summary>
-        public Vector3 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-        Vector3 position;
 
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
         /// </summary>
+// ReSharper disable UnusedMember.Global
         public Vector3 EyeForward
+// ReSharper restore UnusedMember.Global
         {
-            get { Vector3 eyeForward = forward; eyeForward.Y = eyeHeight; return eyeForward; }
+            get
+            {
+                Vector3 eyeForward = _forward;
+                eyeForward.Y = EyeHeight;
+                return eyeForward;
+            }
         }
-        /// <summary>
-        /// Gets or sets which way the entity is facing.
-        /// </summary>
-        public Vector3 Forward
-        {
-            get { return forward; }
-            set { forward = value; }
-        }
-        Vector3 forward;
-
-        /// <summary>
-        /// Gets or sets the orientation of this entity.
-        /// </summary>
-        public Vector3 Up
-        {
-            get { return up; }
-            set { up = value; }
-        }
-        Vector3 up;
-
-        /// <summary>
-        /// Gets or sets how fast this entity is moving.
-        /// </summary>
-        public Vector3 Velocity
-        {
-            get { return velocity; }
-            protected set { velocity = value; }
-        }
-        Vector3 velocity;
 
         /// <summary>
         /// Gets or sets how fast this entity is moving.
         /// </summary>
         public float Speed
         {
-            get { return speed; }
-            set { speed = value; }
+            get { return _speed; }
+// ReSharper disable UnusedMember.Global
+            set { _speed = value; }
+// ReSharper restore UnusedMember.Global
         }
-        float speed;
 
         /// <summary>
         /// Gets how fast this entity is braking.
         /// </summary>
         public float Friction
         {
-            get { return friction; }
-            set { friction = value; }
+            get { return _friction; }
+            set { _friction = value; }
         }
 
         /// <summary>
@@ -105,108 +104,106 @@ namespace Octopussy
         /// </summary>
         public float Alpha
         {
-            get { return alpha; }
-            set { alpha = value; }
+            get { return _alpha; }
+            set { _alpha = value; }
         }
-        float alpha;
 
         /// <summary>
         /// Gets or sets how fast this entity is moving.
         /// </summary>
         public float Rotation
         {
-            get { return rotation; }
-            set { rotation = value; }
+            get { return _rotation; }
+            set { _rotation = value; }
         }
-        float rotation;
 
         /// <summary>
         /// Gets or sets how fast this entity is moving.
         /// </summary>
         public float RotationX
         {
-            get { return rotationX; }
-            set { rotationX = value; }
+            get { return _rotationX; }
+            set { _rotationX = value; }
         }
-        float rotationX;
 
         /// <summary>
         /// Gets or sets the orientation of this entity.
         /// </summary>
-        public Boolean RotateInTime
-        {
-            get { return rotateInTime; }
-            set { rotateInTime = value; }
-        }
-        Boolean rotateInTime;
+// ReSharper disable MemberCanBePrivate.Global
+        public Boolean RotateInTime { get; set; }
+// ReSharper restore MemberCanBePrivate.Global
 
         /// <summary>
         /// Gets or sets the orientation of this entity.
         /// </summary>
-        public Boolean MoveInTime
-        {
-            get { return moveInTime; }
-            set { moveInTime = value; }
-        }
+// ReSharper disable MemberCanBePrivate.Global
+        public Boolean MoveInTime { get; set; }
+// ReSharper restore MemberCanBePrivate.Global
 
         public float MovementSpeed
         {
-            get { return movementSpeed; }
-            set { movementSpeed = value; }
+            get { return _movementSpeed; }
+            set { _movementSpeed = value; }
         }
 
-        Boolean moveInTime;
+        /// <summary>
+        /// Gets or sets the 3D position of the entity.
+        /// </summary>
+        public Vector3 Position
+        {
+            get { return _position; }
+            set { _position = value; }
+        }
 
-        Model model;
-        string modelName;
-        Boolean isUsingBumpMap;
-        Boolean isUsingAlpha;
+        /// <summary>
+        /// Gets or sets which way the entity is facing.
+        /// </summary>
+        public Vector3 Forward
+        {
+            get { return _forward; }
+            set { _forward = value; }
+        }
 
-        // Settings
-        protected float rotationSpeed = 0.005f;
-        private float movementSpeed = 0.01f;
-        protected float maxMovementSpeed = 0.9f;
-        private float friction = 0.001f;
-        protected float eyeHeight = 100;
-        protected float timeRotationSpeed = 0.42f;
-        protected float projectileSpeed = 500;
-        // the next 4 fields are inputs to the normal mapping effect, and will be set
-        // at load time.  change these to change the light properties to modify
-        // the appearance of the model.
-        Vector4 lightColor = new Vector4(1, 1, 1, 1);
-        Vector4 ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
-        float shininess = .3f;
-        float specularPower = 4.0f;
+        /// <summary>
+        /// Gets or sets the orientation of this entity.
+        /// </summary>
+// ReSharper disable MemberCanBePrivate.Global
+        public Vector3 Up { get; set; }
+// ReSharper restore MemberCanBePrivate.Global
 
-        protected GameplayScreen screen;
+        /// <summary>
+        /// Gets or sets how fast this entity is moving.
+        /// </summary>
+// ReSharper disable MemberCanBePrivate.Global
+        public Vector3 Velocity { get; protected set; }
+// ReSharper restore MemberCanBePrivate.Global
 
-        GameTime gameTime;
-        
         #endregion
 
         #region Initialization
 
-        public Entity(GameplayScreen screen, string modelName, Boolean isUsingBumpMap = false, Boolean isUsingAlpha = false)
+        public Entity(GameplayScreen screen, string modelName, Boolean isUsingBumpMap = false,
+                      Boolean isUsingAlpha = false)
         {
             if (screen == null)
                 throw new ArgumentNullException("screen");
             if (modelName == null)
                 throw new ArgumentNullException("modelName");
 
-            this.screen = screen;
+            this._screen = screen;
 
-            this.modelName = modelName;
-            this.isUsingBumpMap = isUsingBumpMap;
-            this.isUsingAlpha = isUsingAlpha;
-            position = new Vector3(0, 0, 0);
-            rotation = 0;
-            rotationX = 0;
-            alpha = 1;
-            up = Vector3.Up;
-            velocity = Vector3.Zero;
-            speed = 0;
-            rotateInTime = false;
-            moveInTime = false;
+            this._modelName = modelName;
+            this._isUsingBumpMap = isUsingBumpMap;
+            this._isUsingAlpha = isUsingAlpha;
+            _position = new Vector3(0, 0, 0);
+            _rotation = 0;
+            _rotationX = 0;
+            _alpha = 1;
+            Up = Vector3.Up;
+            Velocity = Vector3.Zero;
+            _speed = 0;
+            RotateInTime = false;
+            MoveInTime = false;
         }
 
         /// <summary>
@@ -214,20 +211,20 @@ namespace Octopussy
         /// </summary>
         public virtual void LoadContent()
         {
-            model = screen.ScreenManager.Game.Content.Load<Model>(modelName);
+            _model = _screen.ScreenManager.Game.Content.Load<Model>(_modelName);
 
-            if (isUsingBumpMap)
+            if (_isUsingBumpMap)
             {
-                foreach (ModelMesh mesh in model.Meshes)
+                foreach (ModelMesh mesh in _model.Meshes)
                 {
                     foreach (Effect effect in mesh.Effects)
                     {
-                        effect.Parameters["LightColor"].SetValue(lightColor);
+                        effect.Parameters["LightColor"].SetValue(_lightColor);
                         effect.Parameters["AmbientLightColor"].SetValue
-                            (ambientLightColor);
+                            (_ambientLightColor);
 
-                        effect.Parameters["Shininess"].SetValue(shininess);
-                        effect.Parameters["SpecularPower"].SetValue(specularPower);
+                        effect.Parameters["Shininess"].SetValue(Shininess);
+                        effect.Parameters["SpecularPower"].SetValue(SpecularPower);
                     }
                 }
             }
@@ -236,74 +233,92 @@ namespace Octopussy
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
+// ReSharper disable VirtualMemberNeverOverriden.Global
         public virtual void UnloadContent()
+// ReSharper restore VirtualMemberNeverOverriden.Global
         {
-            
         }
 
         #endregion
 
         #region Interaction
 
+// ReSharper disable MemberCanBeProtected.Global
         public void TurnLeft(GameTime gameTime)
+// ReSharper restore MemberCanBeProtected.Global
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            rotation += time * rotationSpeed;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            _rotation += time*RotationSpeed;
             ComputeRotation(gameTime);
         }
 
+// ReSharper disable MemberCanBeProtected.Global
         public void TurnRight(GameTime gameTime)
+// ReSharper restore MemberCanBeProtected.Global
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            rotation -= time * rotationSpeed;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            _rotation -= time*RotationSpeed;
             ComputeRotation(gameTime);
         }
 
+// ReSharper disable MemberCanBeProtected.Global
         public void Accellerate(GameTime gameTime)
+// ReSharper restore MemberCanBeProtected.Global
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            speed += time * movementSpeed;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            _speed += time*_movementSpeed;
         }
 
+// ReSharper disable MemberCanBeProtected.Global
         public void Decellerate(GameTime gameTime)
+// ReSharper restore MemberCanBeProtected.Global
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            speed -= time * movementSpeed;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            _speed -= time*_movementSpeed;
         }
 
+// ReSharper disable MemberCanBeProtected.Global
         public void Shoot()
+// ReSharper restore MemberCanBeProtected.Global
         {
-            float vx = ((float)Math.Cos(rotation) * (projectileSpeed));
-            float vz = ((float)Math.Sin(rotation) * (projectileSpeed));
+            float vx = ((float) Math.Cos(_rotation)*(ProjectileSpeed));
+            float vz = ((float) Math.Sin(_rotation)*(ProjectileSpeed));
 
-            screen.ScreenManager.AudioManager.Play3DSound("sound/tu_mas", false, this);
-            screen.AddProjectile(new Projectile(new Vector3(position.X, 90, position.Z), new Vector3(-vz, 0, -vx), screen.explosionParticles,
-                                               screen.explosionSmokeParticles,
-                                               screen.projectileTrailParticles));
+            _screen.ScreenManager.AudioManager.Play3DSound("sound/tu_mas", false, this);
+            _screen.AddProjectile(new Projectile(new Vector3(_position.X, 90, _position.Z), new Vector3(-vz, 0, -vx),
+                                                _screen.explosionParticles,
+                                                _screen.explosionSmokeParticles,
+                                                _screen.projectileTrailParticles));
         }
 
+// ReSharper disable UnusedParameter.Local
         private void ComputeRotation(GameTime gameTime)
+// ReSharper restore UnusedParameter.Local
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (MathHelper.ToDegrees(rotation) > 360)
-                rotation = 0;
-            else if (MathHelper.ToDegrees(rotation) < -360)
-                rotation = 0;
+            if (MathHelper.ToDegrees(_rotation) > 360)
+                _rotation = 0;
+            else if (MathHelper.ToDegrees(_rotation) < -360)
+                _rotation = 0;
         }
 
         private void ComputeSpeed(GameTime gameTime)
         {
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             // Apply friction to speed
-            if (speed > 0) {
-                speed -= time * friction;
-                if (speed - friction < 0) {
-                    speed = 0;
+            if (_speed > 0)
+            {
+                _speed -= time*_friction;
+                if (_speed - _friction < 0)
+                {
+                    _speed = 0;
                 }
-            } else if (speed < 0) {
-                speed += time * friction;
-                if (speed + friction > 0) {
-                    speed = 0;
+            }
+            else if (_speed < 0)
+            {
+                _speed += time*_friction;
+                if (_speed + _friction > 0)
+                {
+                    _speed = 0;
                 }
             }
             // Limit movement.
@@ -312,72 +327,81 @@ namespace Octopussy
             else if (cameraDistance < 10)
                 cameraDistance = 10;*/
             // Limit movement speed.
-            if (speed > maxMovementSpeed)
-                speed = maxMovementSpeed;
-            else if (speed < (-maxMovementSpeed))
-                speed = -maxMovementSpeed;
+            if (_speed > MaxMovementSpeed)
+                _speed = MaxMovementSpeed;
+            else if (_speed < (-MaxMovementSpeed))
+                _speed = -MaxMovementSpeed;
         }
 
         #endregion
 
         #region Update
 
+// ReSharper disable UnusedParameter.Global
         public virtual void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
-                         KeyboardState currentKeyboardState, GamePadState currentGamePadState)
+// ReSharper restore UnusedParameter.Global
+// ReSharper disable UnusedParameter.Global
+                                        KeyboardState currentKeyboardState, GamePadState currentGamePadState)
+// ReSharper restore UnusedParameter.Global
         {
-            var gameTime = this.gameTime; // this needs rewrite
+            GameTime gameTime = this._gameTime; // this needs rewrite
 
             // Check for input to rotate left and right.
-            if (currentKeyboardState.IsKeyDown(Keys.Left)) {
+            if (currentKeyboardState.IsKeyDown(Keys.Left))
+            {
                 TurnLeft(gameTime);
             }
-            if (currentKeyboardState.IsKeyDown(Keys.Right)) {
+            if (currentKeyboardState.IsKeyDown(Keys.Right))
+            {
                 TurnRight(gameTime);
             }
 
             // Check for input to adjust speed.
-            if (currentKeyboardState.IsKeyDown(Keys.Up)) {
+            if (currentKeyboardState.IsKeyDown(Keys.Up))
+            {
                 Accellerate(gameTime);
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Down)) {
+            if (currentKeyboardState.IsKeyDown(Keys.Down))
+            {
                 Decellerate(gameTime);
             }
 
             if ((currentKeyboardState.IsKeyDown(Keys.Space) &&
-                 lastKeyboardState.IsKeyUp(Keys.Space))) {
+                 lastKeyboardState.IsKeyUp(Keys.Space)))
+            {
                 Shoot();
             }
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            this.gameTime = gameTime;
-            float time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            this._gameTime = gameTime;
+            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             ComputeSpeed(gameTime);
 
-            position.X -= ((float)Math.Sin(rotation) * (time * speed));
-            position.Z -= ((float)Math.Cos(rotation) * (time * speed));
+            _position.X -= ((float) Math.Sin(_rotation)*(time*_speed));
+            _position.Z -= ((float) Math.Cos(_rotation)*(time*_speed));
 
-            forward.X = ((float)Math.Sin(rotation) * (100));
-            forward.Z = ((float)Math.Cos(rotation) * (100));
+            _forward.X = ((float) Math.Sin(_rotation)*(100));
+            _forward.Z = ((float) Math.Cos(_rotation)*(100));
 
             if (RotateInTime)
             {
-                time = (float)gameTime.TotalGameTime.TotalSeconds;
-                this.rotation = time * timeRotationSpeed;
+                time = (float) gameTime.TotalGameTime.TotalSeconds;
+                _rotation = time*TimeRotationSpeed;
             }
 
             if (MoveInTime)
             {
-                time = (float)gameTime.TotalGameTime.TotalSeconds;
-                if(((int)time) % 4 == 0)
+                time = (float) gameTime.TotalGameTime.TotalSeconds;
+                if (((int) time)%4 == 0)
                 {
-                    this.Accellerate(gameTime);
+                    Accellerate(gameTime);
                 }
-                else if (((int)time) % 2 == 0)
+                else if (((int) time)%2 == 0)
                 {
-                    this.Decellerate(gameTime);
+                    Decellerate(gameTime);
                 }
             }
         }
@@ -388,36 +412,42 @@ namespace Octopussy
 
         public virtual void Draw(GameTime gameTime)
         {
-            Matrix view = screen.ViewMatrix;
-            Matrix projection = screen.ProjectionMatrix;
+            Matrix view = _screen.ViewMatrix;
+            Matrix projection = _screen.ProjectionMatrix;
 
-            GraphicsDevice device = screen.ScreenManager.Game.GraphicsDevice;
-            
-            device.BlendState = isUsingAlpha ? BlendState.AlphaBlend : BlendState.Opaque;           
+            GraphicsDevice device = _screen.ScreenManager.Game.GraphicsDevice;
+
+            device.BlendState = _isUsingAlpha ? BlendState.AlphaBlend : BlendState.Opaque;
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
-            Matrix rotationMatrix = Matrix.CreateRotationY(rotation); ;
-            Matrix rotationXMatrix = Matrix.CreateRotationX(rotationX); ;
-            Matrix positionMatrix = Matrix.CreateTranslation(position.X, position.Y, position.Z);
+            Matrix rotationMatrix = Matrix.CreateRotationY(_rotation);
+            Matrix rotationXMatrix = Matrix.CreateRotationX(_rotationX);
+            Matrix positionMatrix = Matrix.CreateTranslation(_position.X, _position.Y, _position.Z);
 
-            Matrix[] transforms = new Matrix[model.Bones.Count];
-            model.CopyAbsoluteBoneTransformsTo(transforms);
-            foreach (ModelMesh mesh in model.Meshes) {
-                if (isUsingBumpMap) {
-                    foreach (EffectMaterial effect in mesh.Effects) {
-                        Matrix world = transforms[mesh.ParentBone.Index] * rotationMatrix;
+            var transforms = new Matrix[_model.Bones.Count];
+            _model.CopyAbsoluteBoneTransformsTo(transforms);
+            foreach (ModelMesh mesh in _model.Meshes)
+            {
+                if (_isUsingBumpMap)
+                {
+                    foreach (EffectMaterial effect in mesh.Effects)
+                    {
+                        Matrix world = transforms[mesh.ParentBone.Index]*rotationMatrix;
                         world *= rotationXMatrix;
                         world *= positionMatrix;
 
                         effect.Parameters["World"].SetValue(world);
                         effect.Parameters["View"].SetValue(view);
                         effect.Parameters["Projection"].SetValue(projection);
-                        effect.Parameters["LightPosition"].SetValue(screen.lightPosition);
+                        effect.Parameters["LightPosition"].SetValue(_screen.lightPosition);
                     }
-                } else {
-                    foreach (BasicEffect effect in mesh.Effects) {
-                        Matrix world = transforms[mesh.ParentBone.Index] * rotationMatrix;
+                }
+                else
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        Matrix world = transforms[mesh.ParentBone.Index]*rotationMatrix;
                         world *= rotationXMatrix;
                         world *= positionMatrix;
 
@@ -425,17 +455,17 @@ namespace Octopussy
                         effect.View = view;
                         effect.Projection = projection;
 
-                        effect.Alpha = alpha;
+                        effect.Alpha = _alpha;
 
                         // Set the fog to match the black background color
                         effect.FogEnabled = true;
                         effect.FogColor = Vector3.Zero;
                         effect.FogStart = 1000;
                         effect.FogEnd = 3200;
-                        
+
                         effect.EnableDefaultLighting();
                         //effect.DirectionalLight0.Direction = screen.lightPosition;
-                        
+
                         // Override the default specular color to make it nice and bright,
                         // so we'll get some decent glints that the bloom can key off.
                         effect.SpecularColor = Vector3.One;

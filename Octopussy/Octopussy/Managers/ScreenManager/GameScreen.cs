@@ -1,20 +1,23 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // GameScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using System.IO;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ScreenManager
 {
     /// <summary>
     /// Enum describes the screen transition state.
@@ -39,6 +42,13 @@ namespace Octopussy
     {
         #region Properties
 
+        private GestureType enabledGestures = GestureType.None;
+        private bool isExiting;
+        private bool otherScreenHasFocus;
+        private ScreenState screenState = ScreenState.TransitionOn;
+        private TimeSpan transitionOffTime = TimeSpan.Zero;
+        private TimeSpan transitionOnTime = TimeSpan.Zero;
+        private float transitionPosition = 1;
 
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
@@ -47,39 +57,35 @@ namespace Octopussy
         /// popup, in which case screens underneath it do not need to bother
         /// transitioning off.
         /// </summary>
-        public bool IsPopup
-        {
-            get { return isPopup; }
-            protected set { isPopup = value; }
-        }
-
-        bool isPopup = false;
+        public bool IsPopup { get; protected set; }
 
 
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition on when it is activated.
         /// </summary>
+// ReSharper disable MemberCanBeProtected.Global
         public TimeSpan TransitionOnTime
+// ReSharper restore MemberCanBeProtected.Global
         {
             get { return transitionOnTime; }
             protected set { transitionOnTime = value; }
         }
-
-        TimeSpan transitionOnTime = TimeSpan.Zero;
 
 
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition off when it is deactivated.
         /// </summary>
+// ReSharper disable MemberCanBeProtected.Global
         public TimeSpan TransitionOffTime
+// ReSharper restore MemberCanBeProtected.Global
         {
+// ReSharper disable MemberCanBePrivate.Global
             get { return transitionOffTime; }
+// ReSharper restore MemberCanBePrivate.Global
             protected set { transitionOffTime = value; }
         }
-
-        TimeSpan transitionOffTime = TimeSpan.Zero;
 
 
         /// <summary>
@@ -87,13 +93,13 @@ namespace Octopussy
         /// from zero (fully active, no transition) to one (transitioned
         /// fully off to nothing).
         /// </summary>
+// ReSharper disable MemberCanBeProtected.Global
         public float TransitionPosition
+// ReSharper restore MemberCanBeProtected.Global
         {
             get { return transitionPosition; }
             protected set { transitionPosition = value; }
         }
-
-        float transitionPosition = 1;
 
 
         /// <summary>
@@ -116,8 +122,6 @@ namespace Octopussy
             protected set { screenState = value; }
         }
 
-        ScreenState screenState = ScreenState.TransitionOn;
-
 
         /// <summary>
         /// There are two possible reasons why a screen might be transitioning
@@ -133,13 +137,13 @@ namespace Octopussy
             protected internal set { isExiting = value; }
         }
 
-        bool isExiting = false;
-
 
         /// <summary>
         /// Checks whether this screen is active and can respond to user input.
         /// </summary>
+// ReSharper disable MemberCanBeProtected.Global
         public bool IsActive
+// ReSharper restore MemberCanBeProtected.Global
         {
             get
             {
@@ -149,19 +153,11 @@ namespace Octopussy
             }
         }
 
-        bool otherScreenHasFocus;
-
 
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
-        public ScreenManager ScreenManager
-        {
-            get { return screenManager; }
-            internal set { screenManager = value; }
-        }
-
-        ScreenManager screenManager;
+        public ScreenManager ScreenManager { get; internal set; }
 
 
         /// <summary>
@@ -172,13 +168,9 @@ namespace Octopussy
         /// this menu is given control over all subsequent screens, so other gamepads
         /// are inactive until the controlling player returns to the main menu.
         /// </summary>
-        public PlayerIndex? ControllingPlayer
-        {
-            get { return controllingPlayer; }
-            internal set { controllingPlayer = value; }
-        }
-
-        PlayerIndex? controllingPlayer;
+// ReSharper disable MemberCanBeProtected.Global
+        public PlayerIndex? ControllingPlayer { get; internal set; }
+// ReSharper restore MemberCanBeProtected.Global
 
 
         /// <summary>
@@ -198,14 +190,12 @@ namespace Octopussy
                 // the screen manager handles this during screen changes, but
                 // if this screen is active and the gesture types are changing,
                 // we have to update the TouchPanel ourself.
-                if (ScreenState == ScreenState.Active) {
+                if (ScreenState == ScreenState.Active)
+                {
                     TouchPanel.EnabledGestures = value;
                 }
             }
         }
-
-        GestureType enabledGestures = GestureType.None;
-
 
         #endregion
 
@@ -214,19 +204,21 @@ namespace Octopussy
         /// <summary>
         /// Load graphics content for the screen.
         /// </summary>
-        public virtual void LoadContent() { }
+        public virtual void LoadContent()
+        {
+        }
 
 
         /// <summary>
         /// Unload content for the screen.
         /// </summary>
-        public virtual void UnloadContent() { }
-
+        public virtual void UnloadContent()
+        {
+        }
 
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Allows the screen to run logic, such as updating the transition position.
@@ -234,33 +226,45 @@ namespace Octopussy
         /// is active, hidden, or in the middle of a transition.
         /// </summary>
         public virtual void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                      bool coveredByOtherScreen)
+                                   bool coveredByOtherScreen)
         {
             this.otherScreenHasFocus = otherScreenHasFocus;
 
-            if (isExiting) {
+            if (isExiting)
+            {
                 // If the screen is going away to die, it should transition off.
                 screenState = ScreenState.TransitionOff;
 
-                if (!UpdateTransition(gameTime, transitionOffTime, 1)) {
+                if (!UpdateTransition(gameTime, transitionOffTime, 1))
+                {
                     // When the transition finishes, remove the screen.
                     ScreenManager.RemoveScreen(this);
                 }
-            } else if (coveredByOtherScreen) {
+            }
+            else if (coveredByOtherScreen)
+            {
                 // If the screen is covered by another, it should transition off.
-                if (UpdateTransition(gameTime, transitionOffTime, 1)) {
+                if (UpdateTransition(gameTime, transitionOffTime, 1))
+                {
                     // Still busy transitioning.
                     screenState = ScreenState.TransitionOff;
-                } else {
+                }
+                else
+                {
                     // Transition finished!
                     screenState = ScreenState.Hidden;
                 }
-            } else {
+            }
+            else
+            {
                 // Otherwise the screen should transition on and become active.
-                if (UpdateTransition(gameTime, transitionOnTime, -1)) {
+                if (UpdateTransition(gameTime, transitionOnTime, -1))
+                {
                     // Still busy transitioning.
                     screenState = ScreenState.TransitionOn;
-                } else {
+                }
+                else
+                {
                     // Transition finished!
                     screenState = ScreenState.Active;
                 }
@@ -271,7 +275,7 @@ namespace Octopussy
         /// <summary>
         /// Helper for updating the screen transition position.
         /// </summary>
-        bool UpdateTransition(GameTime gameTime, TimeSpan time, int direction)
+        private bool UpdateTransition(GameTime gameTime, TimeSpan time, int direction)
         {
             // How much should we move by?
             float transitionDelta;
@@ -279,15 +283,16 @@ namespace Octopussy
             if (time == TimeSpan.Zero)
                 transitionDelta = 1;
             else
-                transitionDelta = (float)(gameTime.ElapsedGameTime.TotalMilliseconds /
-                                          time.TotalMilliseconds);
+                transitionDelta = (float) (gameTime.ElapsedGameTime.TotalMilliseconds/
+                                           time.TotalMilliseconds);
 
             // Update the transition position.
-            transitionPosition += transitionDelta * direction;
+            transitionPosition += transitionDelta*direction;
 
             // Did we reach the end of the transition?
             if (((direction < 0) && (transitionPosition <= 0)) ||
-                ((direction > 0) && (transitionPosition >= 1))) {
+                ((direction > 0) && (transitionPosition >= 1)))
+            {
                 transitionPosition = MathHelper.Clamp(transitionPosition, 0, 1);
                 return false;
             }
@@ -302,19 +307,21 @@ namespace Octopussy
         /// is only called when the screen is active, and not when some other
         /// screen has taken the focus.
         /// </summary>
-        public virtual void HandleInput(InputState input) { }
+        public virtual void HandleInput(InputState input)
+        {
+        }
 
 
         /// <summary>
         /// This is called when the screen should draw itself.
         /// </summary>
-        public virtual void Draw(GameTime gameTime) { }
-
+        public virtual void Draw(GameTime gameTime)
+        {
+        }
 
         #endregion
 
         #region Public Methods
-
 
         /// <summary>
         /// Tells the screen to go away. Unlike ScreenManager.RemoveScreen, which
@@ -323,15 +330,17 @@ namespace Octopussy
         /// </summary>
         public void ExitScreen()
         {
-            if (TransitionOffTime == TimeSpan.Zero) {
+            if (TransitionOffTime == TimeSpan.Zero)
+            {
                 // If the screen has a zero transition time, remove it immediately.
                 ScreenManager.RemoveScreen(this);
-            } else {
+            }
+            else
+            {
                 // Otherwise flag that it should transition off and then exit.
                 isExiting = true;
             }
         }
-
 
         #endregion
     }

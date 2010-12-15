@@ -1,19 +1,24 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // MenuEntry.cs
 //
 // XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Octopussy.Game.Screens;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ScreenManager
 {
     /// <summary>
     /// Helper class represents a single entry in a MenuScreen. By default this
@@ -21,14 +26,15 @@ namespace Octopussy
     /// entries in different ways. This also provides an event that will be raised
     /// when the menu entry is selected.
     /// </summary>
-    class MenuEntry
+    internal class MenuEntry
     {
         #region Fields
 
         /// <summary>
-        /// The text rendered for this entry.
+        /// The position at which the entry is drawn. This is set by the MenuScreen
+        /// each frame in Update.
         /// </summary>
-        string text;
+        private Vector2 position;
 
         /// <summary>
         /// Tracks a fading selection effect on the entry.
@@ -36,23 +42,23 @@ namespace Octopussy
         /// <remarks>
         /// The entries transition out of the selection effect when they are deselected.
         /// </remarks>
-        float selectionFade;
+        private float selectionFade;
 
         /// <summary>
-        /// The position at which the entry is drawn. This is set by the MenuScreen
-        /// each frame in Update.
+        /// The text rendered for this entry.
         /// </summary>
-        Vector2 position;
+        private string text;
 
         #endregion
 
         #region Properties
 
-
         /// <summary>
         /// Gets or sets the text of this menu entry.
         /// </summary>
+// ReSharper disable MemberCanBePrivate.Global
         public string Text
+// ReSharper restore MemberCanBePrivate.Global
         {
             get { return text; }
             set { text = value; }
@@ -68,11 +74,9 @@ namespace Octopussy
             set { position = value; }
         }
 
-
         #endregion
 
         #region Events
-
 
         /// <summary>
         /// Event raised when the menu entry is selected.
@@ -89,11 +93,9 @@ namespace Octopussy
                 Selected(this, new PlayerIndexEventArgs(playerIndex));
         }
 
-
         #endregion
 
         #region Initialization
-
 
         /// <summary>
         /// Constructs a new menu entry with the specified text.
@@ -103,21 +105,21 @@ namespace Octopussy
             this.text = text;
         }
 
-
         #endregion
 
         #region Update and Draw
 
-
         /// <summary>
         /// Updates the menu entry.
         /// </summary>
+// ReSharper disable UnusedParameter.Global
         public virtual void Update(MenuScreen screen, bool isSelected, GameTime gameTime)
+// ReSharper restore UnusedParameter.Global
         {
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
             // popping to the new state.
-            float fadeSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
+            float fadeSpeed = (float) gameTime.ElapsedGameTime.TotalSeconds*4;
 
             if (isSelected)
                 selectionFade = Math.Min(selectionFade + fadeSpeed, 1);
@@ -137,9 +139,9 @@ namespace Octopussy
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
 
-            float pulsate = (float)Math.Sin(time * 6) + 1;
+            float pulsate = (float) Math.Sin(time*6) + 1;
 
-            float scale = 1 +pulsate * 0.05f * selectionFade;
+            float scale = 1 + pulsate*0.05f*selectionFade;
 
             // Modify the alpha to fade text out during transitions.
             color *= screen.TransitionAlpha;
@@ -154,12 +156,12 @@ namespace Octopussy
                 font.Spacing = -38;
                 position.X -= 18.5f;
             }
-                
-            
-            Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+
+
+            var origin = new Vector2(0, font.LineSpacing/2);
 
             spriteBatch.DrawString(font, text, position, color, 0,
-                                  origin, scale, SpriteEffects.None, 0);
+                                   origin, scale, SpriteEffects.None, 0);
         }
 
 
@@ -177,9 +179,8 @@ namespace Octopussy
         /// </summary>
         public virtual int GetWidth(MenuScreen screen)
         {
-            return (int)screen.ScreenManager.Font.MeasureString(Text).X;
+            return (int) screen.ScreenManager.Font.MeasureString(Text).X;
         }
-
 
         #endregion
     }

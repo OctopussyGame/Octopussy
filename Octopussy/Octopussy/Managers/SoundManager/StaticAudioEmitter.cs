@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace Octopussy
+namespace Octopussy.Managers.SoundManager
 {
-    class StaticAudioEmitter : IAudioEmitter
+    internal class StaticAudioEmitter : IAudioEmitter
     {
         #region Implementation of IAudioEmitter
 

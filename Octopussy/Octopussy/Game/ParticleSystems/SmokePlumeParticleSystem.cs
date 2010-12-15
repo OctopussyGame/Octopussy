@@ -1,29 +1,34 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // SmokePlumeParticleSystem.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Octopussy.Managers.ParticlesManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.ParticleSystems
 {
     /// <summary>
     /// Custom particle system for creating a giant plume of long lasting smoke.
     /// </summary>
-    class SmokePlumeParticleSystem : ParticleSystem
+    internal class SmokePlumeParticleSystem : ParticleSystem
     {
-        public SmokePlumeParticleSystem(Game game, ContentManager content)
+        public SmokePlumeParticleSystem(Microsoft.Xna.Framework.Game game, ContentManager content)
             : base(game, content)
-        { }
+        {
+        }
 
 
         protected override void InitializeSettings(ParticleSettings settings)

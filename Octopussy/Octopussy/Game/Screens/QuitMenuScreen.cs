@@ -1,36 +1,35 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // OptionsMenuScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Octopussy.Managers.ScreenManager;
 
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// The options screen is brought up over the top of the main menu
     /// screen, and gives the user a chance to configure the game
     /// in various hopefully useful ways.
     /// </summary>
-    class QuitMenuScreen : MenuScreen
+    internal class QuitMenuScreen : MenuScreen
     {
-        ContentManager content;
-        Texture2D backgroundTexture;
-        private bool shiftKey;
-        private string playerOneName = "Janicka";
-        private string playerTwoName = "Tkanicka";
-        private string textInput;
-        private bool inGame;
+        private readonly bool inGame;
+        private Texture2D backgroundTexture;
+        private ContentManager content;
         
         /// <summary>
         /// Constructor.
@@ -49,9 +48,9 @@ namespace Octopussy
             backgroundTexture = content.Load<Texture2D>("images/menu/main-quit");
 
             var yes = new ImageMenuEntry(new Rectangle(28, 255, 94, 68),
-                                             new Rectangle(178, 255, 94, 68),
-                                             content.Load<Texture2D>("images/menu/polozky"),
-                                             content.Load<Texture2D>("images/menu/polozky"));
+                                         new Rectangle(178, 255, 94, 68),
+                                         content.Load<Texture2D>("images/menu/polozky"),
+                                         content.Load<Texture2D>("images/menu/polozky"));
 
             yes.PositionOriginal = new Vector2(507, 367);
             yes.PositionSelected = new Vector2(507, 367);
@@ -65,9 +64,9 @@ namespace Octopussy
                                 };
 
             var no = new ImageMenuEntry(new Rectangle(27, 178, 79, 68),
-                                             new Rectangle(177, 178, 79, 68),
-                                             content.Load<Texture2D>("images/menu/polozky"),
-                                             content.Load<Texture2D>("images/menu/polozky"));
+                                        new Rectangle(177, 178, 79, 68),
+                                        content.Load<Texture2D>("images/menu/polozky"),
+                                        content.Load<Texture2D>("images/menu/polozky"));
 
             no.PositionOriginal = new Vector2(408, 367);
             no.PositionSelected = new Vector2(408, 367);
@@ -76,13 +75,13 @@ namespace Octopussy
 
 
             var back = new ImageMenuEntry(new Rectangle(23, 25, 78, 54),
-                                             new Rectangle(170, 25, 78, 54),
-                                             content.Load<Texture2D>("images/menu/polozky"),
-                                             content.Load<Texture2D>("images/menu/polozky"));
+                                          new Rectangle(170, 25, 78, 54),
+                                          content.Load<Texture2D>("images/menu/polozky"),
+                                          content.Load<Texture2D>("images/menu/polozky"));
 
             back.PositionOriginal = new Vector2(240, 662);
             back.PositionSelected = new Vector2(240, 662);
-            
+
             back.Selected += OnCancel;
 
             MenuEntries.Add(no);
@@ -102,9 +101,7 @@ namespace Octopussy
             content.Unload();
         }
 
-
         #region Update and Draw
-
 
         /// <summary>
         /// Updates the background screen. Unlike most screens, this should not
@@ -114,7 +111,7 @@ namespace Octopussy
         /// Update method wanting to transition off.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                    bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -127,19 +124,18 @@ namespace Octopussy
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            var fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
             spriteBatch.Begin();
 
             spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(TransitionAlpha, TransitionAlpha, TransitionAlpha));
 
-            
 
             SpriteFont font = ScreenManager.Font;
-            var origin = new Vector2(0, font.LineSpacing / 2.0f);
+            var origin = new Vector2(0, font.LineSpacing/2.0f);
 
-            
+
             spriteBatch.DrawString(font, "Do you want to quit?", new Vector2(361, 304), Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
 

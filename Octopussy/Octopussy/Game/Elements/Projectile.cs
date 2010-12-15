@@ -1,18 +1,22 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // Projectile.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
-using System;
+
 using Microsoft.Xna.Framework;
+using Octopussy.Managers.ParticlesManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Elements
 {
     /// <summary>
     /// This class demonstrates how to combine several different particle systems
@@ -25,30 +29,28 @@ namespace Octopussy
     {
         #region Constants
 
-        const float trailParticlesPerSecond = 200;
-        const int numExplosionParticles = 30;
-        const int numExplosionSmokeParticles = 50;
-        const float projectileLifespan = 1.5f;
-        const float sidewaysVelocityRange = 60;
-        const float verticalVelocityRange = 40;
-        const float gravity = 15;
+        private const float TrailParticlesPerSecond = 200;
+        private const int NumExplosionParticles = 30;
+        private const int NumExplosionSmokeParticles = 50;
+        private const float ProjectileLifespan = 1.5f;
+        //private const float sidewaysVelocityRange = 60;
+        //private const float verticalVelocityRange = 40;
+        private const float gravity = 15;
 
         #endregion
 
         #region Fields
 
-        ParticleSystem explosionParticles;
-        ParticleSystem explosionSmokeParticles;
-        ParticleEmitter trailEmitter;
+        //private static Random random = new Random();
+        private readonly ParticleSystem _explosionParticles;
+        private readonly ParticleSystem _explosionSmokeParticles;
+        private readonly ParticleEmitter _trailEmitter;
+        private float _age;
 
-        Vector3 position;
-        Vector3 velocity;
-        float age;
-
-        static Random random = new Random();
+        private Vector3 _position;
+        private Vector3 _velocity;
 
         #endregion
-
 
         /// <summary>
         /// Constructs a new projectile.
@@ -58,19 +60,19 @@ namespace Octopussy
                           ParticleSystem explosionSmokeParticles,
                           ParticleSystem projectileTrailParticles)
         {
-            this.explosionParticles = explosionParticles;
-            this.explosionSmokeParticles = explosionSmokeParticles;
+            this._explosionParticles = explosionParticles;
+            this._explosionSmokeParticles = explosionSmokeParticles;
 
             // Start at the origin, firing in a random (but roughly upward) direction.
-            position = from;
+            _position = from;
 
-            velocity.X = startVelocity.X;//(float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
-            velocity.Y = startVelocity.Y;//(float)(random.NextDouble() + 0.5) * verticalVelocityRange;
-            velocity.Z = startVelocity.Z;//(float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
+            _velocity.X = startVelocity.X; //(float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
+            _velocity.Y = startVelocity.Y; //(float)(random.NextDouble() + 0.5) * verticalVelocityRange;
+            _velocity.Z = startVelocity.Z; //(float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
 
             // Use the particle emitter helper to output our trail particles.
-            trailEmitter = new ParticleEmitter(projectileTrailParticles,
-                                               trailParticlesPerSecond, position);
+            _trailEmitter = new ParticleEmitter(projectileTrailParticles,
+                                               TrailParticlesPerSecond, _position);
         }
 
 
@@ -79,30 +81,30 @@ namespace Octopussy
         /// </summary>
         public bool Update(GameTime gameTime)
         {
-            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var elapsedTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             // Simple projectile physics.
-            position += velocity * elapsedTime;
-            velocity.Y -= elapsedTime * gravity;
-            age += elapsedTime;
+            _position += _velocity*elapsedTime;
+            _velocity.Y -= elapsedTime*gravity;
+            _age += elapsedTime;
 
             // Update the particle emitter, which will create our particle trail.
-            trailEmitter.Update(gameTime, position);
+            _trailEmitter.Update(gameTime, _position);
 
             // If enough time has passed, explode! Note how we pass our velocity
             // in to the AddParticle method: this lets the explosion be influenced
             // by the speed and direction of the projectile which created it.
-            if (age > projectileLifespan)
+            if (_age > ProjectileLifespan)
             {
-                for (int i = 0; i < numExplosionParticles; i++)
-                    explosionParticles.AddParticle(position, velocity);
+                for (int i = 0; i < NumExplosionParticles; i++)
+                    _explosionParticles.AddParticle(_position, _velocity);
 
-                for (int i = 0; i < numExplosionSmokeParticles; i++)
-                    explosionSmokeParticles.AddParticle(position, velocity);
+                for (int i = 0; i < NumExplosionSmokeParticles; i++)
+                    _explosionSmokeParticles.AddParticle(_position, _velocity);
 
                 return false;
             }
-                
+
             return true;
         }
     }

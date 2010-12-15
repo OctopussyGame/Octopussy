@@ -1,14 +1,11 @@
 #region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using Octopussy.Game.Screens;
+using Octopussy.Managers.PreferenceManager;
+using Octopussy.Managers.ScreenManager;
+using Octopussy.Utils;
+
 #endregion
 
 namespace Octopussy
@@ -20,18 +17,17 @@ namespace Octopussy
     {
         #region Fields
 
-        GraphicsDeviceManager graphics;
-        ScreenManager screenManager;
-        private PreferenceManager preferenceManager;
+        private readonly GraphicsDeviceManager graphics;
+        private readonly ScreenManager screenManager;
 
         #endregion
 
         #region Initialization
 
-        static readonly string[] preloadAssets =
-        {
-            "images/gradient",
-        };
+        private static readonly string[] preloadAssets =
+            {
+                "images/gradient",
+            };
 
         public MainGame()
         {
@@ -57,11 +53,7 @@ namespace Octopussy
             screenManager.AddScreen(new MainMenuScreen(), null);
         }
 
-        public PreferenceManager PreferenceManager
-        {
-            get { return preferenceManager; }
-            set { preferenceManager = value; }
-        }
+        public PreferenceManager PreferenceManager { get; set; }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -73,7 +65,7 @@ namespace Octopussy
         {
             // Initialize our renderer
             DebugShapeRenderer.Initialize(GraphicsDevice);
-            
+
             base.Initialize();
         }
 
@@ -82,15 +74,15 @@ namespace Octopussy
         /// </summary>
         protected override void LoadContent()
         {
-            foreach (string asset in preloadAssets) {
+            foreach (string asset in preloadAssets)
+            {
                 Content.Load<object>(asset);
             }
         }
-        
+
         #endregion
 
         #region Draw
-
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -103,9 +95,6 @@ namespace Octopussy
             base.Draw(gameTime);
         }
 
-
         #endregion
-
-        
     }
 }

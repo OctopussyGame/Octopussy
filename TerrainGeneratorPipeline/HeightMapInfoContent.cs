@@ -143,7 +143,7 @@ namespace TerrainGeneratorPipeline
         /// </summary>
         public override string GetRuntimeType(TargetPlatform targetPlatform)
         {
-            return "Octopussy.HeightMapInfo, " +
+            return "Octopussy.Utils.HeightMapInfo, " +
                 "Octopussy, Version=1.0.0.0, Culture=neutral";
         }
 
@@ -154,7 +154,7 @@ namespace TerrainGeneratorPipeline
         /// </summary>
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Octopussy.HeightMapInfoReader, " +
+            return "Octopussy.Utils.HeightMapInfoReader, " +
                 "Octopussy, Version=1.0.0.0, Culture=neutral";
         }
     }

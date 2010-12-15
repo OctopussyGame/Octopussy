@@ -1,28 +1,32 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // MainMenuScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
 
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
+using Octopussy.Managers.ScreenManager;
+using Octopussy.Managers.SoundManager;
 
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// The main menu screen is the first thing displayed when the game starts up.
     /// </summary>
-    class MainMenuScreen : MenuScreen
+    internal class MainMenuScreen : MenuScreen
     {
         #region Fields
 
@@ -32,8 +36,8 @@ namespace Octopussy
 
         #region Initialization
 
-        ContentManager content;
-        Texture2D backgroundTexture;
+        private Texture2D backgroundTexture;
+        private ContentManager content;
 
         /// <summary>
         /// Constructor fills in the menu contents.
@@ -43,9 +47,9 @@ namespace Octopussy
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            
+
             // Create our menu entries.
-           /* var campaignMenuEntry = new MenuEntry("Kampan");
+            /* var campaignMenuEntry = new MenuEntry("Kampan");
             var singlePlayerMenuEntry = new MenuEntry("Hra jednoho hrace");
             var multiPlayerMenuEntry = new MenuEntry("Hra vice hracu");
             var optionsMenuEntry = new MenuEntry("Nastaveni");
@@ -96,9 +100,9 @@ namespace Octopussy
             options.PositionSelected = new Vector2(359, 360);
 
             var quit = new ImageMenuEntry(new Rectangle(293, 180, 220, 68),
-                                             new Rectangle(542, 180, 307, 68),
-                                             content.Load<Texture2D>("images/menu/polozky"),
-                                             content.Load<Texture2D>("images/menu/polozky"));
+                                          new Rectangle(542, 180, 307, 68),
+                                          content.Load<Texture2D>("images/menu/polozky"),
+                                          content.Load<Texture2D>("images/menu/polozky"));
 
             quit.PositionOriginal = new Vector2(434, 433);
             quit.PositionSelected = new Vector2(390, 433);
@@ -115,16 +119,16 @@ namespace Octopussy
             MenuEntries.Add(options);
             MenuEntries.Add(quit);
 
-            backgroundSound = ScreenManager.AudioManager.Play3DSound("sound/menu_background", true, new StaticAudioEmitter());
+            backgroundSound = ScreenManager.AudioManager.Play3DSound("sound/menu_background", true,
+                                                                     new StaticAudioEmitter());
 
             base.LoadContent();
         }
 
-
         #endregion
 
         #region Cleanup
-        
+
         /// <summary>
         /// Unloads graphics content for this screen.
         /// </summary>
@@ -137,11 +141,9 @@ namespace Octopussy
             content.Unload();
         }
 
-
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Updates the background screen. Unlike most screens, this should not
@@ -151,7 +153,7 @@ namespace Octopussy
         /// Update method wanting to transition off.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                    bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -164,7 +166,7 @@ namespace Octopussy
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            var fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
             spriteBatch.Begin();
 

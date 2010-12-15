@@ -1,19 +1,24 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // LoadingScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Octopussy.Managers.ScreenManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// The loading screen coordinates transitions between the menu system and the
@@ -29,25 +34,26 @@ namespace Octopussy
     ///   next screen, which may take a long time to load its data. The loading
     ///   screen will be the only thing displayed while this load is taking place.
     /// </summary>
-    class LoadingScreen : GameScreen
+    internal class LoadingScreen : GameScreen
     {
         #region Fields
 
-        bool loadingIsSlow;
-        bool otherScreensAreGone;
+        private readonly bool loadingIsSlow;
 
-        GameScreen[] screensToLoad;
+        private readonly GameScreen[] screensToLoad;
+        private bool otherScreensAreGone;
 
         #endregion
 
         #region Initialization
 
-
         /// <summary>
         /// The constructor is private: loading screens should
         /// be activated via the static Load method instead.
         /// </summary>
+// ReSharper disable UnusedParameter.Local
         private LoadingScreen(ScreenManager screenManager, bool loadingIsSlow,
+// ReSharper restore UnusedParameter.Local
                               GameScreen[] screensToLoad)
         {
             this.loadingIsSlow = loadingIsSlow;
@@ -69,34 +75,35 @@ namespace Octopussy
                 screen.ExitScreen();
 
             // Create and activate the loading screen.
-            LoadingScreen loadingScreen = new LoadingScreen(screenManager,
-                                                            loadingIsSlow,
-                                                            screensToLoad);
+            var loadingScreen = new LoadingScreen(screenManager,
+                                                  loadingIsSlow,
+                                                  screensToLoad);
 
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
-
 
         #endregion
 
         #region Update and Draw
 
-
         /// <summary>
         /// Updates the loading screen.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                    bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             // If all the previous screens have finished transitioning
             // off, it is time to actually perform the load.
-            if (otherScreensAreGone) {
+            if (otherScreensAreGone)
+            {
                 ScreenManager.RemoveScreen(this);
 
-                foreach (GameScreen screen in screensToLoad) {
-                    if (screen != null) {
+                foreach (GameScreen screen in screensToLoad)
+                {
+                    if (screen != null)
+                    {
                         ScreenManager.AddScreen(screen, ControllingPlayer);
                     }
                 }
@@ -120,7 +127,8 @@ namespace Octopussy
             // screens to be gone: in order for the transition to look good we must
             // have actually drawn a frame without them before we perform the load.
             if ((ScreenState == ScreenState.Active) &&
-                (ScreenManager.GetScreens().Length == 1)) {
+                (ScreenManager.GetScreens().Length == 1))
+            {
                 otherScreensAreGone = true;
             }
 
@@ -130,7 +138,8 @@ namespace Octopussy
             // second while returning from the game to the menus. This parameter
             // tells us how long the loading is going to take, so we know whether
             // to bother drawing the message.
-            if (loadingIsSlow) {
+            if (loadingIsSlow)
+            {
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
                 SpriteFont font = ScreenManager.Font;
 
@@ -138,11 +147,11 @@ namespace Octopussy
 
                 // Center the text in the viewport.
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+                var viewportSize = new Vector2(viewport.Width, viewport.Height);
                 Vector2 textSize = font.MeasureString(message);
-                Vector2 textPosition = (viewportSize - textSize) / 2;
+                Vector2 textPosition = (viewportSize - textSize)/2;
 
-                Color color = Color.White * TransitionAlpha;
+                Color color = Color.White*TransitionAlpha;
 
                 // Draw the text.
                 spriteBatch.Begin();
@@ -150,7 +159,6 @@ namespace Octopussy
                 spriteBatch.End();
             }
         }
-
 
         #endregion
     }

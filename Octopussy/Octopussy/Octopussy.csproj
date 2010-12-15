@@ -127,7 +127,6 @@
     <Compile Include="Game\Screens\LoadingScreen.cs" />
     <Compile Include="Game\Screens\MainMenuScreen.cs" />
     <Compile Include="Game\Screens\PlayerIndexEventArgs.cs" />
-    <Compile Include="Managers\SoundManager\MenuAudioManager.cs" />
     <Compile Include="Game\Elements\Player.cs" />
     <Compile Include="Managers\ScreenManager\GameScreen.cs" />
     <Compile Include="Managers\SoundManager\IAudioEmitter.cs" />

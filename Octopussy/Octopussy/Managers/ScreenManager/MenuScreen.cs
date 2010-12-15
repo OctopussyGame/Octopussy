@@ -1,39 +1,40 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // MenuScreen.cs
 //
 // XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input.Touch;
-using Microsoft.Xna.Framework.Input;
+using Octopussy.Game.Screens;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ScreenManager
 {
     /// <summary>
     /// Base class for screens that contain a menu of options. The user can
     /// move up and down to select an entry, or cancel to back out of the screen.
     /// </summary>
-    abstract class MenuScreen : GameScreen
+    internal abstract class MenuScreen : GameScreen
     {
         #region Fields
 
-        List<ImageMenuEntry> menuEntries = new List<ImageMenuEntry>();
-        private int selectedEntry = 0;
-        string menuTitle;
+        private readonly List<ImageMenuEntry> menuEntries = new List<ImageMenuEntry>();
+        private string menuTitle;
 
         #endregion
 
         #region Properties
-
 
         /// <summary>
         /// Gets the list of menu entries, so derived classes can add
@@ -44,21 +45,16 @@ namespace Octopussy
             get { return menuEntries; }
         }
 
-        public int SelectedEntry
-        {
-            get { return selectedEntry; }
-            set { selectedEntry = value; }
-        }
+        protected int SelectedEntry { get; set; }
 
         #endregion
 
         #region Initialization
 
-
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MenuScreen(string menuTitle)
+        protected MenuScreen(string menuTitle)
         {
             this.menuTitle = menuTitle;
 
@@ -66,11 +62,9 @@ namespace Octopussy
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
-
         #endregion
 
         #region Handle Input
-
 
         /// <summary>
         /// Responds to user input, changing the selected entry and accepting
@@ -79,7 +73,8 @@ namespace Octopussy
         public override void HandleInput(InputState input)
         {
             // Move to the previous menu entry?
-            if (input.IsMenuUp(ControllingPlayer)) {
+            if (input.IsMenuUp(ControllingPlayer))
+            {
                 SelectedEntry--;
 
                 if (SelectedEntry < 0)
@@ -87,7 +82,8 @@ namespace Octopussy
             }
 
             // Move to the next menu entry?
-            if (input.IsMenuDown(ControllingPlayer)) {
+            if (input.IsMenuDown(ControllingPlayer))
+            {
                 SelectedEntry++;
 
                 if (SelectedEntry >= menuEntries.Count)
@@ -101,9 +97,12 @@ namespace Octopussy
             // OnSelectEntry and OnCancel, so they can tell which player triggered them.
             PlayerIndex playerIndex;
 
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex)) {
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            {
                 OnSelectEntry(SelectedEntry, playerIndex);
-            } else if (input.IsMenuCancel(ControllingPlayer, out playerIndex)) {
+            }
+            else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
+            {
                 OnCancel(playerIndex);
             }
         }
@@ -135,11 +134,9 @@ namespace Octopussy
             OnCancel(e.PlayerIndex);
         }
 
-
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Allows the screen the chance to position the menu entries. By default
@@ -150,23 +147,24 @@ namespace Octopussy
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes
             // the movement slow down as it nears the end).
-            float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
+            var transitionOffset = (float) Math.Pow(TransitionPosition, 2);
 
             // start at Y = 175; each X value is generated per entry
-            Vector2 position = new Vector2(200f, 320f);
+            var position = new Vector2(200f, 320f);
 
             // update each menu entry's location in turn
-            for (int i = 0; i < menuEntries.Count; i++) {
+            for (int i = 0; i < menuEntries.Count; i++)
+            {
                 ImageMenuEntry menuEntry = menuEntries[i];
 
                 // each entry is to be centered horizontally
-                position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
+                position.X = ScreenManager.GraphicsDevice.Viewport.Width/2 - menuEntry.GetWidth(this)/2;
 
                 if (ScreenState == ScreenState.TransitionOn)
-                    position.X -= transitionOffset * 256;
+                    position.X -= transitionOffset*256;
                 else
-                    position.X += transitionOffset * 512;
-                
+                    position.X += transitionOffset*512;
+
                 // set the entry's position
                 menuEntry.Position = position;
 
@@ -180,12 +178,13 @@ namespace Octopussy
         /// Updates the menu.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                    bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             // Update each nested MenuEntry object.
-            for (int i = 0; i < menuEntries.Count; i++) {
+            for (int i = 0; i < menuEntries.Count; i++)
+            {
                 bool isSelected = IsActive && (i == SelectedEntry);
 
                 menuEntries[i].Update(this, isSelected, gameTime);
@@ -201,14 +200,13 @@ namespace Octopussy
             // make sure our entries are in the right place before we draw them
             UpdateMenuEntryLocations();
 
-            GraphicsDevice graphics = ScreenManager.GraphicsDevice;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            SpriteFont font = ScreenManager.Font;
-
+            
             spriteBatch.Begin();
 
             // Draw each menu entry in turn.
-            for (int i = 0; i < menuEntries.Count; i++) {
+            for (int i = 0; i < menuEntries.Count; i++)
+            {
                 ImageMenuEntry menuEntry = menuEntries[i];
 
                 bool isSelected = IsActive && (i == SelectedEntry);
@@ -234,7 +232,6 @@ namespace Octopussy
 
             spriteBatch.End();
         }
-
 
         #endregion
     }

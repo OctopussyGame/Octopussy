@@ -1,25 +1,31 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // PlayerIndexEventArgs.cs
 //
 // XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// Custom event argument which includes the index of the player who
     /// triggered the event. This is used by the MenuEntry.Selected event.
     /// </summary>
-    class PlayerIndexEventArgs : EventArgs
+    internal class PlayerIndexEventArgs : EventArgs
     {
+        private readonly PlayerIndex playerIndex;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -36,7 +42,5 @@ namespace Octopussy
         {
             get { return playerIndex; }
         }
-
-        PlayerIndex playerIndex;
     }
 }

@@ -1,21 +1,23 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // HeightMapInfo.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Utils
 {
     /// <summary>
     /// HeightMapInfo is a collection of data about the heightmap. It includes
@@ -28,30 +30,24 @@ namespace Octopussy
     {
         #region Private fields
 
-
         // TerrainScale is the distance between each entry in the Height property.
         // For example, if TerrainScale is 30, Height[0,0] and Height[1,0] are 30
         // units apart.        
-        private float terrainScale;
-
-        // This 2D array of floats tells us the height that each position in the 
-        // heightmap is.
-        private float[,] heights;
-
-        private Vector3[,] normals;
 
         // the position of the heightmap's -x, -z corner, in worldspace.
-        private Vector3 heightmapPosition;
+        private readonly float heightmapHeight;
+        private readonly Vector3 heightmapPosition;
 
         // the total width of the heightmap, including terrainscale.
-        private float heightmapWidth;
+        private readonly float heightmapWidth;
+        private readonly float[,] heights;
+
+        private readonly Vector3[,] normals;
+        private readonly float terrainScale;
 
         // the total height of the height map, including terrainscale.
-        private float heightmapHeight;
-
 
         #endregion
-
 
         // the constructor will initialize all of the member variables.
         public HeightMapInfo(float[,] heights, Vector3[,] normals, float terrainScale)
@@ -69,11 +65,11 @@ namespace Octopussy
             this.heights = heights;
             this.normals = normals;
 
-            heightmapWidth = (heights.GetLength(0) - 1) * terrainScale;
-            heightmapHeight = (heights.GetLength(1) - 1) * terrainScale;
+            heightmapWidth = (heights.GetLength(0) - 1)*terrainScale;
+            heightmapHeight = (heights.GetLength(1) - 1)*terrainScale;
 
-            heightmapPosition.X = -(heights.GetLength(0) - 1) / 2.0f * terrainScale;
-            heightmapPosition.Z = -(heights.GetLength(1) - 1) / 2.0f * terrainScale;
+            heightmapPosition.X = -(heights.GetLength(0) - 1)/2.0f*terrainScale;
+            heightmapPosition.Z = -(heights.GetLength(1) - 1)/2.0f*terrainScale;
         }
 
 
@@ -87,9 +83,9 @@ namespace Octopussy
             // ... and then check to see if that value goes outside the bounds of the
             // heightmap.
             return (positionOnHeightmap.X > 0 &&
-                positionOnHeightmap.X < heightmapWidth &&
-                positionOnHeightmap.Z > 0 &&
-                positionOnHeightmap.Z < heightmapHeight);
+                    positionOnHeightmap.X < heightmapWidth &&
+                    positionOnHeightmap.Z > 0 &&
+                    positionOnHeightmap.Z < heightmapHeight);
         }
 
         // This function takes in a position, and has two out parameters: the 
@@ -106,15 +102,14 @@ namespace Octopussy
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left, top;
-            left = (int)positionOnHeightmap.X / (int)terrainScale;
-            top = (int)positionOnHeightmap.Z / (int)terrainScale;
+            int left = (int) positionOnHeightmap.X/(int) terrainScale;
+            int top = (int) positionOnHeightmap.Z/(int) terrainScale;
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
             // which we then divide by terrainScale to normalize 0 to 1.
-            float xNormalized = (positionOnHeightmap.X % terrainScale) / terrainScale;
-            float zNormalized = (positionOnHeightmap.Z % terrainScale) / terrainScale;
+            float xNormalized = (positionOnHeightmap.X%terrainScale)/terrainScale;
+            float zNormalized = (positionOnHeightmap.Z%terrainScale)/terrainScale;
 
             // Now that we've calculated the indices of the corners of our cell, and
             // where we are in that cell, we'll use bilinear interpolation to calculuate
@@ -153,7 +148,6 @@ namespace Octopussy
     }
 
 
-
     /// <summary>
     /// This class will load the HeightMapInfo when the game starts. This class needs 
     /// to match the HeightMapInfoWriter.
@@ -161,13 +155,13 @@ namespace Octopussy
     public class HeightMapInfoReader : ContentTypeReader<HeightMapInfo>
     {
         protected override HeightMapInfo Read(ContentReader input,
-            HeightMapInfo existingInstance)
+                                              HeightMapInfo existingInstance)
         {
             float terrainScale = input.ReadSingle();
             int width = input.ReadInt32();
             int height = input.ReadInt32();
-            float[,] heights = new float[width, height];
-            Vector3[,] normals = new Vector3[width, height];
+            var heights = new float[width,height];
+            var normals = new Vector3[width,height];
 
             for (int x = 0; x < width; x++)
             {

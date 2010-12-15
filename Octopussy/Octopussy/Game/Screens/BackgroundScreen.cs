@@ -1,37 +1,41 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // BackgroundScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Octopussy.Managers.ScreenManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// The background screen sits behind all the other menu screens.
     /// It draws a background image that remains fixed in place regardless
     /// of whatever transitions the screens on top of it may be doing.
     /// </summary>
-    class BackgroundScreen : GameScreen
+    internal class BackgroundScreen : GameScreen
     {
         #region Fields
 
-        ContentManager content;
-        Texture2D backgroundTexture;
+        private Texture2D backgroundTexture;
+        private ContentManager content;
 
         #endregion
 
         #region Initialization
-
 
         /// <summary>
         /// Constructor.
@@ -56,9 +60,6 @@ namespace Octopussy
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             backgroundTexture = content.Load<Texture2D>("images/background");
-
-            var audio = new MenuAudioManager(ScreenManager.Game);
-            ScreenManager.Game.Components.Add(audio);
         }
 
 
@@ -70,11 +71,9 @@ namespace Octopussy
             content.Unload();
         }
 
-
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Updates the background screen. Unlike most screens, this should not
@@ -84,7 +83,7 @@ namespace Octopussy
         /// Update method wanting to transition off.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                    bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -97,16 +96,13 @@ namespace Octopussy
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            var fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
             spriteBatch.Begin();
-
             spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(TransitionAlpha, TransitionAlpha, TransitionAlpha));
-
             spriteBatch.End();
         }
-
 
         #endregion
     }

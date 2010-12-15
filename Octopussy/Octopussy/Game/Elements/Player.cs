@@ -1,40 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Octopussy.Game.Screens;
+using Octopussy.Managers.PreferenceManager;
 
-namespace Octopussy
+namespace Octopussy.Game.Elements
 {
     public class Player : Entity
     {
-        private int hp = 10;
-        private Texture2D hud;
-        private new GameplayScreen screen;
-        private SpriteBatch spriteBatch;
-        private SpriteFont spriteFont;
-        private int player;
-        private GameTime gameTime;
-        private PreferenceManager pm;
-        private string name;
+        private readonly string _name;
+        private readonly int _player;
+        private readonly GameplayScreen _screen;
+        private GameTime _gameTime;
+        private int _hp = 10;
+        private Texture2D _hud;
+        private PreferenceManager _pm;
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _spriteFont;
 
-        public int HP
+        public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false)
+            : base(screen, modelName, isUsingBumpMap)
         {
-            get
-            {
-                return hp;
-            }
+            this._screen = screen;
+            this._player = player;
+            this._name = name;
+        }
+
+// ReSharper disable MemberCanBePrivate.Global
+        public int HP
+// ReSharper restore MemberCanBePrivate.Global
+        {
+            get { return _hp; }
 
             set
             {
-                hp = value;
+                _hp = value;
 
-                if (hp > 10)
-                    hp = 10;
-                else if (hp < 0)
-                    hp = 0;
+                if (_hp > 10)
+                    _hp = 10;
+                else if (_hp < 0)
+                    _hp = 0;
             }
         }
 
@@ -53,23 +59,15 @@ namespace Octopussy
             HP--;
         }
 
-        public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false) 
-            : base(screen, modelName, isUsingBumpMap)
-        {
-            this.screen = screen;
-            this.player = player;
-            this.name = name;
-        }
-
         public override void LoadContent()
         {
             base.LoadContent();
-            
-            hud = screen.ScreenManager.Game.Content.Load<Texture2D>("images/HUD-novy");
-            spriteBatch = new SpriteBatch(screen.ScreenManager.Game.GraphicsDevice);
-            spriteFont = screen.ScreenManager.Game.Content.Load<SpriteFont>("fonts/hudFont");
 
-            pm = ((MainGame) screen.ScreenManager.Game).PreferenceManager;
+            _hud = _screen.ScreenManager.Game.Content.Load<Texture2D>("images/HUD-novy");
+            _spriteBatch = new SpriteBatch(_screen.ScreenManager.Game.GraphicsDevice);
+            _spriteFont = _screen.ScreenManager.Game.Content.Load<SpriteFont>("fonts/hudFont");
+
+            _pm = ((MainGame) _screen.ScreenManager.Game).PreferenceManager;
         }
 
         public override void Update(GameTime gameTime)
@@ -81,7 +79,7 @@ namespace Octopussy
                 // gameover
             }
 
-            this.gameTime = gameTime;
+            this._gameTime = gameTime;
         }
 
         public override void Draw(GameTime gameTime)
@@ -90,33 +88,35 @@ namespace Octopussy
 
             DrawHUD(gameTime);
         }
-        
+
+// ReSharper disable UnusedParameter.Local
         private void DrawHUD(GameTime time)
+// ReSharper restore UnusedParameter.Local
         {
             var huds = new[]
                            {
-                                new Rectangle(17, 558, 372, 40),
-                                new Rectangle(17, 504, 372, 40),
-                                new Rectangle(17, 450, 372, 40),
-                                new Rectangle(17, 396, 372, 40),
-                                new Rectangle(17, 341, 372, 40),
-                                new Rectangle(17, 287, 372, 40),
-                                new Rectangle(17, 233, 372, 40),
-                                new Rectangle(17, 179, 372, 40),
-                                new Rectangle(17, 125, 372, 40),
-                                new Rectangle(17, 71, 372, 40),
-                                new Rectangle(17, 17, 372, 40)
-                            };
+                               new Rectangle(17, 558, 372, 40),
+                               new Rectangle(17, 504, 372, 40),
+                               new Rectangle(17, 450, 372, 40),
+                               new Rectangle(17, 396, 372, 40),
+                               new Rectangle(17, 341, 372, 40),
+                               new Rectangle(17, 287, 372, 40),
+                               new Rectangle(17, 233, 372, 40),
+                               new Rectangle(17, 179, 372, 40),
+                               new Rectangle(17, 125, 372, 40),
+                               new Rectangle(17, 71, 372, 40),
+                               new Rectangle(17, 17, 372, 40)
+                           };
 
             var weapon = new Rectangle(201, 632, 238, 59);
             //var bullets = new Rectangle(708, 51, 29, 70);
 
-            var offset = 0;
+            int offset = 0;
 
-            if (player == 2)
+            if (_player == 2)
                 offset = 600;
 
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
             var locationHP = new Vector2(20 + offset, 50);
             //var locationBullets = new Vector2(630 + offset, 18);
             //var locationNumBullets = new Vector2(670 + offset, 29);
@@ -124,25 +124,26 @@ namespace Octopussy
             var locationWeapon = new Vector2(20 + offset, 110);
 
             var origin = new Vector2(0, 0);
-            
-            spriteBatch.Draw(hud, locationHP, huds[HP], Color.White, 0, origin, 1, SpriteEffects.None, 0); // HP bar
+
+            _spriteBatch.Draw(_hud, locationHP, huds[HP], Color.White, 0, origin, 1, SpriteEffects.None, 0); // HP bar
 
             //spriteBatch.Draw(hud, locationBullets, bullets, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Bullets
 
-            spriteBatch.DrawString(spriteFont, name, locationName, Color.Black, 0, origin, 1, SpriteEffects.None, 0);
+            _spriteBatch.DrawString(_spriteFont, _name, locationName, Color.Black, 0, origin, 1, SpriteEffects.None, 0);
 
-            spriteBatch.Draw(hud, locationWeapon, weapon, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Weapon
+            _spriteBatch.Draw(_hud, locationWeapon, weapon, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Weapon
 
-            spriteBatch.End();
+            _spriteBatch.End();
         }
 
-        public override void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState, KeyboardState currentKeyboardState, GamePadState currentGamePadState)
+        public override void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
+                                         KeyboardState currentKeyboardState, GamePadState currentGamePadState)
         {
-            var gameTime = this.gameTime; // this needs rewrite
+            GameTime gameTime = this._gameTime; // this needs rewrite
 
-            if (player == 1)
+            if (_player == 1)
             {
-                var playerPreference = pm.PlayerOne;
+                PlayerPreference playerPreference = _pm.PlayerOne;
                 // Check for input to rotate left and right.
                 if (currentKeyboardState.IsKeyDown(playerPreference.Left))
                 {
@@ -171,27 +172,33 @@ namespace Octopussy
                 }
             }
 
-            if (player == 2) {
-                var playerPreference = pm.PlayerTwo;
+            if (_player == 2)
+            {
+                PlayerPreference playerPreference = _pm.PlayerTwo;
                 // Check for input to rotate left and right.
-                if (currentKeyboardState.IsKeyDown(playerPreference.Left)) {
+                if (currentKeyboardState.IsKeyDown(playerPreference.Left))
+                {
                     TurnLeft(gameTime);
                 }
-                if (currentKeyboardState.IsKeyDown(playerPreference.Right)) {
+                if (currentKeyboardState.IsKeyDown(playerPreference.Right))
+                {
                     TurnRight(gameTime);
                 }
 
                 // Check for input to adjust speed.
-                if (currentKeyboardState.IsKeyDown(playerPreference.Forward)) {
+                if (currentKeyboardState.IsKeyDown(playerPreference.Forward))
+                {
                     Accellerate(gameTime);
                 }
 
-                if (currentKeyboardState.IsKeyDown(playerPreference.Backward)) {
+                if (currentKeyboardState.IsKeyDown(playerPreference.Backward))
+                {
                     Decellerate(gameTime);
                 }
 
                 if ((currentKeyboardState.IsKeyDown(playerPreference.Shoot) &&
-                     lastKeyboardState.IsKeyUp(playerPreference.Shoot))) {
+                     lastKeyboardState.IsKeyUp(playerPreference.Shoot)))
+                {
                     Shoot();
                 }
             }

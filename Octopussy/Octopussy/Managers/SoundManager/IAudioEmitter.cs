@@ -1,17 +1,21 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // IAudioEmitter.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
-using Microsoft.Xna.Framework;
-#endregion 
 
-namespace Octopussy
+using Microsoft.Xna.Framework;
+
+#endregion
+
+namespace Octopussy.Managers.SoundManager
 {
     /// <summary>
     /// Interface used by the AudioManager to look up the position

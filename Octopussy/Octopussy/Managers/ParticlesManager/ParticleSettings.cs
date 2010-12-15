@@ -1,19 +1,23 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // ParticleSettings.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.ParticlesManager
 {
     /// <summary>
     /// Settings class describes all the tweakable options used
@@ -22,19 +26,15 @@ namespace Octopussy
     public class ParticleSettings
     {
         // Name of the texture used by this particle system.
-        public string TextureName = null;
-
-
-        // Maximum number of particles that can be displayed at one time.
-        public int MaxParticles = 100;
 
 
         // How long these particles will last.
+        public BlendState BlendState = BlendState.NonPremultiplied;
         public TimeSpan Duration = TimeSpan.FromSeconds(1);
 
 
         // If greater than zero, some particles will last a shorter time than others.
-        public float DurationRandomness = 0;
+        public float DurationRandomness;
 
 
         // Controls how much particles are influenced by the velocity of the object
@@ -48,21 +48,6 @@ namespace Octopussy
         // Range of values controlling how much X and Z axis velocity to give each
         // particle. Values for individual particles are randomly chosen from somewhere
         // between these limits.
-        public float MinHorizontalVelocity = 0;
-        public float MaxHorizontalVelocity = 0;
-
-
-        // Range of values controlling how much Y axis velocity to give each particle.
-        // Values for individual particles are randomly chosen from somewhere between
-        // these limits.
-        public float MinVerticalVelocity = 0;
-        public float MaxVerticalVelocity = 0;
-
-
-        // Direction and strength of the gravity effect. Note that this can point in any
-        // direction, not just down! The fire effect points it upward to make the flames
-        // rise, and the smoke plume points it sideways to simulate wind.
-        public Vector3 Gravity = Vector3.Zero;
 
 
         // Controls how the particle velocity will change over their lifetime. If set
@@ -70,12 +55,15 @@ namespace Octopussy
         // If set to 0, particles will come to a complete stop right before they die.
         // Values greater than 1 make the particles speed up over time.
         public float EndVelocity = 1;
+        public Vector3 Gravity = Vector3.Zero;
 
 
         // Range of values controlling the particle color and alpha. Values for
         // individual particles are randomly chosen from somewhere between these limits.
-        public Color MinColor = Color.White;
         public Color MaxColor = Color.White;
+        public float MaxEndSize = 100;
+        public float MaxHorizontalVelocity;
+        public int MaxParticles = 100;
 
 
         // Range of values controlling how fast the particles rotate. Values for
@@ -85,25 +73,25 @@ namespace Octopussy
         // support rotation, and thus requires significantly less GPU power. This
         // means if you don't need the rotation effect, you may get a performance
         // boost from leaving these values at 0.
-        public float MinRotateSpeed = 0;
-        public float MaxRotateSpeed = 0;
+        public float MaxRotateSpeed;
 
 
         // Range of values controlling how big the particles are when first created.
         // Values for individual particles are randomly chosen from somewhere between
         // these limits.
-        public float MinStartSize = 100;
         public float MaxStartSize = 100;
+        public float MaxVerticalVelocity;
+        public Color MinColor = Color.White;
 
 
         // Range of values controlling how big particles become at the end of their
         // life. Values for individual particles are randomly chosen from somewhere
         // between these limits.
         public float MinEndSize = 100;
-        public float MaxEndSize = 100;
-
-
-        // Alpha blending settings.
-        public BlendState BlendState = BlendState.NonPremultiplied;
+        public float MinHorizontalVelocity;
+        public float MinRotateSpeed;
+        public float MinStartSize = 100;
+        public float MinVerticalVelocity;
+        public string TextureName;
     }
 }

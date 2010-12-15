@@ -1,70 +1,73 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // AudioManager.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Managers.SoundManager
 {
     /// <summary>
     /// Audio manager keeps track of what 3D sounds are playing, updating
     /// their settings as the camera and entities move around the world, and
     /// automatically disposing sound effect instances after they finish playing.
     /// </summary>
-    public class AudioManager : Microsoft.Xna.Framework.GameComponent
+    public class AudioManager : GameComponent
     {
         #region Fields
 
-
         // List of all the sound effects that will be loaded into this manager.
-        static string[] soundNames =
-        {
-            "sound/tu_mas",
-            "sound/no_fuj",
-            "sound/to_je_moje_chapadlo",
-            "sound/nesahej_na_me",
-            "sound/game_background",
-            "sound/menu_background",
-        };
+        private static readonly string[] soundNames =
+            {
+                "sound/tu_mas",
+                "sound/no_fuj",
+                "sound/to_je_moje_chapadlo",
+                "sound/nesahej_na_me",
+                "sound/game_background",
+                "sound/menu_background",
+            };
+
+        private readonly List<ActiveSound> activeSounds = new List<ActiveSound>();
 
 
         // The listener describes the ear which is hearing 3D sounds.
         // This is usually set to match the camera.
+
+
+        // The emitter describes an entity which is making a 3D sound.
+        private readonly AudioEmitter emitter = new AudioEmitter();
+        private readonly AudioListener listener = new AudioListener();
+
+
+        // Store all the sound effects that are available to be played.
+        private readonly Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
+
         public AudioListener Listener
         {
             get { return listener; }
         }
 
-        AudioListener listener = new AudioListener();
 
-
-        // The emitter describes an entity which is making a 3D sound.
-        AudioEmitter emitter = new AudioEmitter();
-
-
-        // Store all the sound effects that are available to be played.
-        Dictionary<string, SoundEffect> soundEffects = new Dictionary<string, SoundEffect>();
-
-        
         // Keep track of all the 3D sounds that are currently playing.
-        List<ActiveSound> activeSounds = new List<ActiveSound>();
-
 
         #endregion
 
-
-        public AudioManager(Game game)
+        public AudioManager(Microsoft.Xna.Framework.Game game)
             : base(game)
-        { }
+        {
+        }
 
 
         /// <summary>
@@ -111,7 +114,7 @@ namespace Octopussy
             }
         }
 
-        
+
         /// <summary>
         /// Updates the state of the 3D audio system.
         /// </summary>
@@ -150,7 +153,7 @@ namespace Octopussy
         /// </summary>
         public SoundEffectInstance Play3DSound(string soundName, bool isLooped, IAudioEmitter emitter)
         {
-            ActiveSound activeSound = new ActiveSound();
+            var activeSound = new ActiveSound();
 
             // Fill in the instance and emitter fields.
             activeSound.Instance = soundEffects[soundName].CreateInstance();
@@ -183,6 +186,7 @@ namespace Octopussy
             activeSound.Instance.Apply3D(listener, emitter);
         }
 
+        #region Nested type: ActiveSound
 
         /// <summary>
         /// Internal helper class for keeping track of an active 3D sound,
@@ -190,8 +194,10 @@ namespace Octopussy
         /// </summary>
         private class ActiveSound
         {
-            public SoundEffectInstance Instance;
             public IAudioEmitter Emitter;
+            public SoundEffectInstance Instance;
         }
+
+        #endregion
     }
 }

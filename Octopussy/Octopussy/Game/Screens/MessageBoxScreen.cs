@@ -1,31 +1,36 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // MessageBoxScreen.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Octopussy.Managers.ScreenManager;
+
 #endregion
 
-namespace Octopussy
+namespace Octopussy.Game.Screens
 {
     /// <summary>
     /// A popup message box screen, used to display "are you sure?"
     /// confirmation messages.
     /// </summary>
-    class MessageBoxScreen : GameScreen
+    internal class MessageBoxScreen : GameScreen
     {
         #region Fields
 
-        string message;
-        Texture2D gradientTexture;
+        private readonly string message;
+        private Texture2D gradientTexture;
 
         #endregion
 
@@ -38,21 +43,23 @@ namespace Octopussy
 
         #region Initialization
 
-
         /// <summary>
         /// Constructor automatically includes the standard "A=ok, B=cancel"
         /// usage text prompt.
         /// </summary>
         public MessageBoxScreen(string message)
             : this(message, true)
-        { }
+        {
+        }
 
 
         /// <summary>
         /// Constructor lets the caller specify whether to include the standard
         /// "A=ok, B=cancel" usage text prompt.
         /// </summary>
+// ReSharper disable MemberCanBePrivate.Global
         public MessageBoxScreen(string message, bool includeUsageText)
+// ReSharper restore MemberCanBePrivate.Global
         {
             const string usageText = "\nZmackni enter pro ok nebo esc pro cancel.";
 
@@ -81,11 +88,9 @@ namespace Octopussy
             gradientTexture = content.Load<Texture2D>("images/gradient");
         }
 
-
         #endregion
 
         #region Handle Input
-
 
         /// <summary>
         /// Responds to user input, accepting or cancelling the message box.
@@ -99,13 +104,16 @@ namespace Octopussy
             // controlling player, the InputState helper returns to us which player
             // actually provided the input. We pass that through to our Accepted and
             // Cancelled events, so they can tell which player triggered them.
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex)) {
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            {
                 // Raise the accepted event, then exit the message box.
                 if (Accepted != null)
                     Accepted(this, new PlayerIndexEventArgs(playerIndex));
 
                 ExitScreen();
-            } else if (input.IsMenuCancel(ControllingPlayer, out playerIndex)) {
+            }
+            else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
+            {
                 // Raise the cancelled event, then exit the message box.
                 if (Cancelled != null)
                     Cancelled(this, new PlayerIndexEventArgs(playerIndex));
@@ -114,11 +122,9 @@ namespace Octopussy
             }
         }
 
-
         #endregion
 
         #region Draw
-
 
         /// <summary>
         /// Draws the message box.
@@ -129,25 +135,25 @@ namespace Octopussy
             SpriteFont font = ScreenManager.Font;
 
             // Darken down any other screens that were drawn beneath the popup.
-            ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
+            ScreenManager.FadeBackBufferToBlack(TransitionAlpha*2/3);
 
             // Center the message text in the viewport.
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+            var viewportSize = new Vector2(viewport.Width, viewport.Height);
             Vector2 textSize = font.MeasureString(message);
-            Vector2 textPosition = (viewportSize - textSize) / 2;
+            Vector2 textPosition = (viewportSize - textSize)/2;
 
             // The background includes a border somewhat larger than the text itself.
             const int hPad = 32;
             const int vPad = 16;
 
-            Rectangle backgroundRectangle = new Rectangle((int)textPosition.X - hPad,
-                                                          (int)textPosition.Y - vPad,
-                                                          (int)textSize.X + hPad * 2,
-                                                          (int)textSize.Y + vPad * 2);
+            var backgroundRectangle = new Rectangle((int) textPosition.X - hPad,
+                                                    (int) textPosition.Y - vPad,
+                                                    (int) textSize.X + hPad*2,
+                                                    (int) textSize.Y + vPad*2);
 
             // Fade the popup alpha during transitions.
-            Color color = Color.White * TransitionAlpha;
+            Color color = Color.White*TransitionAlpha;
 
             spriteBatch.Begin();
 
@@ -159,7 +165,6 @@ namespace Octopussy
 
             spriteBatch.End();
         }
-
 
         #endregion
     }
