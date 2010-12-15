@@ -52,7 +52,7 @@ namespace Octopussy.Game.Screens
         //private int bloomSettingsIndex;
         private float cameraArc = -45;
         private float cameraDistance = 1200;
-        private float cameraRotation;
+        private float cameraRotation = 0;
         private GamePadState currentGamePadState;
         private KeyboardState currentKeyboardState;
         public ParticleSystem explosionParticles;
@@ -184,48 +184,48 @@ namespace Octopussy.Game.Screens
             entites.Add(playerOne);
             entites.Add(playerTwo);
 
-            addMultipleInstancesOfEntity("models/egg/egg", 2, true);
-            //addMultipleInstancesOfEntity("models/grass/grassBig1", 30, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassBig2", 30, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassBig3", 30, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassBig4", 30, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassSmall1", 50, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassSmall2", 50, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassSmall3", 50, false, true);
-            //addMultipleInstancesOfEntity("models/grass/grassSmall4", 50, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall1", 300, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall2", 300, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall3", 300, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig1", 600, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig2", 600, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig3", 600, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigBlue", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigGreen", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigPink", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigRed", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigViolet", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigYellow", 50, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleBlue", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleGreen", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleRed", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleViolet", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleYellow", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallBlue", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallGreen", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallRed", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallViolet", 100, false, true);
-            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallYellow", 100, false, true);
-            addMultipleInstancesOfEntity("models/shell/shellOpen", 50, true, true);
-            addMultipleInstancesOfEntity("models/shell/shellHalfClose", 50, true, true);
-            addMultipleInstancesOfEntity("models/shell/shellClose", 50, true, true);
-            addMultipleInstancesOfEntity("models/mussel/musselOpen", 50, true, true);
-            addMultipleInstancesOfEntity("models/mussel/musselClose", 50, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinBlack", 100, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinRed", 100, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongBlack", 100, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongRed", 100, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortBlack", 100, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortRed", 100, true, true);
+            AddMultipleInstancesOfEntity("models/egg/egg", 2, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassBig1", 30, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassBig2", 30, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassBig3", 30, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassBig4", 30, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassSmall1", 50, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassSmall2", 50, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassSmall3", 50, false, true);
+            //AddMultipleInstancesOfEntity("models/grass/grassSmall4", 50, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall1", 300, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall2", 300, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall3", 300, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig1", 600, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig2", 600, false, true);
+            AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig3", 600, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigBlue", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigGreen", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigPink", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigRed", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigViolet", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigYellow", 50, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleBlue", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleGreen", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleRed", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleViolet", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleYellow", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallBlue", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallGreen", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallRed", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallViolet", 100, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallYellow", 100, false, true);
+            AddMultipleInstancesOfEntity("models/shell/shellOpen", 50, true, true);
+            AddMultipleInstancesOfEntity("models/shell/shellHalfClose", 50, true, true);
+            AddMultipleInstancesOfEntity("models/shell/shellClose", 50, true, true);
+            AddMultipleInstancesOfEntity("models/mussel/musselOpen", 50, true, true);
+            AddMultipleInstancesOfEntity("models/mussel/musselClose", 50, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinBlack", 100, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinRed", 100, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinWithHairLongBlack", 100, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinWithHairLongRed", 100, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinWithHairShortBlack", 100, true, true);
+            AddMultipleInstancesOfEntity("models/urchin/urchinWithHairShortRed", 100, true, true);
 
             // Components registration
             bloom = new BloomComponent(ScreenManager.Game);
@@ -246,16 +246,16 @@ namespace Octopussy.Game.Screens
             ScreenManager.Game.ResetElapsedTime();
         }
 
-        private void addMultipleInstancesOfEntity(String modelName, int count, Boolean isUsingBumpMap = false,
+        private void AddMultipleInstancesOfEntity(String modelName, int count, Boolean isUsingBumpMap = false,
                                                   Boolean isUsingAlpha = false)
         {
             for (int i = 0; i < count; i++)
             {
-                entites.Add(initPositionAndRotation(new Entity(this, modelName, isUsingBumpMap, isUsingAlpha)));
+                entites.Add(InitPositionAndRotation(new Entity(this, modelName, isUsingBumpMap, isUsingAlpha)));
             }
         }
 
-        private Entity initPositionAndRotation(Entity entity)
+        private Entity InitPositionAndRotation(Entity entity)
         {
             var heightMapSize = heightMapInfo.HeightMapSize();
 
@@ -275,7 +275,8 @@ namespace Octopussy.Game.Screens
         /// </summary>
         public override void UnloadContent()
         {
-            backgroundSound.Stop(true);
+            if (!backgroundSound.IsDisposed)
+                backgroundSound.Stop(true);
 
             for (int i = ScreenManager.Game.Components.Count - 1; i > 1; i--)
                 ScreenManager.Game.Components.RemoveAt(i);
@@ -311,7 +312,7 @@ namespace Octopussy.Game.Screens
 
             float newCameraArc = 0;
             float newCameraRotation = 0;
-            float newCameraDistance = 100;
+            float newCameraDistance = 500;
 
             // Check for input to rotate the camera up and down around the model.
             if (currentKeyboardState.IsKeyDown(Keys.Up))
@@ -515,11 +516,11 @@ namespace Octopussy.Game.Screens
             // Draw debug shapes
             DebugShapeRenderer.Draw(gameTime, view, projection);
 
-            foreach (Entity entity in entites)
-                entity.Draw(gameTime);
-
             // Draw other components (which includes the bloom).
             base.Draw(gameTime);
+
+            foreach (Entity entity in entites)
+                entity.Draw(gameTime);
         }
 
         private void DrawBackground(Viewport viewport)

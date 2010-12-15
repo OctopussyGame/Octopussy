@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Octopussy.Game.Screens;
 using Octopussy.Managers.PreferenceManager;
+using Octopussy.Managers.ScreenManager;
 using Octopussy.Utils;
 
 namespace Octopussy.Game.Elements
@@ -28,9 +29,7 @@ namespace Octopussy.Game.Elements
             this._name = name;
         }
 
-// ReSharper disable MemberCanBePrivate.Global
         public int HP
-// ReSharper restore MemberCanBePrivate.Global
         {
             get { return _hp; }
 
@@ -77,7 +76,7 @@ namespace Octopussy.Game.Elements
 
             if (HP == 0)
             {
-                // gameover
+                _screen.ScreenManager.AddScreen(new GameOverMenuScreen(), PlayerIndex.One);
             }
 
             this._gameTime = gameTime;
