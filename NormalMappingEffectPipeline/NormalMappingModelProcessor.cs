@@ -177,7 +177,7 @@ namespace NormalMappingEffectPipeline
         {
             EffectMaterialContent normalMappingMaterial = new EffectMaterialContent();
             normalMappingMaterial.Effect = new ExternalReference<EffectContent>
-                (Path.Combine(directory, "NormalMapping.fx"));
+                (Path.Combine(directory, "..\\..\\shaders\\bump\\NormalMapping.fx"));
 
             OpaqueDataDictionary processorParameters = new OpaqueDataDictionary();
             processorParameters["ColorKeyColor"] = this.ColorKeyColor;
