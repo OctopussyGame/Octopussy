@@ -401,98 +401,116 @@
     <Compile Include="models\seaGrass\seaGrassBigBlue.fbx">
       <Name>seaGrassBigBlue</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassBigGreen.fbx">
       <Name>seaGrassBigGreen</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassBigPink.fbx">
       <Name>seaGrassBigPink</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassBigRed.fbx">
       <Name>seaGrassBigRed</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassBigViolet.fbx">
       <Name>seaGrassBigViolet</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassBigYellow.fbx">
       <Name>seaGrassBigYellow</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassMiddleBlue.fbx">
       <Name>seaGrassMiddleBlue</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassMiddleGreen.fbx">
       <Name>seaGrassMiddleGreen</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassMiddleRed.fbx">
       <Name>seaGrassMiddleRed</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassMiddleViolet.fbx">
       <Name>seaGrassMiddleViolet</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassMiddleYellow.fbx">
       <Name>seaGrassMiddleYellow</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassSmallBlue.fbx">
       <Name>seaGrassSmallBlue</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassSmallGreen.fbx">
       <Name>seaGrassSmallGreen</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassSmallRed.fbx">
       <Name>seaGrassSmallRed</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassSmallViolet.fbx">
       <Name>seaGrassSmallViolet</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
     <Compile Include="models\seaGrass\seaGrassSmallYellow.fbx">
       <Name>seaGrassSmallYellow</Name>
       <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\mussel\musselClose.fbx">
+      <Name>musselClose</Name>
+      <Importer>FbxImporter</Importer>
       <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>textures/seaGrass_norm.tga</ProcessorParameters_NormalMapTexture>
+      <ProcessorParameters_NormalMapTexture>textures/mussel_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\mussel\musselOpen.fbx">
+      <Name>musselOpen</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/mussel_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\shell\shellClose.fbx">
+      <Name>shellClose</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/shell_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\shell\shellHalfClose.fbx">
+      <Name>shellHalfClose</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/shell_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\shell\shellOpen.fbx">
+      <Name>shellOpen</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/shell_norm.tga</ProcessorParameters_NormalMapTexture>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
