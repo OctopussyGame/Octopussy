@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Octopussy.Game.Screens;
 using Octopussy.Managers.PreferenceManager;
+using Octopussy.Utils;
 
 namespace Octopussy.Game.Elements
 {
@@ -70,9 +71,9 @@ namespace Octopussy.Game.Elements
             _pm = ((MainGame) _screen.ScreenManager.Game).PreferenceManager;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, heightMapInfo);
 
             if (HP == 0)
             {

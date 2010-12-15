@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Octopussy.Game.Screens;
 using Octopussy.Managers.SoundManager;
+using Octopussy.Utils;
 
 #endregion
 
@@ -26,29 +27,33 @@ namespace Octopussy.Game.Elements
     {
         #region Fields
 
-        private readonly Vector4 _ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
-        private readonly Boolean _isUsingAlpha;
-        private readonly Boolean _isUsingBumpMap;
-        private readonly Vector4 _lightColor = new Vector4(1, 1, 1, 1);
-        private readonly string _modelName;
-        private float _alpha;
-        private const float EyeHeight = 100;
-        private Vector3 _forward;
-        private float _friction = 0.001f;
-        private GameTime _gameTime;
+        private const float EyeHeight = 120;
         private const float MaxMovementSpeed = 0.9f;
-        private Model _model;
-        private float _movementSpeed = 0.01f;
-        private Vector3 _position;
         private const float ProjectileSpeed = 500;
-        private float _rotation;
         private const float RotationSpeed = 0.005f;
-        private float _rotationX;
-        private readonly GameplayScreen _screen;
         private const float Shininess = .3f;
         private const float SpecularPower = 4.0f;
-        private float _speed;
         private const float TimeRotationSpeed = 0.42f;
+        
+        private readonly Vector4 _ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
+        private readonly Vector4 _lightColor = new Vector4(1, 1, 1, 1);
+        private readonly Boolean _isUsingAlpha;
+        private readonly Boolean _isUsingBumpMap;
+        private readonly GameplayScreen _screen;
+        private readonly string _modelName;
+        
+        private GameTime _gameTime;
+        private Model _model;
+        private Vector3 _forward;
+        private Vector3 _position;
+        private Boolean _isBoundToHeightMap;
+        private float _alpha;
+        private float _friction = 0.001f;
+        private float _movementSpeed = 0.01f;
+        private float _rotation;
+        private float _rotationX;
+        private float _speed;
+        Matrix _orientation = Matrix.Identity;
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
@@ -58,7 +63,7 @@ namespace Octopussy.Game.Elements
             get
             {
                 Vector3 eyePosition = _position;
-                eyePosition.Y = EyeHeight;
+                eyePosition.Y += EyeHeight;
                 return eyePosition;
             }
         }
@@ -74,7 +79,7 @@ namespace Octopussy.Game.Elements
             get
             {
                 Vector3 eyeForward = _forward;
-                eyeForward.Y = EyeHeight;
+                eyeForward.Y += EyeHeight;
                 return eyeForward;
             }
         }
@@ -176,6 +181,13 @@ namespace Octopussy.Game.Elements
         /// </summary>
 // ReSharper disable MemberCanBePrivate.Global
         public Vector3 Velocity { get; protected set; }
+
+        public bool IsBoundToHeightMap
+        {
+            get { return _isBoundToHeightMap; }
+            set { _isBoundToHeightMap = value; }
+        }
+
 // ReSharper restore MemberCanBePrivate.Global
 
         #endregion
@@ -199,11 +211,12 @@ namespace Octopussy.Game.Elements
             _rotation = 0;
             _rotationX = 0;
             _alpha = 1;
+            _speed = 0;
             Up = Vector3.Up;
             Velocity = Vector3.Zero;
-            _speed = 0;
             RotateInTime = false;
             MoveInTime = false;
+            _isBoundToHeightMap = true;
         }
 
         /// <summary>
@@ -248,7 +261,7 @@ namespace Octopussy.Game.Elements
 // ReSharper restore MemberCanBeProtected.Global
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            _rotation += time*RotationSpeed;
+            _rotation += time * RotationSpeed;
             ComputeRotation(gameTime);
         }
 
@@ -257,7 +270,7 @@ namespace Octopussy.Game.Elements
 // ReSharper restore MemberCanBeProtected.Global
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            _rotation -= time*RotationSpeed;
+            _rotation -= time * RotationSpeed;
             ComputeRotation(gameTime);
         }
 
@@ -266,7 +279,7 @@ namespace Octopussy.Game.Elements
 // ReSharper restore MemberCanBeProtected.Global
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            _speed += time*_movementSpeed;
+            _speed += time * _movementSpeed;
         }
 
 // ReSharper disable MemberCanBeProtected.Global
@@ -274,7 +287,14 @@ namespace Octopussy.Game.Elements
 // ReSharper restore MemberCanBeProtected.Global
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            _speed -= time*_movementSpeed;
+            _speed -= time * _movementSpeed;
+        }
+
+        // ReSharper disable MemberCanBeProtected.Global
+        public void Stop(GameTime gameTime)
+        // ReSharper restore MemberCanBeProtected.Global
+        {
+            _speed = 0;
         }
 
 // ReSharper disable MemberCanBeProtected.Global
@@ -374,35 +394,88 @@ namespace Octopussy.Game.Elements
             }
         }
 
-        public virtual void Update(GameTime gameTime)
+        private void AdjustToHeightMap(GameTime gameTime, HeightMapInfo heightMapInfo)
+        {
+            var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            Vector3 newPosition = _position;
+            
+            newPosition.X -= ((float)Math.Sin(_rotation) * (time * _speed));
+            newPosition.Z -= ((float)Math.Cos(_rotation) * (time * _speed));
+
+            _forward.X = ((float)Math.Sin(_rotation) * (100));
+            _forward.Z = ((float)Math.Cos(_rotation) * (100));
+            _orientation = Matrix.CreateRotationY(_rotation);
+            
+            if (heightMapInfo.IsOnHeightmap(newPosition))
+            {
+                // now that we know we're on the heightmap, we need to know the correct
+                // height and normal at this position.
+                Vector3 normal;
+                heightMapInfo.GetHeightAndNormal(newPosition,
+                    out newPosition.Y, out normal);
+
+
+                // As discussed in the doc, we'll use the normal of the heightmap
+                // and our desired forward direction to recalculate our orientation
+                // matrix. It's important to normalize, as well.
+                _orientation.Up = normal;
+
+                _orientation.Right = Vector3.Cross(_orientation.Forward, _orientation.Up);
+                _orientation.Right = Vector3.Normalize(_orientation.Right);
+
+                _orientation.Forward = Vector3.Cross(_orientation.Up, _orientation.Right);
+                _orientation.Forward = Vector3.Normalize(_orientation.Forward);
+
+                // once we've finished all computations, we can set our position to the
+                // new position that we calculated.
+                _position = newPosition;
+            }
+            else
+            {
+                Stop(gameTime);
+            }
+        }
+
+        public virtual void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
             this._gameTime = gameTime;
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (MoveInTime)
+            {
+                time = (float)gameTime.TotalGameTime.TotalSeconds;
+                if (((int)time) % 4 == 0)
+                {
+                    Accellerate(gameTime);
+                }
+                else if (((int)time) % 2 == 0)
+                {
+                    Decellerate(gameTime);
+                }
+            }
+
             ComputeSpeed(gameTime);
-
-            _position.X -= ((float) Math.Sin(_rotation)*(time*_speed));
-            _position.Z -= ((float) Math.Cos(_rotation)*(time*_speed));
-
-            _forward.X = ((float) Math.Sin(_rotation)*(100));
-            _forward.Z = ((float) Math.Cos(_rotation)*(100));
 
             if (RotateInTime)
             {
                 time = (float) gameTime.TotalGameTime.TotalSeconds;
-                _rotation = time*TimeRotationSpeed;
+                _rotation = time * TimeRotationSpeed;
             }
 
-            if (MoveInTime)
+            if (_isBoundToHeightMap)
             {
-                time = (float) gameTime.TotalGameTime.TotalSeconds;
-                if (((int) time)%4 == 0)
-                {
-                    Accellerate(gameTime);
-                }
-                else if (((int) time)%2 == 0)
-                {
-                    Decellerate(gameTime);
-                }
+                AdjustToHeightMap(gameTime, heightMapInfo);
+            }
+            else
+            {
+                var militime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                
+                _position.X -= ((float)Math.Sin(_rotation) * (militime * _speed));
+                _position.Z -= ((float)Math.Cos(_rotation) * (militime * _speed));
+
+                _forward.X = ((float)Math.Sin(_rotation) * (100));
+                _forward.Z = ((float)Math.Cos(_rotation) * (100));
+                _orientation = Matrix.CreateRotationY(_rotation);
             }
         }
 
@@ -421,22 +494,19 @@ namespace Octopussy.Game.Elements
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
-            Matrix rotationMatrix = Matrix.CreateRotationY(_rotation);
-            Matrix rotationXMatrix = Matrix.CreateRotationX(_rotationX);
-            Matrix positionMatrix = Matrix.CreateTranslation(_position.X, _position.Y, _position.Z);
+            Matrix worldMatrix = _orientation * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
 
             var transforms = new Matrix[_model.Bones.Count];
             _model.CopyAbsoluteBoneTransformsTo(transforms);
+            
             foreach (ModelMesh mesh in _model.Meshes)
             {
                 if (_isUsingBumpMap)
                 {
                     foreach (EffectMaterial effect in mesh.Effects)
                     {
-                        Matrix world = transforms[mesh.ParentBone.Index]*rotationMatrix;
-                        world *= rotationXMatrix;
-                        world *= positionMatrix;
-
+                        Matrix world = transforms[mesh.ParentBone.Index] * worldMatrix;
+                        
                         effect.Parameters["World"].SetValue(world);
                         effect.Parameters["View"].SetValue(view);
                         effect.Parameters["Projection"].SetValue(projection);
@@ -447,10 +517,8 @@ namespace Octopussy.Game.Elements
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        Matrix world = transforms[mesh.ParentBone.Index]*rotationMatrix;
-                        world *= rotationXMatrix;
-                        world *= positionMatrix;
-
+                        Matrix world = transforms[mesh.ParentBone.Index] * worldMatrix;
+                        
                         effect.World = world;
                         effect.View = view;
                         effect.Projection = projection;
@@ -464,7 +532,8 @@ namespace Octopussy.Game.Elements
                         effect.FogEnd = 3200;
 
                         effect.EnableDefaultLighting();
-                        //effect.DirectionalLight0.Direction = screen.lightPosition;
+                        effect.PreferPerPixelLighting = true;
+                        //effect.DirectionalLight0.Direction = _screen.lightPosition;
 
                         // Override the default specular color to make it nice and bright,
                         // so we'll get some decent glints that the bloom can key off.

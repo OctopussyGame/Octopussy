@@ -61,7 +61,9 @@ namespace Octopussy.Game.Screens
         public ParticleSystem fireParticles;
 // ReSharper restore MemberCanBePrivate.Global
         private Boolean fpsCamera;
-        private Vector3 fpsCameraPosition, fpsCameraTarget;
+        private Vector3 fpsCameraPosition;
+        private Vector3 topCameraPosition;
+        private Vector3 fpsCameraTarget;
         private GraphicsDeviceManager graphics;
         private HeightMapInfo heightMapInfo;
 
@@ -175,31 +177,50 @@ namespace Octopussy.Game.Screens
             surface.MovementSpeed = 0.0006f;
             surface.Friction = 0.0003f;
             surface.RotationX = MathHelper.ToRadians(180f);
-            surface.Position = new Vector3(0, 2000, 0);
+            surface.Position = new Vector3(0, 500, 0);
+            surface.IsBoundToHeightMap = false;
             entites.Add(surface);
 
             entites.Add(playerOne);
             entites.Add(playerTwo);
 
-            addMultipleInstancesOfEntity("models/egg/egg", 3, true);
+            addMultipleInstancesOfEntity("models/egg/egg", 2, true);
             addMultipleInstancesOfEntity("models/grass/grassBig1", 30, false, true);
             addMultipleInstancesOfEntity("models/grass/grassBig2", 30, false, true);
             addMultipleInstancesOfEntity("models/grass/grassBig3", 30, false, true);
             addMultipleInstancesOfEntity("models/grass/grassBig4", 30, false, true);
-            addMultipleInstancesOfEntity("models/grass/grassSmall1", 30, false, true);
-            addMultipleInstancesOfEntity("models/grass/grassSmall2", 30, false, true);
-            addMultipleInstancesOfEntity("models/grass/grassSmall3", 30, false, true);
-            addMultipleInstancesOfEntity("models/grass/grassSmall4", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall1", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall2", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall3", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig1", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig2", 30, false, true);
-            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig3", 30, false, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongBlack", 10, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongRed", 10, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortBlack", 10, true, true);
-            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortRed", 10, true, true);
+            addMultipleInstancesOfEntity("models/grass/grassSmall1", 50, false, true);
+            addMultipleInstancesOfEntity("models/grass/grassSmall2", 50, false, true);
+            addMultipleInstancesOfEntity("models/grass/grassSmall3", 50, false, true);
+            addMultipleInstancesOfEntity("models/grass/grassSmall4", 50, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall1", 300, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall2", 300, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchSmall3", 300, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig1", 300, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig2", 300, false, true);
+            addMultipleInstancesOfEntity("models/grassBunch/grassBunchBig3", 300, false, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigBlue", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigGreen", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigPink", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigRed", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigViolet", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassBigYellow", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleBlue", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleGreen", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleRed", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleViolet", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleYellow", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallBlue", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallGreen", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallRed", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallViolet", 50, true, true);
+            addMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallYellow", 50, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinBlack", 100, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinRed", 100, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongBlack", 100, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinWithHairLongRed", 100, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortBlack", 100, true, true);
+            addMultipleInstancesOfEntity("models/urchin/urchinWithHairShortRed", 100, true, true);
 
             // Components registration
             bloom = new BloomComponent(ScreenManager.Game);
@@ -231,7 +252,9 @@ namespace Octopussy.Game.Screens
 
         private Entity initPositionAndRotation(Entity entity)
         {
-            entity.Position = new Vector3(random.Next(-1000, 1000), 0, random.Next(-1000, 1000));
+            var heightMapSize = heightMapInfo.HeightMapSize();
+
+            entity.Position = new Vector3(random.Next((int)heightMapSize.X, (int)heightMapSize.W), 0, random.Next((int)heightMapSize.X, (int)heightMapSize.W));
             entity.Rotation = random.Next(0, 360);
 
             return entity;
@@ -269,7 +292,7 @@ namespace Octopussy.Game.Screens
             UpdateProjectiles(gameTime);
 
             foreach (Entity entity in entites)
-                entity.Update(gameTime);
+                entity.Update(gameTime, heightMapInfo);
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -281,53 +304,80 @@ namespace Octopussy.Game.Screens
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
 
+            float newCameraArc = 0;
+            float newCameraRotation = 0;
+            float newCameraDistance = 100;
+
             // Check for input to rotate the camera up and down around the model.
-            if (currentKeyboardState.IsKeyDown(Keys.W))
+            if (currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                cameraArc += time*0.025f;
+                newCameraArc = cameraArc + time * 0.025f;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.S))
+            if (currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                cameraArc -= time*0.025f;
+                newCameraArc = cameraArc - time * 0.025f;
             }
 
             cameraArc += currentGamePadState.ThumbSticks.Right.Y*time*0.05f;
 
-            // Limit the arc movement.
-            if (cameraArc > 90.0f)
-                cameraArc = 90.0f;
-            else if (cameraArc < -90.0f)
-                cameraArc = -90.0f;
-
             // Check for input to rotate the camera around the model.
-            if (currentKeyboardState.IsKeyDown(Keys.D))
+            if (currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                cameraRotation += time*0.05f;
+                newCameraRotation = cameraRotation + time * 0.05f;
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.A))
+            if (currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                cameraRotation -= time*0.05f;
+                newCameraRotation = cameraRotation - time * 0.05f;
             }
 
-            cameraRotation += currentGamePadState.ThumbSticks.Right.X*time*0.1f;
+            //cameraRotation += currentGamePadState.ThumbSticks.Right.X*time*0.1f;
 
             // Check for input to zoom camera in and out.
             if (currentKeyboardState.IsKeyDown(Keys.Z))
-                cameraDistance += time*0.25f;
+                newCameraDistance = cameraDistance + time * 0.25f;
 
             if (currentKeyboardState.IsKeyDown(Keys.X))
-                cameraDistance -= time*0.25f;
+                newCameraDistance = cameraDistance - time * 0.25f;
 
-            cameraDistance += currentGamePadState.Triggers.Left*time*0.5f;
-            cameraDistance -= currentGamePadState.Triggers.Right*time*0.5f;
+            //cameraDistance += currentGamePadState.Triggers.Left*time*0.5f;
+            //cameraDistance -= currentGamePadState.Triggers.Right*time*0.5f;
 
-            // Limit the camera distance.
-            if (cameraDistance > 5000)
-                cameraDistance = 5000;
-            else if (cameraDistance < 10)
-                cameraDistance = 10;
+            view = Matrix.CreateTranslation(0, -25, 0) *
+                       Matrix.CreateRotationY(MathHelper.ToRadians(newCameraRotation)) *
+                       Matrix.CreateRotationX(MathHelper.ToRadians(newCameraArc)) *
+                       Matrix.CreateLookAt(new Vector3(0, 0, -newCameraDistance),
+                                           new Vector3(0, 0, 0), Vector3.Up);
+            topCameraPosition = view.Translation;
+
+            if (heightMapInfo.IsOnHeightmap(topCameraPosition))
+            {
+                // we don't want the camera to go beneath the terrain's height +
+                // a small offset.
+                float minimumHeight;
+                Vector3 normal;
+                heightMapInfo.GetHeightAndNormal
+                    (topCameraPosition, out minimumHeight, out normal);
+
+                minimumHeight += 10;
+
+                if (topCameraPosition.Y < minimumHeight)
+                {
+                    topCameraPosition.Y = minimumHeight;
+                }
+
+                // Perform update
+
+                // Limit the arc movement.
+                //if (newCameraArc <= 90.0f && newCameraArc > -90.0f)
+                    cameraArc = newCameraArc;
+                // Limit the camera distance.
+                //if (newCameraDistance <= 5000 && newCameraDistance > 10)
+                    cameraDistance = newCameraDistance;
+                // Rotation is not limited.
+                cameraRotation = newCameraRotation;
+            }
 
             if (currentGamePadState.Buttons.RightStick == ButtonState.Pressed ||
                 currentKeyboardState.IsKeyDown(Keys.R))
@@ -434,7 +484,7 @@ namespace Octopussy.Game.Screens
                        Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc))*
                        Matrix.CreateLookAt(new Vector3(0, 0, -cameraDistance),
                                            new Vector3(0, 0, 0), Vector3.Up);
-
+                
                 projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                                                                  aspectRatio,
                                                                  1, 10000);
@@ -535,8 +585,11 @@ namespace Octopussy.Game.Screens
                 return;
             }
 
-            foreach (Entity entity in entites)
-                entity.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+            playerOne.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+            playerTwo.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+
+            //foreach (Entity entity in entites)
+            //    entity.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
 
             // Switch to the next bloom settings preset?
             /*if ((currentGamePadState.Buttons.A == ButtonState.Pressed &&

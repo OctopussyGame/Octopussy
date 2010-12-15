@@ -72,6 +72,14 @@ namespace Octopussy.Utils
             heightmapPosition.Z = -(heights.GetLength(1) - 1)/2.0f*terrainScale;
         }
 
+        public Vector4 HeightMapSize()
+        {
+            return new Vector4(heightmapPosition.X,
+                heightmapPosition.X + heightmapWidth,
+                heightmapPosition.Z,
+                heightmapPosition.Z + heightmapHeight);
+        }
+
 
         // This function takes in a position, and tells whether or not the position is 
         // on the heightmap.
