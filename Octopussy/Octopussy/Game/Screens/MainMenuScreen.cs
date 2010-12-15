@@ -11,13 +11,10 @@
 
 using System;
 using Microsoft.Xna.Framework;
-<<<<<<< HEAD:Octopussy/Octopussy/Screens/MainMenuScreen.cs
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-=======
 using Microsoft.Xna.Framework.Audio;
->>>>>>> 8790126693b4096f969055446c21a380ce038165:Octopussy/Octopussy/Game/Screens/MainMenuScreen.cs
+
 #endregion
 
 namespace Octopussy
@@ -118,13 +115,15 @@ namespace Octopussy
             MenuEntries.Add(options);
             MenuEntries.Add(quit);
 
+            backgroundSound = ScreenManager.AudioManager.Play3DSound("sound/menu_background", true, new StaticAudioEmitter());
+
             base.LoadContent();
         }
 
 
         #endregion
 
-        #region Handle Input
+        #region Cleanup
         
         /// <summary>
         /// Unloads graphics content for this screen.
@@ -132,6 +131,8 @@ namespace Octopussy
         public override void UnloadContent()
         {
             base.UnloadContent();
+
+            if (!backgroundSound.IsDisposed) backgroundSound.Stop(true);
 
             content.Unload();
         }
@@ -176,23 +177,5 @@ namespace Octopussy
         }
 
         #endregion
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        public override void LoadContent()
-        {
-            backgroundSound = ScreenManager.AudioManager.Play3DSound("sound/menu_background", true, new StaticAudioEmitter());
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        public override void UnloadContent()
-        {
-            if (!backgroundSound.IsDisposed) backgroundSound.Stop(true);
-        }
     }
 }

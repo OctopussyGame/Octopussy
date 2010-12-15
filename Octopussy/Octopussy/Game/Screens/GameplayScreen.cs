@@ -47,17 +47,13 @@ namespace Octopussy
         private Player playerOne;
         private Player playerTwo;
 
-<<<<<<< HEAD:Octopussy/Octopussy/Screens/GameplayScreen.cs
         private string playerOneName;
         private string playerTwoName;
 
-        Model grid;
-=======
         Model terrain;
         Entity surface;
 
         HeightMapInfo heightMapInfo;
->>>>>>> 8790126693b4096f969055446c21a380ce038165:Octopussy/Octopussy/Game/Screens/GameplayScreen.cs
 
         public ParticleSystem explosionParticles;
         public ParticleSystem explosionSmokeParticles;
@@ -177,18 +173,9 @@ namespace Octopussy
             }
 
             // Load entities
-<<<<<<< HEAD:Octopussy/Octopussy/Screens/GameplayScreen.cs
-            //model = new Entity(this, "models/lizard/lizard", true);
-            //model.RotateInTime = true;
-            playerOne = new Player(this, "models/popelnice/popelnice", playerOneName, 1);
+            playerOne = new Player(this, "models/rio/rio", playerOneName, 1);
             playerOne.Position = new Vector3(400, 0, -400);
-            //tank.RotateInTime = true;
-            playerTwo = new Player(this, "models/popelnice/popelnice", playerTwoName, 2);
-=======
-            playerOne = new Player(this, "models/rio/rio");
-            playerOne.Position = new Vector3(400, 0, -400);
-            playerTwo = new Player(this, "models/rio/rio");
->>>>>>> 8790126693b4096f969055446c21a380ce038165:Octopussy/Octopussy/Game/Screens/GameplayScreen.cs
+            playerTwo = new Player(this, "models/rio/rio", playerTwoName, 2);
             playerTwo.Position = new Vector3(200, 0, 200);
 
             surface = new Entity(this, "models/surface/surface", true, true);
@@ -233,16 +220,9 @@ namespace Octopussy
 
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
             spriteFont = ScreenManager.Game.Content.Load<SpriteFont>("fonts/hudFont");
-<<<<<<< HEAD:Octopussy/Octopussy/Screens/GameplayScreen.cs
-            
-            background = ScreenManager.Game.Content.Load<Texture2D>("images/sunset");
-            grid = ScreenManager.Game.Content.Load<Model>("models/grid/grid");
-
-=======
             hud = ScreenManager.Game.Content.Load<Texture2D>("images/hud");
             background = ScreenManager.Game.Content.Load<Texture2D>("images/game/background");
-            
->>>>>>> 8790126693b4096f969055446c21a380ce038165:Octopussy/Octopussy/Game/Screens/GameplayScreen.cs
+
             foreach (var entity in entites)
                 entity.LoadContent();
 
@@ -482,15 +462,7 @@ namespace Octopussy
 
             // Display some text over the top. Note how we draw this after the bloom,
             // because we don't want the text to be affected by the postprocessing.
-<<<<<<< HEAD:Octopussy/Octopussy/Screens/GameplayScreen.cs
-            // DrawOverlayText();
-        }
-
-        
-=======
-            //DrawOverlayText();
-
-            DrawHUD(gameTime);
+            //DrawOverlayText();;
         }
 
         private void DrawBackground(Viewport viewport)
@@ -501,49 +473,7 @@ namespace Octopussy
                              Color.White);
             spriteBatch.End();
         }
-
-        private int lifes = 0;
-
-        private void DrawHUD(GameTime time)
-        {
-            //time.
-            lifes = ((int)time.TotalGameTime.TotalSeconds) % 11;
-            var huds = new []
-                           {
-                               new Rectangle(53, 60, 549, 60),
-                               new Rectangle(53, 140, 549, 60),
-                               new Rectangle(53, 220, 549, 60),
-                               new Rectangle(53, 300, 549, 60),
-                               new Rectangle(53, 380, 549, 60),
-                               new Rectangle(53, 460, 549, 60),
-                               new Rectangle(53, 540, 549, 60),
-                               new Rectangle(53, 620, 549, 60),
-                               new Rectangle(53, 700, 549, 60),
-                               new Rectangle(53, 780, 549, 60),
-                               new Rectangle(53, 860, 549, 60)
-                           };
-
-            var weapon = new Rectangle(844, 52, 110, 70);
-            var bullets = new Rectangle(708, 51, 29, 70); 
-
-            spriteBatch.Begin();
-            var locationHP = new Vector2(20, 20);
-            var locationBullets = new Vector2(630, 18);
-            var locationNumBullets = new Vector2(670, 29);
-            var locationWeapon = new Vector2(770, 22);
-            var origin = new Vector2(0, 0);
-
-            spriteBatch.Draw(hud, locationHP, huds[lifes], Color.White, 0, origin, 1, SpriteEffects.None, 0); // HP bar
-
-            spriteBatch.Draw(hud, locationBullets, bullets, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Bullets
-            spriteBatch.DrawString(spriteFont, "55", locationNumBullets, Color.Black, 0, origin, 2, SpriteEffects.None, 0);
-
-            spriteBatch.Draw(hud, locationWeapon, weapon, Color.White, 0, origin, 1, SpriteEffects.None, 0); // Weapon
-
-            spriteBatch.End();
-        }
->>>>>>> 8790126693b4096f969055446c21a380ce038165:Octopussy/Octopussy/Game/Screens/GameplayScreen.cs
-
+		
         /// <summary>
         /// Helper for drawing the terrain model.
         /// </summary>

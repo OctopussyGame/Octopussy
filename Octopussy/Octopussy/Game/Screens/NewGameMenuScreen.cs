@@ -27,8 +27,8 @@ namespace Octopussy
         ContentManager content;
         Texture2D backgroundTexture;
         private bool shiftKey;
-        private string playerOneName = "Janicka";
-        private string playerTwoName = "Tkanicka";
+        private string playerOneName = "Player 1";
+        private string playerTwoName = "Player 2";
         private string textInput;
         
         /// <summary>
@@ -137,6 +137,7 @@ namespace Octopussy
         public override void HandleInput(InputState input)
         {
             PlayerIndex playerIndex = PlayerIndex.One;
+
             if (true) {
                 if (SelectedEntry == 0 && input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out playerIndex))
                 {

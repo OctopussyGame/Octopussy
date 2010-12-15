@@ -36,7 +36,7 @@ namespace Octopussy
             : base("Multi Player")
         {
             // Create our menu entries.
-            var ipAddressMenuEntry = new MenuEntry("IP Adresa: 192.168.1.101");
+            /*var ipAddressMenuEntry = new MenuEntry("IP Adresa: 192.168.1.101");
             var waitForPlayersMenuEntry = new MenuEntry("Zalozit hru a pockat na hrace");
 
             var back = new MenuEntry("Zpet");
@@ -46,7 +46,7 @@ namespace Octopussy
             // Add entries to the menu.
             MenuEntries.Add(ipAddressMenuEntry);
             MenuEntries.Add(waitForPlayersMenuEntry);
-            MenuEntries.Add(back);
+            MenuEntries.Add(back);*/
         }
 
         #endregion

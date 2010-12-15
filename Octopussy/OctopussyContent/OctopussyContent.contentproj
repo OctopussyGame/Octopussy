@@ -185,7 +185,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="images\HUD-novy.png">
       <Name>HUD-novy</Name>
       <Importer>TextureImporter</Importer>
@@ -210,7 +209,9 @@
     </Compile>
     <Compile Include="images\menu\settings.png">
       <Name>settings</Name>
-=======
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="models\egg\egg.fbx">
       <Name>egg</Name>
       <Importer>FbxImporter</Importer>
@@ -343,13 +344,10 @@
   <ItemGroup>
     <Compile Include="images\game\background.jpg">
       <Name>background</Name>
->>>>>>> 8790126693b4096f969055446c21a380ce038165
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-<<<<<<< HEAD
-=======
   <ItemGroup>
     <Compile Include="sound\game_background.mp3">
       <Name>game_background</Name>
@@ -384,7 +382,6 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
->>>>>>> 8790126693b4096f969055446c21a380ce038165
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
