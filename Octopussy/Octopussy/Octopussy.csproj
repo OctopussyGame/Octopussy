@@ -108,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\Screens\GameOverMenuScreen.cs" />
     <Compile Include="Managers\PreferenceManager\PreferenceManager.cs" />
     <Compile Include="Managers\ScreenManager\MenuEntry.cs" />
     <Compile Include="Managers\ScreenManager\MenuScreen.cs" />
