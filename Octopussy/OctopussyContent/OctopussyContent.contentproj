@@ -513,6 +513,404 @@
       <ProcessorParameters_NormalMapTexture>textures/shell_norm.tga</ProcessorParameters_NormalMapTexture>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\star\seaStarSlim.fbx">
+      <Name>seaStarSlim</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/seaStarSlim_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderDorangev1.fbx">
+      <Name>seaGrassCylinderDorangev1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderDorangev2.fbx">
+      <Name>seaGrassCylinderDorangev2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderDorangev3.fbx">
+      <Name>seaGrassCylinderDorangev3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderOrangev1.fbx">
+      <Name>seaGrassCylinderOrangev1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderOrangev2.fbx">
+      <Name>seaGrassCylinderOrangev2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderOrangev3.fbx">
+      <Name>seaGrassCylinderOrangev3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderRedv1.fbx">
+      <Name>seaGrassCylinderRedv1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderRedv2.fbx">
+      <Name>seaGrassCylinderRedv2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinderRedv3.fbx">
+      <Name>seaGrassCylinderRedv3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinder2Pink.fbx">
+      <Name>seaGrassCylinder2Pink</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinder2Red.fbx">
+      <Name>seaGrassCylinder2Red</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="models\seaGrassCylinder\seaGrassCylinder2Violet.fbx">
+      <Name>seaGrassCylinder2Violet</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="models\stone\stone10_tex1.fbx">
+      <Name>stone10_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone10_tex2.fbx">
+      <Name>stone10_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone10_tex3.fbx">
+      <Name>stone10_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone11_tex1.fbx">
+      <Name>stone11_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone11_tex2.fbx">
+      <Name>stone11_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone11_tex3.fbx">
+      <Name>stone11_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone12_tex1.fbx">
+      <Name>stone12_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone12_tex2.fbx">
+      <Name>stone12_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone12_tex3.fbx">
+      <Name>stone12_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone13_tex1.fbx">
+      <Name>stone13_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone13_tex2.fbx">
+      <Name>stone13_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone13_tex3.fbx">
+      <Name>stone13_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone14_tex1.fbx">
+      <Name>stone14_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone14_tex2.fbx">
+      <Name>stone14_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone14_tex3.fbx">
+      <Name>stone14_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone1_tex1.fbx">
+      <Name>stone1_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone1_tex2.fbx">
+      <Name>stone1_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone1_tex3.fbx">
+      <Name>stone1_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone2_tex1.fbx">
+      <Name>stone2_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone2_tex2.fbx">
+      <Name>stone2_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone2_tex3.fbx">
+      <Name>stone2_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone3_tex1.fbx">
+      <Name>stone3_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone3_tex2.fbx">
+      <Name>stone3_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone3_tex3.fbx">
+      <Name>stone3_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone4_tex1.fbx">
+      <Name>stone4_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone4_tex2.fbx">
+      <Name>stone4_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone4_tex3.fbx">
+      <Name>stone4_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone5_tex1.fbx">
+      <Name>stone5_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone5_tex2.fbx">
+      <Name>stone5_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone5_tex3.fbx">
+      <Name>stone5_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone6_tex1.fbx">
+      <Name>stone6_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone6_tex2.fbx">
+      <Name>stone6_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone6_tex3.fbx">
+      <Name>stone6_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone7_tex1.fbx">
+      <Name>stone7_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone7_tex2.fbx">
+      <Name>stone7_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone7_tex3.fbx">
+      <Name>stone7_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone8_tex1.fbx">
+      <Name>stone8_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone8_tex2.fbx">
+      <Name>stone8_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone8_tex3.fbx">
+      <Name>stone8_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone9_tex1.fbx">
+      <Name>stone9_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone9_tex2.fbx">
+      <Name>stone9_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stone9_tex3.fbx">
+      <Name>stone9_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup1_tex1.fbx">
+      <Name>stoneGroup1_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup1_tex2.fbx">
+      <Name>stoneGroup1_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup1_tex3.fbx">
+      <Name>stoneGroup1_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup2_tex1.fbx">
+      <Name>stoneGroup2_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup2_tex2.fbx">
+      <Name>stoneGroup2_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup2_tex3.fbx">
+      <Name>stoneGroup2_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup3_tex1.fbx">
+      <Name>stoneGroup3_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup3_tex2.fbx">
+      <Name>stoneGroup3_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup3_tex3.fbx">
+      <Name>stoneGroup3_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup4_tex1.fbx">
+      <Name>stoneGroup4_tex1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_1_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup4_tex2.fbx">
+      <Name>stoneGroup4_tex2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_2_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+    <Compile Include="models\stone\stoneGroup4_tex3.fbx">
+      <Name>stoneGroup4_tex3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>NormalMappingModelProcessor</Processor>
+      <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
