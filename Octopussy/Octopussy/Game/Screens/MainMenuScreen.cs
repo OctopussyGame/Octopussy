@@ -107,7 +107,7 @@ namespace Octopussy
         /// </summary>
         public override void UnloadContent()
         {
-            backgroundSound.Stop(true);
+            if (!backgroundSound.IsDisposed) backgroundSound.Stop(true);
         }
     }
 }
