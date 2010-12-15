@@ -161,10 +161,10 @@ namespace Octopussy
             // Load entities
             //model = new Entity(this, "models/lizard/lizard", true);
             //model.RotateInTime = true;
-            playerOne = new Player(this, "models/popelnice/popelnice", playerOneName);
+            playerOne = new Player(this, "models/popelnice/popelnice", playerOneName, 1);
             playerOne.Position = new Vector3(400, 0, -400);
             //tank.RotateInTime = true;
-            playerTwo = new Player(this, "models/popelnice/popelnice", playerTwoName);
+            playerTwo = new Player(this, "models/popelnice/popelnice", playerTwoName, 2);
             playerTwo.Position = new Vector3(200, 0, 200);
 
             entites.Add(playerOne);
@@ -217,7 +217,7 @@ namespace Octopussy
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            UpdateCamera(gameTime);
+            // UpdateCamera(gameTime); colission with player controlls
             UpdateProjectiles(gameTime);
 
             foreach (var entity in entites)
@@ -411,9 +411,7 @@ namespace Octopussy
 
             // Display some text over the top. Note how we draw this after the bloom,
             // because we don't want the text to be affected by the postprocessing.
-            DrawOverlayText();
-
-          //  DrawHUD(gameTime);
+            // DrawOverlayText();
         }
 
         
@@ -479,14 +477,15 @@ namespace Octopussy
             // Check for exit.
             if (input.IsPauseGame(ControllingPlayer))
             {
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+                ScreenManager.AddScreen(new QuitMenuScreen(true), ControllingPlayer);
                 return;
             }
 
-            playerOne.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+            foreach (var entity in entites)
+                entity.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
 
             // Switch to the next bloom settings preset?
-            if ((currentGamePadState.Buttons.A == ButtonState.Pressed &&
+            /*if ((currentGamePadState.Buttons.A == ButtonState.Pressed &&
                  lastGamePadState.Buttons.A != ButtonState.Pressed) ||
                 (currentKeyboardState.IsKeyDown(Keys.V) &&
                  lastKeyboardState.IsKeyUp(Keys.V))) {
@@ -501,7 +500,7 @@ namespace Octopussy
             if ((currentKeyboardState.IsKeyDown(Keys.B) &&
                  lastKeyboardState.IsKeyUp(Keys.B))) {
                 bloom.Visible = !bloom.Visible;
-            }
+            }*/
 
             // Toggle fullscreen
             if ((currentKeyboardState.IsKeyDown(Keys.F) &&
@@ -518,10 +517,10 @@ namespace Octopussy
             }
 
             // Toggle light rotation on or off?
-            if ((currentKeyboardState.IsKeyDown(Keys.L) &&
+            /*if ((currentKeyboardState.IsKeyDown(Keys.L) &&
                  lastKeyboardState.IsKeyUp(Keys.L))) {
                 rotateLight = !rotateLight;
-            }
+            }*/
         }
 
         #endregion

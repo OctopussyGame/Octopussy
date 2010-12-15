@@ -30,14 +30,15 @@ namespace Octopussy
         private string playerOneName = "Janicka";
         private string playerTwoName = "Tkanicka";
         private string textInput;
+        private bool inGame;
         
         /// <summary>
         /// Constructor.
         /// </summary>
-        public QuitMenuScreen()
+        public QuitMenuScreen(bool inGame = false)
             : base("Quit")
         {
-            //textInput = playerOneName;
+            this.inGame = inGame;
         }
 
         public override void LoadContent()
@@ -55,7 +56,13 @@ namespace Octopussy
             yes.PositionOriginal = new Vector2(507, 367);
             yes.PositionSelected = new Vector2(507, 367);
 
-            yes.Selected += (e, sender) => ScreenManager.Game.Exit();
+            yes.Selected += (e, sender) =>
+                                {
+                                    if (!inGame)
+                                        ScreenManager.Game.Exit();
+                                    else
+                                        LoadingScreen.Load(ScreenManager, false, null, new MainMenuScreen());
+                                };
 
             var no = new ImageMenuEntry(new Rectangle(27, 178, 79, 68),
                                              new Rectangle(177, 178, 79, 68),
