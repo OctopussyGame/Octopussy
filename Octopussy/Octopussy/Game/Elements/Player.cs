@@ -14,12 +14,13 @@ namespace Octopussy.Game.Elements
         private readonly string _name;
         private readonly int _player;
         private readonly GameplayScreen _screen;
-        private GameTime _gameTime;
         private int _hp = 10;
+        private GameTime _gameTime;
         private Texture2D _hud;
         private PreferenceManager _pm;
         private SpriteBatch _spriteBatch;
         private SpriteFont _spriteFont;
+        private bool _isOver;
 
         public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false)
             : base(screen, modelName, isUsingBumpMap)
@@ -27,6 +28,7 @@ namespace Octopussy.Game.Elements
             this._screen = screen;
             this._player = player;
             this._name = name;
+            this._isOver = false;
         }
 
         public int HP
@@ -46,16 +48,19 @@ namespace Octopussy.Game.Elements
 
         public void OnShot()
         {
+            _screen.ScreenManager.AudioManager.Play3DSound("sound/nesahej_na_me", false, this);
             HP--;
         }
 
         public void OnSeaFlower()
         {
+            _screen.ScreenManager.AudioManager.Play3DSound("sound/to_je_moje_chapadlo", false, this);
             HP++;
         }
 
         public void OnUrchin()
         {
+            _screen.ScreenManager.AudioManager.Play3DSound("sound/no_fuj", false, this);
             HP--;
         }
 
@@ -72,14 +77,39 @@ namespace Octopussy.Game.Elements
 
         public override void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
+            //if (!_isOver) this.UpdateCollision();
+            
             base.Update(gameTime, heightMapInfo);
 
-            if (HP == 0)
+            if (HP == 0 && !_isOver)
             {
+                _isOver = true;
                 _screen.ScreenManager.AddScreen(new GameOverMenuScreen(), PlayerIndex.One);
             }
 
             this._gameTime = gameTime;
+        }
+
+        private void UpdateCollision()
+        {
+            //if (!_moved) return;
+
+            foreach (Entity entity in _screen.Entites)
+            {
+                if (entity.Intersects(this))
+                {
+                    if(entity.ModelName.Contains("urchin"))
+                    {
+                        this.OnUrchin();
+                        break;
+                    }
+                    else if (entity.ModelName.Contains("seaGrass"))
+                    {
+                        this.OnSeaFlower();
+                        break;
+                    }
+                }
+            }   
         }
 
         public override void Draw(GameTime gameTime)

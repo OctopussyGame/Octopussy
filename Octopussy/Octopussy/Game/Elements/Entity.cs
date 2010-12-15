@@ -12,6 +12,7 @@
 #region Using Statements
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -47,7 +48,7 @@ namespace Octopussy.Game.Elements
         private Vector3 _forward;
         private Vector3 _position;
         private Boolean _isBoundToHeightMap;
-        private Boolean _moved;
+        protected Boolean Moved;
         private float _alpha;
         private float _friction = 0.01f;
         private float _movementSpeed = 0.02f;
@@ -68,7 +69,6 @@ namespace Octopussy.Game.Elements
                 return eyePosition;
             }
         }
-
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
@@ -132,6 +132,28 @@ namespace Octopussy.Game.Elements
             set { _rotationX = value; }
         }
 
+        public Boolean Intersects(Entity model)
+        {
+            foreach (ModelMesh m in model.Model.Meshes)
+            {
+                foreach (ModelMesh n in Model.Meshes)
+                {
+                    /*if (!_debuged)
+                    {
+                        DebugShapeRenderer.AddBoundingSphere(m.BoundingSphere, Color.Red);
+                        DebugShapeRenderer.AddBoundingSphere(m.BoundingSphere, Color.Blue);
+                    }*/
+
+                    if (m.BoundingSphere.Intersects(n.BoundingSphere))
+                    {
+                        return true;
+                    } 
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Gets or sets the orientation of this entity.
         /// </summary>
@@ -189,6 +211,16 @@ namespace Octopussy.Game.Elements
             set { _isBoundToHeightMap = value; }
         }
 
+        public Model Model
+        {
+            get { return _model; }
+        }
+
+        public string ModelName
+        {
+            get { return _modelName; }
+        }
+
 // ReSharper restore MemberCanBePrivate.Global
 
         #endregion
@@ -203,7 +235,7 @@ namespace Octopussy.Game.Elements
             if (modelName == null)
                 throw new ArgumentNullException("modelName");
 
-            this._moved = true;
+            this.Moved = true;
             this._screen = screen;
 
             this._modelName = modelName;
@@ -230,7 +262,7 @@ namespace Octopussy.Game.Elements
 
             if (_isUsingBumpMap)
             {
-                foreach (ModelMesh mesh in _model.Meshes)
+                foreach (ModelMesh mesh in Model.Meshes)
                 {
                     foreach (Effect effect in mesh.Effects)
                     {
@@ -262,7 +294,7 @@ namespace Octopussy.Game.Elements
         public void TurnLeft(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            this._moved = true;
+            this.Moved = true;
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             _rotation += time * RotationSpeed;
             ComputeRotation(gameTime);
@@ -272,7 +304,7 @@ namespace Octopussy.Game.Elements
         public void TurnRight(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            this._moved = true;
+            this.Moved = true;
             var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _rotation -= time * RotationSpeed;
             ComputeRotation(gameTime);
@@ -282,7 +314,7 @@ namespace Octopussy.Game.Elements
         public void Accellerate(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            this._moved = true;
+            this.Moved = true;
             var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _speed += time * _movementSpeed;
         }
@@ -291,7 +323,7 @@ namespace Octopussy.Game.Elements
         public void Decellerate(GameTime gameTime)
 // ReSharper restore MemberCanBeProtected.Global
         {
-            this._moved = true;
+            this.Moved = true;
             var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _speed -= time * _movementSpeed;
         }
@@ -300,7 +332,7 @@ namespace Octopussy.Game.Elements
         public void Stop(GameTime gameTime)
         // ReSharper restore MemberCanBeProtected.Global
         {
-            this._moved = true;
+            this.Moved = true;
             _speed = 0;
         }
 
@@ -445,11 +477,6 @@ namespace Octopussy.Game.Elements
 
         public virtual void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
-            if (!this._moved)
-            {
-                return;
-            }
-
             this._gameTime = gameTime;
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -464,6 +491,11 @@ namespace Octopussy.Game.Elements
                 {
                     Decellerate(gameTime);
                 }
+            }
+
+            if (!this.Moved)
+            {
+                return;
             }
 
             ComputeSpeed(gameTime);
@@ -489,7 +521,8 @@ namespace Octopussy.Game.Elements
                 _forward.Z = ((float)Math.Cos(_rotation) * (100));
                 _orientation = Matrix.CreateRotationY(_rotation);
             }
-            this._moved = false;
+
+            this.Moved = false;
         }
 
         #endregion
@@ -509,10 +542,10 @@ namespace Octopussy.Game.Elements
 
             Matrix worldMatrix = _orientation * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
 
-            var transforms = new Matrix[_model.Bones.Count];
-            _model.CopyAbsoluteBoneTransformsTo(transforms);
+            var transforms = new Matrix[Model.Bones.Count];
+            Model.CopyAbsoluteBoneTransformsTo(transforms);
             
-            foreach (ModelMesh mesh in _model.Meshes)
+            foreach (ModelMesh mesh in Model.Meshes)
             {
                 if (_isUsingBumpMap)
                 {

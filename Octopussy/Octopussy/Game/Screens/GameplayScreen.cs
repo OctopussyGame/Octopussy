@@ -99,6 +99,11 @@ namespace Octopussy.Game.Screens
             get { return projection; }
         }
 
+        public List<Entity> Entites
+        {
+            get { return entites; }
+        }
+
         #endregion
 
         #region Initialization
@@ -179,10 +184,10 @@ namespace Octopussy.Game.Screens
             surface.RotationX = MathHelper.ToRadians(180f);
             surface.Position = new Vector3(0, 500, 0);
             surface.IsBoundToHeightMap = false;
-            entites.Add(surface);
+            Entites.Add(surface);
 
-            entites.Add(playerOne);
-            entites.Add(playerTwo);
+            Entites.Add(playerOne);
+            Entites.Add(playerTwo);
 
             AddMultipleInstancesOfEntity("models/egg/egg", 2, true);
             //AddMultipleInstancesOfEntity("models/grass/grassBig1", 30, false, true);
@@ -240,7 +245,7 @@ namespace Octopussy.Game.Screens
             hud = ScreenManager.Game.Content.Load<Texture2D>("images/hud");
             background = ScreenManager.Game.Content.Load<Texture2D>("images/game/background");
 
-            foreach (Entity entity in entites)
+            foreach (Entity entity in Entites)
                 entity.LoadContent();
 
             ScreenManager.Game.ResetElapsedTime();
@@ -251,7 +256,7 @@ namespace Octopussy.Game.Screens
         {
             for (int i = 0; i < count; i++)
             {
-                entites.Add(InitPositionAndRotation(new Entity(this, modelName, isUsingBumpMap, isUsingAlpha)));
+                Entites.Add(InitPositionAndRotation(new Entity(this, modelName, isUsingBumpMap, isUsingAlpha)));
             }
         }
 
@@ -281,7 +286,7 @@ namespace Octopussy.Game.Screens
             for (int i = ScreenManager.Game.Components.Count - 1; i > 1; i--)
                 ScreenManager.Game.Components.RemoveAt(i);
 
-            foreach (Entity entity in entites)
+            foreach (Entity entity in Entites)
                 entity.UnloadContent();
         }
 
@@ -297,7 +302,7 @@ namespace Octopussy.Game.Screens
             // UpdateCamera(gameTime); colission with player controlls
             UpdateProjectiles(gameTime);
 
-            foreach (Entity entity in entites)
+            foreach (Entity entity in Entites)
                 entity.Update(gameTime, heightMapInfo);
 
             base.Update(gameTime, otherScreenHasFocus, false);
@@ -519,7 +524,7 @@ namespace Octopussy.Game.Screens
             // Draw other components (which includes the bloom).
             base.Draw(gameTime);
 
-            foreach (Entity entity in entites)
+            foreach (Entity entity in Entites)
                 entity.Draw(gameTime);
         }
 
