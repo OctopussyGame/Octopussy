@@ -312,7 +312,7 @@ namespace Octopussy.Game.Elements
             float vz = ((float) Math.Sin(_rotation)*(ProjectileSpeed));
 
             _screen.ScreenManager.AudioManager.Play3DSound("sound/tu_mas", false, this);
-            _screen.AddProjectile(new Projectile(new Vector3(_position.X, 90, _position.Z), new Vector3(-vz, 0, -vx),
+            _screen.AddProjectile(new Projectile(new Vector3(_position.X, _position.Y + 50, _position.Z), new Vector3(-vz, 0, -vx),
                                                 _screen.explosionParticles,
                                                 _screen.explosionSmokeParticles,
                                                 _screen.projectileTrailParticles));
@@ -539,9 +539,9 @@ namespace Octopussy.Game.Elements
                         effect.Alpha = _alpha;
 
                         // Set the fog to match the black background color
-                        effect.FogEnabled = true;
+                        effect.FogEnabled = false;
                         effect.FogColor = Vector3.Zero;
-                        effect.FogStart = 1000;
+                        effect.FogStart = 2500;
                         effect.FogEnd = 3200;
 
                         effect.EnableDefaultLighting();

@@ -20,6 +20,7 @@ namespace Octopussy.Game.Elements
         private PreferenceManager _pm;
         private SpriteBatch _spriteBatch;
         private SpriteFont _spriteFont;
+        private bool isOver;
 
         public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false)
             : base(screen, modelName, isUsingBumpMap)
@@ -74,8 +75,9 @@ namespace Octopussy.Game.Elements
         {
             base.Update(gameTime, heightMapInfo);
 
-            if (HP == 0)
+            if (HP == 0 && !isOver)
             {
+                isOver = true;
                 _screen.ScreenManager.AddScreen(new GameOverMenuScreen(), PlayerIndex.One);
             }
 

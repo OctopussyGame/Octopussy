@@ -51,7 +51,7 @@ namespace Octopussy.Game.Screens
         private BloomComponent bloom;
         //private int bloomSettingsIndex;
         private float cameraArc = -80;
-        private float cameraDistance = 3200;
+        private float cameraDistance = 2000;
         private float cameraRotation = 0;
         private GamePadState currentGamePadState;
         private KeyboardState currentKeyboardState;
@@ -259,7 +259,7 @@ namespace Octopussy.Game.Screens
         {
             var heightMapSize = heightMapInfo.HeightMapSize();
 
-            entity.Position = new Vector3(random.Next((int)heightMapSize.X, (int)heightMapSize.W), 0, random.Next((int)heightMapSize.X, (int)heightMapSize.W));
+            entity.Position = new Vector3(random.Next((int)heightMapSize.X, (int)heightMapSize.Y), 0, random.Next((int)heightMapSize.Z, (int)heightMapSize.W));
             entity.Rotation = random.Next(0, 360);
 
             return entity;
