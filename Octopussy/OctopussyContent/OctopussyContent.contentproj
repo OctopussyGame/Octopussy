@@ -159,13 +159,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\background.jpg">
-      <Name>background</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="fonts\glowfont.png">
       <Name>glowfont</Name>
       <Importer>TextureImporter</Importer>
@@ -330,8 +323,7 @@
     <Compile Include="models\surface\surface.x">
       <Name>surface</Name>
       <Importer>XImporter</Importer>
-      <Processor>NormalMappingModelProcessor</Processor>
-      <ProcessorParameters_NormalMapTexture>surface_norm.jpg</ProcessorParameters_NormalMapTexture>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -909,6 +901,38 @@
       <Importer>FbxImporter</Importer>
       <Processor>NormalMappingModelProcessor</Processor>
       <ProcessorParameters_NormalMapTexture>textures/stone_3_norm.tga</ProcessorParameters_NormalMapTexture>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="terrain\terrain2.jpg">
+      <Name>terrain2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <ProcessorParameters_TerrainTexture>sand.jpg</ProcessorParameters_TerrainTexture>
+    </Compile>
+    <Compile Include="terrain\terrain3.jpg">
+      <Name>terrain3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <ProcessorParameters_TerrainTexture>sand.jpg</ProcessorParameters_TerrainTexture>
+    </Compile>
+    <Compile Include="terrain\terrain4.jpg">
+      <Name>terrain4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <ProcessorParameters_TerrainTexture>sand.jpg</ProcessorParameters_TerrainTexture>
+    </Compile>
+    <Compile Include="terrain\terrain5.jpg">
+      <Name>terrain5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <ProcessorParameters_TerrainTexture>sand.jpg</ProcessorParameters_TerrainTexture>
+    </Compile>
+    <Compile Include="terrain\terrain6.jpg">
+      <Name>terrain6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TerrainProcessor</Processor>
+      <ProcessorParameters_TerrainTexture>sand.jpg</ProcessorParameters_TerrainTexture>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

@@ -9,11 +9,11 @@ namespace Octopussy.Managers.PreferenceManager
         {
             PlayerOne = new PlayerPreference
                             {
-                                Forward = Keys.W,
-                                Backward = Keys.S,
-                                Left = Keys.A,
-                                Right = Keys.D,
-                                Shoot = Keys.LeftShift
+                                Forward = Keys.Up,
+                                Backward = Keys.Down,
+                                Left = Keys.Left,
+                                Right = Keys.Right,
+                                Shoot = Keys.Space
                             };
 
             PlayerTwo = new PlayerPreference

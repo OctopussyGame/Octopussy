@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Octopussy.Game.Screens;
+using Octopussy.Managers.BloomManager;
 using Octopussy.Managers.SoundManager;
 using Octopussy.Utils;
 
@@ -29,12 +30,12 @@ namespace Octopussy.Game.Elements
         #region Fields
 
         private const float EyeHeight = 120;
-        private const float MaxMovementSpeed = 0.9f;
         private const float ProjectileSpeed = 500;
-        private const float RotationSpeed = 0.005f;
         private const float Shininess = .3f;
-        private const float SpecularPower = 4.0f;
         private const float TimeRotationSpeed = 0.42f;
+        private const float CollisionInterval = 0.1f;
+        private float _randomMovementMinimalInterval = 0.2f;
+        private float _randomMovementMaximalnInterval = 4.0f;
         
         private readonly Vector4 _ambientLightColor = new Vector4(.2f, .2f, .2f, 1);
         private readonly Vector4 _lightColor = new Vector4(1, 1, 1, 1);
@@ -49,13 +50,23 @@ namespace Octopussy.Game.Elements
         private Vector3 _position;
         private Boolean _isBoundToHeightMap;
         protected Boolean Moved;
+        private TimeSpan collisionDelay = TimeSpan.Zero;
+        private TimeSpan randomMovementDelay = TimeSpan.Zero;
+        private float _scale;
         private float _alpha;
         private float _friction = 0.01f;
         private float _movementSpeed = 0.02f;
         private float _rotation;
         private float _rotationX;
         private float _speed;
+        private float _rotationSpeed = 0.005f;
+        private float _maxMovementSpeed = 0.9f;
+        private float _specularPower = 4.0f;
         Matrix _orientation = Matrix.Identity;
+        private bool _canCollide;
+        private BoundingSphere _boundingSphere;
+        private float _collisionRadius;
+        private bool _movesRandomly;
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
@@ -132,28 +143,6 @@ namespace Octopussy.Game.Elements
             set { _rotationX = value; }
         }
 
-        public Boolean Intersects(Entity model)
-        {
-            foreach (ModelMesh m in model.Model.Meshes)
-            {
-                foreach (ModelMesh n in Model.Meshes)
-                {
-                    /*if (!_debuged)
-                    {
-                        DebugShapeRenderer.AddBoundingSphere(m.BoundingSphere, Color.Red);
-                        DebugShapeRenderer.AddBoundingSphere(m.BoundingSphere, Color.Blue);
-                    }*/
-
-                    if (m.BoundingSphere.Intersects(n.BoundingSphere))
-                    {
-                        return true;
-                    } 
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Gets or sets the orientation of this entity.
         /// </summary>
@@ -221,6 +210,53 @@ namespace Octopussy.Game.Elements
             get { return _modelName; }
         }
 
+        public float RotationSpeed
+        {
+            get { return _rotationSpeed; }
+            set { _rotationSpeed = value; }
+        }
+
+        public float MaxMovementSpeed
+        {
+            get { return _maxMovementSpeed; }
+            set { _maxMovementSpeed = value; }
+        }
+
+        public float SpecularPower
+        {
+            get { return _specularPower; }
+            set { _specularPower = value; }
+        }
+
+        public float Scale
+        {
+            get { return _scale; }
+            set { _scale = value; }
+        }
+
+        public BoundingSphere BoundingSphere
+        {
+            get { return _boundingSphere; }
+        }
+
+        public bool MovesRandomly
+        {
+            get { return _movesRandomly; }
+            set { _movesRandomly = value; }
+        }
+
+        public float RandomMovementMinimalInterval
+        {
+            get { return _randomMovementMinimalInterval; }
+            set { _randomMovementMinimalInterval = value; }
+        }
+
+        public float RandomMovementMaximalnInterval
+        {
+            get { return _randomMovementMaximalnInterval; }
+            set { _randomMovementMaximalnInterval = value; }
+        }
+
 // ReSharper restore MemberCanBePrivate.Global
 
         #endregion
@@ -228,7 +264,7 @@ namespace Octopussy.Game.Elements
         #region Initialization
 
         public Entity(GameplayScreen screen, string modelName, Boolean isUsingBumpMap = false,
-                      Boolean isUsingAlpha = false)
+                      Boolean isUsingAlpha = false, bool canCollide = false, float collisionRadius = 100)
         {
             if (screen == null)
                 throw new ArgumentNullException("screen");
@@ -237,6 +273,8 @@ namespace Octopussy.Game.Elements
 
             this.Moved = true;
             this._screen = screen;
+            _collisionRadius = collisionRadius;
+            _canCollide = canCollide;
 
             this._modelName = modelName;
             this._isUsingBumpMap = isUsingBumpMap;
@@ -246,10 +284,12 @@ namespace Octopussy.Game.Elements
             _rotationX = 0;
             _alpha = 1;
             _speed = 0;
+            _scale = 1;
             Up = Vector3.Up;
             Velocity = Vector3.Zero;
             RotateInTime = false;
             MoveInTime = false;
+            _movesRandomly = false;
             _isBoundToHeightMap = true;
         }
 
@@ -259,6 +299,11 @@ namespace Octopussy.Game.Elements
         public virtual void LoadContent()
         {
             _model = _screen.ScreenManager.Game.Content.Load<Model>(_modelName);
+
+            if (_canCollide)
+            {
+                this._boundingSphere = new BoundingSphere(_position, _collisionRadius * _scale);
+            }
 
             if (_isUsingBumpMap)
             {
@@ -360,7 +405,7 @@ namespace Octopussy.Game.Elements
                 _rotation = 0;
         }
 
-        private void ComputeSpeed(GameTime gameTime)
+        protected void ComputeSpeed(GameTime gameTime)
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             // Apply friction to speed
@@ -433,7 +478,7 @@ namespace Octopussy.Game.Elements
             }
         }
 
-        private void AdjustToHeightMap(GameTime gameTime, HeightMapInfo heightMapInfo)
+        protected void AdjustToHeightMap(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
             var time = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Vector3 newPosition = _position;
@@ -475,20 +520,104 @@ namespace Octopussy.Game.Elements
             }
         }
 
+        private void UpdateBoundingSphere()
+        {
+            this._boundingSphere.Center = _position;
+        }
+
+        protected virtual void OnCollision(Entity entity, GameTime gameTime, HeightMapInfo heightMapInfo)
+        {
+            //this._isBlocked = true;
+        }
+
+        protected Boolean InCollisionWith(Entity entity)
+        {
+            return entity.BoundingSphere.Intersects(this.BoundingSphere);
+        }
+
+        private void UpdateCollision(GameTime gameTime, HeightMapInfo heightMapInfo)
+        {
+            collisionDelay -= gameTime.ElapsedGameTime;
+            if (collisionDelay >= TimeSpan.Zero)
+            {
+                return;
+            }
+
+            foreach (Entity entity in _screen.CollideableEntites)
+            {
+                if (entity.BoundingSphere.Intersects(this.BoundingSphere))
+                {
+                    this.OnCollision(entity, gameTime, heightMapInfo);
+                }
+            }
+
+            collisionDelay += TimeSpan.FromSeconds(CollisionInterval);
+        }
+
+        private void performRandomMovement(GameTime gameTime)
+        {
+            randomMovementDelay -= gameTime.ElapsedGameTime;
+            if (randomMovementDelay >= TimeSpan.Zero)
+            {
+                return;
+            }
+
+            // Rotate in random direction
+            int direction = _screen.Random.Next(2);
+            for (int i = 0; i < _screen.Random.Next(20); i++)
+            {
+                if(direction == 1)
+                {
+                    TurnLeft(gameTime);
+                }
+                else
+                {
+                    TurnRight(gameTime);
+                }
+            }
+
+            // Move for random times
+            for (int i = 0; i < _screen.Random.Next(5); i++)
+            {
+                Accellerate(gameTime);
+            }
+
+            randomMovementDelay += TimeSpan.FromSeconds(RandomMovementMinimalInterval + (_screen.Random.NextDouble() * RandomMovementMaximalnInterval));
+        }
+
         public virtual void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
             this._gameTime = gameTime;
-            var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            var time = (float)gameTime.TotalGameTime.TotalSeconds;
 
+            if (MovesRandomly) performRandomMovement(gameTime);
+
+            if (_canCollide) this.UpdateCollision(gameTime, heightMapInfo);
+                
             if (MoveInTime)
             {
-                time = (float)gameTime.TotalGameTime.TotalSeconds;
                 if (((int)time) % 4 == 0)
                 {
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
+                    Accellerate(gameTime);
                     Accellerate(gameTime);
                 }
                 else if (((int)time) % 2 == 0)
                 {
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
+                    Decellerate(gameTime);
                     Decellerate(gameTime);
                 }
             }
@@ -502,7 +631,6 @@ namespace Octopussy.Game.Elements
 
             if (RotateInTime)
             {
-                time = (float) gameTime.TotalGameTime.TotalSeconds;
                 _rotation = time * TimeRotationSpeed;
             }
 
@@ -522,7 +650,22 @@ namespace Octopussy.Game.Elements
                 _orientation = Matrix.CreateRotationY(_rotation);
             }
 
+            if (_canCollide)
+            {
+                this.UpdateBoundingSphere();
+            }
+
             this.Moved = false;
+        }
+
+        protected void MoveBack(GameTime gameTime, HeightMapInfo heightMapInfo)
+        {
+            Stop(gameTime);
+            Decellerate(gameTime);
+            ComputeSpeed(gameTime);
+            AdjustToHeightMap(gameTime, heightMapInfo);
+            Stop(gameTime);
+            UpdateBoundingSphere();
         }
 
         #endregion
@@ -540,10 +683,12 @@ namespace Octopussy.Game.Elements
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
-            Matrix worldMatrix = _orientation * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
+            Matrix worldMatrix = _orientation * Matrix.CreateScale(_scale) * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
 
             var transforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            //if (_canCollide) DebugShapeRenderer.AddBoundingSphere(this.BoundingSphere, Color.Red);
             
             foreach (ModelMesh mesh in Model.Meshes)
             {
@@ -574,8 +719,8 @@ namespace Octopussy.Game.Elements
                         // Set the fog to match the black background color
                         effect.FogEnabled = false;
                         effect.FogColor = Vector3.Zero;
-                        effect.FogStart = 2500;
-                        effect.FogEnd = 3200;
+                        effect.FogStart = GameplayScreen.FogStart;
+                        effect.FogEnd = GameplayScreen.FogEnd;
 
                         effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;

@@ -31,8 +31,8 @@ namespace Octopussy.Game.Screens
     {
         private Texture2D _backgroundTexture;
         private ContentManager _content;
-        private string _playerOneName = "Player 1";
-        private string _playerTwoName = "Player 2";
+        private string _playerOneName = "Player";
+        private string _playerTwoName = "AI";
         private bool _shiftKey;
         private string _textInput;
 

@@ -11,6 +11,8 @@ namespace Octopussy.Game.Elements
 {
     public class Player : Entity
     {
+        private const float ActionInterval = 0.2f;
+
         private readonly string _name;
         private readonly int _player;
         private readonly GameplayScreen _screen;
@@ -21,9 +23,10 @@ namespace Octopussy.Game.Elements
         private SpriteBatch _spriteBatch;
         private SpriteFont _spriteFont;
         private bool _isOver;
-
+        private TimeSpan actionDelay = TimeSpan.Zero;
+        
         public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false)
-            : base(screen, modelName, isUsingBumpMap)
+            : base(screen, modelName, isUsingBumpMap, false, true)
         {
             this._screen = screen;
             this._player = player;
@@ -54,12 +57,16 @@ namespace Octopussy.Game.Elements
 
         public void OnSeaFlower()
         {
+            if (HP == 10) return;
+ 
+            _screen.setBloomPreset("Soft");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/to_je_moje_chapadlo", false, this);
             HP++;
         }
 
         public void OnUrchin()
         {
+            _screen.setBloomPreset("Blurry");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/no_fuj", false, this);
             HP--;
         }
@@ -77,8 +84,6 @@ namespace Octopussy.Game.Elements
 
         public override void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
-            //if (!_isOver) this.UpdateCollision();
-            
             base.Update(gameTime, heightMapInfo);
 
             if (HP == 0 && !_isOver)
@@ -90,37 +95,40 @@ namespace Octopussy.Game.Elements
             this._gameTime = gameTime;
         }
 
-        private void UpdateCollision()
+        protected override void OnCollision(Entity entity, GameTime gameTime, HeightMapInfo heightMapInfo)
         {
-            //if (!_moved) return;
+            if (_isOver) return;
 
-            foreach (Entity entity in _screen.Entites)
+            if (entity.ModelName.Contains("egg") ||
+                entity.ModelName.Contains("stone") ||
+                entity.ModelName.Contains("seaGrassBig"))
             {
-                if (entity.Intersects(this))
+                while (InCollisionWith(entity))
                 {
-                    if(entity.ModelName.Contains("urchin"))
-                    {
-                        this.OnUrchin();
-                        break;
-                    }
-                    else if (entity.ModelName.Contains("seaGrass"))
-                    {
-                        this.OnSeaFlower();
-                        break;
-                    }
+                    this.MoveBack(gameTime, heightMapInfo);
                 }
-            }   
-        }
+            }
 
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
+            actionDelay -= gameTime.ElapsedGameTime;
+            if (actionDelay >= TimeSpan.Zero)
+            {
+                return;
+            }
 
-            DrawHUD(gameTime);
+            if(entity.ModelName.Contains("urchin"))
+            {
+                this.OnUrchin();
+            }
+            else if (entity.ModelName.Contains("seaGrassCylinder"))
+            {
+                this.OnSeaFlower();
+            }
+
+            actionDelay += TimeSpan.FromSeconds(ActionInterval);
         }
 
 // ReSharper disable UnusedParameter.Local
-        private void DrawHUD(GameTime time)
+        public void DrawHUD(GameTime time)
 // ReSharper restore UnusedParameter.Local
         {
             var huds = new[]
