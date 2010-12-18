@@ -75,7 +75,7 @@ namespace Octopussy.Game.Screens
             MenuEntries.Add(back);
             MenuEntries.Add(ok);
 
-            SelectedEntry = -2;
+            SelectedEntry = -1;
 
             base.LoadContent();
         }
@@ -126,12 +126,12 @@ namespace Octopussy.Game.Screens
 
 
             spriteBatch.DrawString(font, _playerOneName, new Vector2(474, 303),
-                                   SelectedEntry == -2 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, _playerTwoName, new Vector2(474, 367),
                                    SelectedEntry == -1 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
+
+            /*spriteBatch.DrawString(font, _playerTwoName, new Vector2(474, 367),
+                                   SelectedEntry == -1 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
 
             spriteBatch.End();
 
@@ -162,18 +162,18 @@ namespace Octopussy.Game.Screens
                 {
                     SelectedEntry--;
 
-                    if (SelectedEntry < -2)
+                    if (SelectedEntry < -1)
                         SelectedEntry = 1;
 
-                    if (SelectedEntry == -2)
+                    if (SelectedEntry == -1)
                     {
                         _textInput = _playerOneName;
                     }
 
-                    if (SelectedEntry == -1)
+                    /*if (SelectedEntry == -1)
                     {
                         _textInput = _playerTwoName;
-                    }
+                    }*/
                 }
 
                 // Move to the next menu entry?
@@ -182,17 +182,17 @@ namespace Octopussy.Game.Screens
                     SelectedEntry++;
 
                     if (SelectedEntry > 1)
-                        SelectedEntry = -2;
+                        SelectedEntry = -1;
 
-                    if (SelectedEntry == -2)
+                    if (SelectedEntry == -1)
                     {
                         _textInput = _playerOneName;
                     }
 
-                    if (SelectedEntry == -1)
+                    /*if (SelectedEntry == -1)
                     {
                         _textInput = _playerTwoName;
-                    }
+                    }*/
                 }
 
                 /*if (textInput.Length > 9) {
@@ -245,15 +245,15 @@ namespace Octopussy.Game.Screens
                     }
                 }
 
-                if (SelectedEntry == -2)
+                if (SelectedEntry == -1)
                 {
                     _playerOneName = _textInput;
                 }
 
-                if (SelectedEntry == -1)
+                /*if (SelectedEntry == -1)
                 {
                     _playerTwoName = _textInput;
-                }
+                }*/
             }
             /*else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {

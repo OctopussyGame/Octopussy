@@ -123,6 +123,9 @@ namespace Octopussy.Managers.ScreenManager
         protected virtual void OnCancel(PlayerIndex playerIndex)
         {
             ExitScreen();
+
+            if (ScreenManager.GetScreens().Length == 1)
+                ScreenManager.Game.Exit();
         }
 
 

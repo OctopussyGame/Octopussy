@@ -74,7 +74,7 @@ namespace Octopussy.Game.Screens
             MenuEntries.Add(back);
             MenuEntries.Add(ok);
 
-            SelectedEntry = -10;
+            SelectedEntry = -5;
 
             pm = ((MainGame) ScreenManager.Game).PreferenceManager;
             previousPm = pm;
@@ -128,44 +128,44 @@ namespace Octopussy.Game.Screens
 
 
             spriteBatch.DrawString(font, pm.PlayerOne.Forward.ToString(), new Vector2(453, 302),
-                                   SelectedEntry == -10 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, pm.PlayerTwo.Forward.ToString(), new Vector2(574, 302),
-                                   SelectedEntry == -9 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, pm.PlayerOne.Backward.ToString(), new Vector2(453, 358),
-                                   SelectedEntry == -8 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, pm.PlayerTwo.Backward.ToString(), new Vector2(574, 358),
-                                   SelectedEntry == -7 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, pm.PlayerOne.Left.ToString(), new Vector2(453, 417),
-                                   SelectedEntry == -6 ? Color.Teal : Color.White, 0,
-                                   origin, 1f, SpriteEffects.None, 0);
-
-            spriteBatch.DrawString(font, pm.PlayerTwo.Left.ToString(), new Vector2(574, 417),
                                    SelectedEntry == -5 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, pm.PlayerOne.Right.ToString(), new Vector2(453, 480),
+            /*spriteBatch.DrawString(font, pm.PlayerTwo.Forward.ToString(), new Vector2(574, 302),
+                                   SelectedEntry == -9 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
+
+            spriteBatch.DrawString(font, pm.PlayerOne.Backward.ToString(), new Vector2(453, 358),
                                    SelectedEntry == -4 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, pm.PlayerTwo.Right.ToString(), new Vector2(574, 480),
+            /*spriteBatch.DrawString(font, pm.PlayerTwo.Backward.ToString(), new Vector2(574, 358),
+                                   SelectedEntry == -7 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
+
+            spriteBatch.DrawString(font, pm.PlayerOne.Left.ToString(), new Vector2(453, 417),
                                    SelectedEntry == -3 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, pm.PlayerOne.Shoot.ToString(), new Vector2(453, 555),
+            /*spriteBatch.DrawString(font, pm.PlayerTwo.Left.ToString(), new Vector2(574, 417),
+                                   SelectedEntry == -5 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
+
+            spriteBatch.DrawString(font, pm.PlayerOne.Right.ToString(), new Vector2(453, 480),
                                    SelectedEntry == -2 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, pm.PlayerTwo.Shoot.ToString(), new Vector2(574, 555),
+            /*spriteBatch.DrawString(font, pm.PlayerTwo.Right.ToString(), new Vector2(574, 480),
+                                   SelectedEntry == -3 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
+
+            spriteBatch.DrawString(font, pm.PlayerOne.Shoot.ToString(), new Vector2(453, 555),
                                    SelectedEntry == -1 ? Color.Teal : Color.White, 0,
                                    origin, 1f, SpriteEffects.None, 0);
+
+            /*spriteBatch.DrawString(font, pm.PlayerTwo.Shoot.ToString(), new Vector2(574, 555),
+                                   SelectedEntry == -1 ? Color.Teal : Color.White, 0,
+                                   origin, 1f, SpriteEffects.None, 0);*/
 
             spriteBatch.End();
 
@@ -187,40 +187,40 @@ namespace Octopussy.Game.Screens
                         {
                             switch (SelectedEntry)
                             {
-                                case -10:
+                                case -5:
                                     pm.PlayerOne.Forward = key;
                                     break;
-                                case -9:
+                               /* case -9:
                                     pm.PlayerTwo.Forward = key;
-                                    break;
-                                case -8:
+                                    break;*/
+                                case -4:
                                     pm.PlayerOne.Backward = key;
                                     break;
-                                case -7:
+                               /* case -7:
                                     pm.PlayerTwo.Backward = key;
-                                    break;
-                                case -6:
+                                    break;*/
+                                case -3:
                                     pm.PlayerOne.Left = key;
                                     break;
-                                case -5:
+                              /*  case -5:
                                     pm.PlayerTwo.Left = key;
-                                    break;
+                                    break;*/
 
-                                case -4:
+                                case -2:
                                     pm.PlayerOne.Right = key;
                                     break;
 
-                                case -3:
+                              /*  case -3:
                                     pm.PlayerTwo.Right = key;
-                                    break;
+                                    break;*/
 
-                                case -2:
+                                case -1:
                                     pm.PlayerOne.Shoot = key;
                                     break;
 
-                                case -1:
+                              /*  case -1:
                                     pm.PlayerTwo.Shoot = key;
-                                    break;
+                                    break;*/
 
                                 default:
                                     break;
@@ -246,55 +246,55 @@ namespace Octopussy.Game.Screens
                     return;
                 }
 
-                if (SelectedEntry >= -10 && SelectedEntry < 0 &&
+                if (SelectedEntry >= -5 && SelectedEntry < 0 &&
                     input.IsNewKeyPress(Keys.Enter, ControllingPlayer, out playerIndex))
                 {
                     switch (SelectedEntry)
                     {
-                        case -10:
+                        case -5:
                             if (!waiting)
                             {
                                 pm.PlayerOne.Forward = Keys.None;
                                 waiting = true;
                             }
                             break;
-                        case -9:
+                        /*case -9:
                             if (!waiting)
                             {
                                 pm.PlayerTwo.Forward = Keys.None;
                                 waiting = true;
                             }
-                            break;
-                        case -8:
+                            break;*/
+                        case -4:
                             if (!waiting)
                             {
                                 pm.PlayerOne.Backward = Keys.None;
                                 waiting = true;
                             }
                             break;
-                        case -7:
+                        /*case -7:
                             if (!waiting)
                             {
                                 pm.PlayerTwo.Backward = Keys.None;
                                 waiting = true;
                             }
-                            break;
-                        case -6:
+                            break;*/
+                        case -3:
                             if (!waiting)
                             {
                                 pm.PlayerOne.Left = Keys.None;
                                 waiting = true;
                             }
                             break;
-                        case -5:
+                        /*case -5:
                             if (!waiting)
                             {
                                 pm.PlayerTwo.Left = Keys.None;
                                 waiting = true;
                             }
-                            break;
+                            break;*/
 
-                        case -4:
+                        case -2:
                             if (!waiting)
                             {
                                 pm.PlayerOne.Right = Keys.None;
@@ -302,15 +302,15 @@ namespace Octopussy.Game.Screens
                             }
                             break;
 
-                        case -3:
+                        /*case -3:
                             if (!waiting)
                             {
                                 pm.PlayerTwo.Right = Keys.None;
                                 waiting = true;
                             }
-                            break;
+                            break;*/
 
-                        case -2:
+                        case -1:
                             if (!waiting)
                             {
                                 pm.PlayerOne.Shoot = Keys.None;
@@ -318,13 +318,13 @@ namespace Octopussy.Game.Screens
                             }
                             break;
 
-                        case -1:
+                        /*case -1:
                             if (!waiting)
                             {
                                 pm.PlayerTwo.Shoot = Keys.None;
                                 waiting = true;
                             }
-                            break;
+                            break;*/
 
                         default:
                             break;
@@ -337,18 +337,8 @@ namespace Octopussy.Game.Screens
                 {
                     SelectedEntry--;
 
-                    if (SelectedEntry < -10)
+                    if (SelectedEntry < -5)
                         SelectedEntry = 1;
-
-                    if (SelectedEntry == -2)
-                    {
-                        //    textInput = playerOneName;
-                    }
-
-                    if (SelectedEntry == -1)
-                    {
-                        //  textInput = playerTwoName;
-                    }
                 }
 
                 // Move to the next menu entry?
@@ -357,17 +347,7 @@ namespace Octopussy.Game.Screens
                     SelectedEntry++;
 
                     if (SelectedEntry > 1)
-                        SelectedEntry = -10;
-
-                    if (SelectedEntry == -2)
-                    {
-                        // textInput = playerOneName;
-                    }
-
-                    if (SelectedEntry == -1)
-                    {
-                        //  textInput = playerTwoName;
-                    }
+                        SelectedEntry = -5;
                 }
             }
 
