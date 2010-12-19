@@ -45,7 +45,7 @@ namespace Octopussy.Game.Screens
         private const float PresetCleanInterval = 0.5f;
         
         private Vector3 CameraPositionOffset = new Vector3(0, 100, 450);
-        private Vector3 CameraTargetOffset = new Vector3(0, 100, 0);
+        private Vector3 CameraTargetOffset = new Vector3(0, 50, 0);
         private readonly List<Entity> entites = new List<Entity>();
         private readonly List<Entity> collideableEntites = new List<Entity>();
         private readonly string playerOneName;
@@ -166,13 +166,6 @@ namespace Octopussy.Game.Screens
             projectileTrailParticles.DrawOrder = 300;
             explosionParticles.DrawOrder = 400;
             fireParticles.DrawOrder = 500;
-
-            // Register the particle system components.
-            ScreenManager.Game.Components.Add(explosionParticles);
-            ScreenManager.Game.Components.Add(explosionSmokeParticles);
-            ScreenManager.Game.Components.Add(projectileTrailParticles);
-            ScreenManager.Game.Components.Add(smokePlumeParticles);
-            ScreenManager.Game.Components.Add(fireParticles);
 
             // Load terrain
             terrain = ScreenManager.Game.Content.Load<Model>("terrain/terrain3");
@@ -326,6 +319,13 @@ namespace Octopussy.Game.Screens
             bloom = new BloomComponent(ScreenManager.Game);
             ScreenManager.Game.Components.Add(bloom);
 
+            // Register the particle system components.
+            ScreenManager.Game.Components.Add(explosionParticles);
+            ScreenManager.Game.Components.Add(explosionSmokeParticles);
+            ScreenManager.Game.Components.Add(projectileTrailParticles);
+            ScreenManager.Game.Components.Add(smokePlumeParticles);
+            ScreenManager.Game.Components.Add(fireParticles);
+
             // Enable background sound
             backgroundSound = ScreenManager.AudioManager.Play3DSound("sound/game_background", true, surface);
 
@@ -397,7 +397,7 @@ namespace Octopussy.Game.Screens
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            if (!_fpsCamera) UpdateCamera(gameTime); // colission with player controls
+            /*if(!_fpsCamera)*/ UpdateCamera(gameTime); // colission with player controls
             UpdateProjectiles(gameTime);
 
             presetCleanDelay -= gameTime.ElapsedGameTime;
@@ -427,13 +427,13 @@ namespace Octopussy.Game.Screens
             if (currentKeyboardState.IsKeyDown(Keys.W))
             {
                 //newCameraArc += time * 0.025f;
-                CameraPositionOffset.Z -= time * 0.25f;
+                CameraPositionOffset.Z -= time*0.25f;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.S))
             {
                 //newCameraArc -= time * 0.025f;
-                CameraPositionOffset.Z += time * 0.25f;
+                CameraPositionOffset.Z += time*0.25f;
             }
 
             //cameraArc += currentGamePadState.ThumbSticks.Right.Y*time*0.05f;
@@ -442,13 +442,13 @@ namespace Octopussy.Game.Screens
             if (currentKeyboardState.IsKeyDown(Keys.D))
             {
                 //newCameraRotation += time * 0.05f;
-                CameraPositionOffset.Y += time * 0.25f;
+                CameraPositionOffset.Y += time*0.25f;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.A))
             {
                 //newCameraRotation -= time * 0.05f;
-                CameraPositionOffset.Y -= time * 0.25f;
+                CameraPositionOffset.Y -= time*0.25f;
             }
 
             //cameraRotation += currentGamePadState.ThumbSticks.Right.X*time*0.1f;
@@ -481,15 +481,15 @@ namespace Octopussy.Game.Screens
             // transform the two offset values that control the camera.
             Matrix cameraFacingMatrix = Matrix.CreateRotationY(playerOne.Rotation);
             Vector3 positionOffset = Vector3.Transform(CameraPositionOffset,
-                cameraFacingMatrix);
+                                                       cameraFacingMatrix);
             Vector3 targetOffset = Vector3.Transform(CameraTargetOffset,
-                cameraFacingMatrix);
+                                                     cameraFacingMatrix);
 
             // once we've transformed the camera's position offset vector, it's easy to
             // figure out where we think the camera should be.
             cameraPosition = playerOne.Position + positionOffset;
-
-            // We don't want the camera to go beneath the heightmap, so if the camera is
+            
+        // We don't want the camera to go beneath the heightmap, so if the camera is
             // over the terrain, we'll move it up.
             if (heightMapInfo.IsOnHeightmap(cameraPosition))
             {
@@ -604,21 +604,49 @@ namespace Octopussy.Game.Screens
 
             // Set camera
             float aspectRatio = viewport.Width / (float) viewport.Height;
-            
+            Vector3 listenerPosition;
+
             if (_fpsCamera)
             {
                 // FPS camera
-                Matrix rotationMatrix = Matrix.CreateRotationY(playerOne.Rotation);
+                /*Matrix rotationMatrix = Matrix.CreateRotationY(playerOne.Rotation);
                 Vector3 transformedReference = Vector3.Transform(Vector3.Forward, rotationMatrix);
                 Vector3 position = playerOne.EyePosition;
                 fpsCameraPosition += Vector3.Transform(position, rotationMatrix) * playerOne.Speed;
-                fpsCameraTarget = transformedReference + position;
+                fpsCameraTarget = transformedReference + position;*/
 
-                view = Matrix.CreateLookAt(position, fpsCameraTarget, Vector3.Up);
+                Matrix rotationMatrix = Matrix.CreateRotationY(playerOne.Rotation);
+                Vector3 targetOffset = Vector3.Transform(new Vector3(0, 0, 500), 
+                                                     rotationMatrix);
+                Vector3 transformedReference = Vector3.Transform(Vector3.Forward, rotationMatrix);
+                Vector3 position = playerOne.EyePosition;
+                position.Y -= 200;
+                fpsCameraTarget = transformedReference + position - targetOffset;
+                
+                if (heightMapInfo.IsOnHeightmap(fpsCameraTarget))
+                {
+                    // we don't want the camera to go beneath the terrain's height +
+                    // a small offset.
+                    float minimumHeight;
+                    Vector3 normal;
+                    heightMapInfo.GetHeightAndNormal
+                        (fpsCameraTarget, out minimumHeight, out normal);
+
+                    minimumHeight += 20;
+
+                    if (fpsCameraTarget.Y < minimumHeight)
+                    {
+                        fpsCameraTarget.Y = minimumHeight;
+                    }
+                }
+
+                listenerPosition = playerOne.EyePosition;
+                view = Matrix.CreateLookAt(playerOne.EyePosition, fpsCameraTarget, Vector3.Up);
             }
             else
             {
                 // Chase camera
+                listenerPosition = cameraPosition;
                 view = Matrix.CreateLookAt(cameraPosition,
                                            cameraTargetPosition, Vector3.Up);
             }
@@ -626,6 +654,11 @@ namespace Octopussy.Game.Screens
             projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
                                                                  aspectRatio,
                                                                  1, 10000);
+
+            // Apply camera position as listener to sound manager
+            ScreenManager.AudioManager.Listener.Position = listenerPosition;
+            //ScreenManager.AudioManager.Listener.Forward = listenerPosition;
+            ScreenManager.AudioManager.Listener.Up = Vector3.Up;
 
             // Draw light
             if (rotateLight)

@@ -58,8 +58,8 @@ namespace Octopussy.Game.Elements
         public void OnSeaFlower()
         {
             if (HP == 10) return;
- 
-            _screen.setBloomPreset("Soft");
+
+            _screen.setBloomPreset("Subtle");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/to_je_moje_chapadlo", false, this);
             HP++;
         }
