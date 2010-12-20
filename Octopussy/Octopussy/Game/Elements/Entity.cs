@@ -61,7 +61,7 @@ namespace Octopussy.Game.Elements
         private float _rotationX;
         private float _rotationZ;
         protected float _speed;
-        private float _rotationSpeed = 0.005f;
+        private float _rotationSpeed = 0.002f;
         private float _maxMovementSpeed = 0.9f;
         private float _specularPower = 4.0f;
         protected Matrix _orientation = Matrix.Identity;
