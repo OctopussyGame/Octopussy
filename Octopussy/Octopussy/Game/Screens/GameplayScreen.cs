@@ -43,11 +43,13 @@ namespace Octopussy.Game.Screens
         public const float FogStart = 200;
         public const float FogEnd = 300;
         private const float PresetCleanInterval = 0.5f;
+        private const float RocketGCInterval = 0.5f;
         
         private Vector3 CameraPositionOffset = new Vector3(0, 100, 450);
         private Vector3 CameraTargetOffset = new Vector3(0, 50, 0);
         private readonly List<Entity> entites = new List<Entity>();
         private readonly List<Entity> collideableEntites = new List<Entity>();
+        private readonly List<Rocket> rockets = new List<Rocket>();
         private readonly string playerOneName;
         private readonly string playerTwoName;
         private readonly List<Projectile> projectiles = new List<Projectile>();
@@ -82,6 +84,8 @@ namespace Octopussy.Game.Screens
 
         private Player playerOne;
         private Player ai;
+        private Rocket playerOneRocket;
+        private Rocket aiRocket;
 
         public ParticleSystem projectileTrailParticles;
         private Matrix projection;
@@ -95,6 +99,7 @@ namespace Octopussy.Game.Screens
         private Vector3 cameraTargetPosition;
         private Vector3 cameraPosition;
         private TimeSpan presetCleanDelay;
+        private TimeSpan rocketGCDelay;
 
         // Draw matricies
         public Matrix ViewMatrix
@@ -120,6 +125,11 @@ namespace Octopussy.Game.Screens
         public Random Random
         {
             get { return random; }
+        }
+
+        public Player PlayerOne
+        {
+            get { return playerOne; }
         }
 
         #endregion
@@ -182,10 +192,11 @@ namespace Octopussy.Game.Screens
             }
 
             // Load entities
-            playerOne = new Player(this, "models/rio/rio", playerOneName, 1) {Position = new Vector3(400, 0, -400)};
-            ai = new Player(this, "models/rio/rio", playerTwoName, 2) {Position = new Vector3(200, 0, 200)};
+            playerOne = new Player(this, "models/rio/rio_1", playerOneName, 1, true) {Position = new Vector3(400, 0, -400)};
+            ai = new Player(this, "models/rio/rio_2", playerTwoName, 2, true) {Position = new Vector3(200, 0, 200)};
             ai.RandomMovementMinimalInterval = 0.01f;
             ai.RandomMovementMaximalnInterval = 0.03f;
+            ai.RandomMovementRotationProbability = 0.3f;
             ai.MovesRandomly = true;
 
             surface = new Entity(this, "models/surface/surface", false, true);
@@ -199,9 +210,12 @@ namespace Octopussy.Game.Screens
             surface.IsBoundToHeightMap = false;
             Entites.Add(surface);
 
-            Entites.Add(playerOne);
+            Entites.Add(PlayerOne);
             Entites.Add(ai);
 
+            CollideableEntites.Add(PlayerOne);
+            CollideableEntites.Add(ai);
+            
             AddMultipleInstancesOfEntity("models/egg/egg", 2, true, false, true);
             //AddMultipleInstancesOfEntity("models/grass/grassBig1", 30, false, true);
             //AddMultipleInstancesOfEntity("models/grass/grassBig2", 30, false, true);
@@ -217,34 +231,34 @@ namespace Octopussy.Game.Screens
             AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig1", 60, false, true);
             AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig2", 60, false, true);
             AddMultipleInstancesOfEntity("models/grassBunch/grassBunchBig3", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigBlue", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigGreen", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigPink", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigRed", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigViolet", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigYellow", 60, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev1", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev2", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev3", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev1", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev2", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev3", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv1", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv2", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv3", 30, false, true, true, 15);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigBlue", 60, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigGreen", 60, true, true);
+            //AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigPink", 60, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigRed", 60, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigViolet", 60, true, true);
+            //AddMultipleInstancesOfEntity("models/seaGrass/seaGrassBigYellow", 60, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev1", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev2", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderDorangev3", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev1", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev2", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderOrangev3", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv1", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv2", 30, true, true, false, 15);
+            AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinderRedv3", 30, true, true, false, 15);
             AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinder2Pink", 30, false, true, true, 15);
             AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinder2Red", 30, false, true, true, 15);
             AddMultipleInstancesOfEntity("models/seaGrassCylinder/seaGrassCylinder2Violet", 30, false, true, true, 15);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleBlue", 65, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleGreen", 65, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleRed", 65, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleViolet", 65, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleYellow", 65, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallBlue", 40, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallGreen", 40, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallRed", 40, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallViolet", 40, false, true);
-            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallYellow", 40, false, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleBlue", 65, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleGreen", 65, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleRed", 65, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleViolet", 65, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassMiddleYellow", 65, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallBlue", 40, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallGreen", 40, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallRed", 40, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallViolet", 40, true, true);
+            AddMultipleInstancesOfEntity("models/seaGrass/seaGrassSmallYellow", 40, true, true);
             AddMultipleInstancesOfEntity("models/star/seaStarSlim", 85, true, true, false, 15, true);
             AddMultipleInstancesOfEntity("models/shell/shellOpen", 25, true, true);
             AddMultipleInstancesOfEntity("models/shell/shellHalfClose", 25, true, true);
@@ -314,7 +328,8 @@ namespace Octopussy.Game.Screens
             AddMultipleInstancesOfEntity("models/stone/stoneGroup4_tex1", 1, true, false, true, 100);
             AddMultipleInstancesOfEntity("models/stone/stoneGroup4_tex2", 1, true, false, true, 100);
             AddMultipleInstancesOfEntity("models/stone/stoneGroup4_tex3", 1, true, false, true, 100);
-
+            /**/
+            
             // Components registration
             bloom = new BloomComponent(ScreenManager.Game);
             ScreenManager.Game.Components.Add(bloom);
@@ -381,6 +396,8 @@ namespace Octopussy.Game.Screens
 
             foreach (Entity entity in Entites)
                 entity.UnloadContent();
+            foreach (Rocket entity in rockets)
+                entity.UnloadContent();
         }
 
         #endregion
@@ -406,7 +423,17 @@ namespace Octopussy.Game.Screens
                 setBloomPreset("Default");
             }
 
+            rocketGCDelay -= gameTime.ElapsedGameTime;
+            if (rocketGCDelay < TimeSpan.Zero)
+            {
+                RocketGC();
+                rocketGCDelay += TimeSpan.FromSeconds(RocketGCInterval);;
+            }
+
             foreach (Entity entity in Entites)
+                entity.Update(gameTime, heightMapInfo);
+
+            foreach (Rocket entity in rockets)
                 entity.Update(gameTime, heightMapInfo);
 
             base.Update(gameTime, otherScreenHasFocus, false);
@@ -479,7 +506,7 @@ namespace Octopussy.Game.Screens
             // tank turns, the camera needs to stay behind it. So, we'll calculate a
             // rotation matrix using the tank's facing direction, and use it to
             // transform the two offset values that control the camera.
-            Matrix cameraFacingMatrix = Matrix.CreateRotationY(playerOne.Rotation);
+            Matrix cameraFacingMatrix = Matrix.CreateRotationY(PlayerOne.Rotation);
             Vector3 positionOffset = Vector3.Transform(CameraPositionOffset,
                                                        cameraFacingMatrix);
             Vector3 targetOffset = Vector3.Transform(CameraTargetOffset,
@@ -487,7 +514,7 @@ namespace Octopussy.Game.Screens
 
             // once we've transformed the camera's position offset vector, it's easy to
             // figure out where we think the camera should be.
-            cameraPosition = playerOne.Position + positionOffset;
+            cameraPosition = PlayerOne.Position + positionOffset;
             
         // We don't want the camera to go beneath the heightmap, so if the camera is
             // over the terrain, we'll move it up.
@@ -511,7 +538,7 @@ namespace Octopussy.Game.Screens
             // next, we need to calculate the point that the camera is aiming it. That's
             // simple enough - the camera is aiming at the tank, and has to take the 
             // targetOffset into account.
-            cameraTargetPosition = playerOne.Position + targetOffset;
+            cameraTargetPosition = PlayerOne.Position + targetOffset;
         }
 
         /// <summary>
@@ -572,6 +599,36 @@ namespace Octopussy.Game.Screens
             setBloomPresetCleaningTimeout();
         }
 
+        public void AddRocket(Player owner)
+        {
+            Rocket rocket = new Rocket(this, owner);
+            rocket.LoadContent();
+            rocket.Fly(owner.Position, owner.Rotation);
+
+            rockets.Add(rocket);
+            collideableEntites.Add(rocket);
+        }
+
+        private void RocketGC()
+        {
+            List<Rocket> rocketsToRemove = new List<Rocket>();
+
+            foreach (Rocket rocket in rockets)
+            {
+                if (rocket.IsDead)
+                {
+                    rocketsToRemove.Add(rocket);
+                    collideableEntites.Remove(rocket);
+                }
+            }
+
+            foreach (var rocket in rocketsToRemove)
+            {
+                rocket.UnloadContent();
+                rockets.Remove(rocket);
+            }
+        }
+
         public void AddProjectile(Projectile projectile)
         {
             projectiles.Add(projectile);
@@ -615,11 +672,11 @@ namespace Octopussy.Game.Screens
                 fpsCameraPosition += Vector3.Transform(position, rotationMatrix) * playerOne.Speed;
                 fpsCameraTarget = transformedReference + position;*/
 
-                Matrix rotationMatrix = Matrix.CreateRotationY(playerOne.Rotation);
+                Matrix rotationMatrix = Matrix.CreateRotationY(PlayerOne.Rotation);
                 Vector3 targetOffset = Vector3.Transform(new Vector3(0, 0, 500), 
                                                      rotationMatrix);
                 Vector3 transformedReference = Vector3.Transform(Vector3.Forward, rotationMatrix);
-                Vector3 position = playerOne.EyePosition;
+                Vector3 position = PlayerOne.EyePosition;
                 position.Y -= 200;
                 fpsCameraTarget = transformedReference + position - targetOffset;
                 
@@ -640,8 +697,8 @@ namespace Octopussy.Game.Screens
                     }
                 }
 
-                listenerPosition = playerOne.EyePosition;
-                view = Matrix.CreateLookAt(playerOne.EyePosition, fpsCameraTarget, Vector3.Up);
+                listenerPosition = PlayerOne.EyePosition;
+                view = Matrix.CreateLookAt(PlayerOne.EyePosition, fpsCameraTarget, Vector3.Up);
             }
             else
             {
@@ -679,11 +736,14 @@ namespace Octopussy.Game.Screens
 
             foreach (Entity entity in Entites)
                 entity.Draw(gameTime);
+            
+            foreach (Rocket entity in rockets)
+                entity.Draw(gameTime);
 
             // Draw other components (which includes the bloom).
             base.Draw(gameTime);
 
-            playerOne.DrawHUD(gameTime);
+            PlayerOne.DrawHUD(gameTime);
             ai.DrawHUD(gameTime);
 
             // Draw debug shapes
@@ -760,7 +820,7 @@ namespace Octopussy.Game.Screens
                 return;
             }
 
-            playerOne.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
+            PlayerOne.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
             ai.HandleInput(lastKeyboardState, lastGamePadState, currentKeyboardState, currentGamePadState);
 
             //foreach (Entity entity in entites)

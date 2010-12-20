@@ -11,8 +11,11 @@ namespace Octopussy.Game.Elements
 {
     public class Player : Entity
     {
-        private const float ActionInterval = 0.2f;
+        private const float ActionInterval = 0.8f;
+        private const float ShootInterval = 0.03f;
+        private const float AutoShootInterval = 0.5f;
 
+        private BoundingSphere _shootRadius;
         private readonly string _name;
         private readonly int _player;
         private readonly GameplayScreen _screen;
@@ -24,7 +27,9 @@ namespace Octopussy.Game.Elements
         private SpriteFont _spriteFont;
         private bool _isOver;
         private TimeSpan actionDelay = TimeSpan.Zero;
-        
+        private TimeSpan shootDelay = TimeSpan.Zero;
+        private TimeSpan autoShootDelay = TimeSpan.Zero;
+
         public Player(GameplayScreen screen, string modelName, string name, int player, Boolean isUsingBumpMap = false)
             : base(screen, modelName, isUsingBumpMap, false, true)
         {
@@ -32,6 +37,8 @@ namespace Octopussy.Game.Elements
             this._player = player;
             this._name = name;
             this._isOver = false;
+            this.HeightOffset = 5;
+            _shootRadius = new BoundingSphere(Position, 1000);
         }
 
         public int HP
@@ -49,8 +56,14 @@ namespace Octopussy.Game.Elements
             }
         }
 
+        public BoundingSphere ShootRadius
+        {
+            get { return _shootRadius; }
+        }
+
         public void OnShot()
         {
+            if (_player == 1) _screen.setBloomPreset("Blurry");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/nesahej_na_me", false, this);
             HP--;
         }
@@ -59,14 +72,14 @@ namespace Octopussy.Game.Elements
         {
             if (HP == 10) return;
 
-            _screen.setBloomPreset("Subtle");
+            if (_player == 1) _screen.setBloomPreset("Subtle");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/to_je_moje_chapadlo", false, this);
             HP++;
         }
 
         public void OnUrchin()
         {
-            _screen.setBloomPreset("Blurry");
+            if (_player == 1) _screen.setBloomPreset("Blurry");
             _screen.ScreenManager.AudioManager.Play3DSound("sound/no_fuj", false, this);
             HP--;
         }
@@ -85,6 +98,15 @@ namespace Octopussy.Game.Elements
         public override void Update(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
             base.Update(gameTime, heightMapInfo);
+            _shootRadius.Center = Position;
+
+            autoShootDelay -= gameTime.ElapsedGameTime;
+            if (_player == 2 && autoShootDelay < TimeSpan.Zero && _shootRadius.Intersects(_screen.PlayerOne.BoundingSphere))
+            {
+                Shoot(gameTime);
+                autoShootDelay += TimeSpan.FromSeconds(AutoShootInterval);
+            }
+            
 
             if (HP == 0 && !_isOver)
             {
@@ -101,7 +123,8 @@ namespace Octopussy.Game.Elements
 
             if (entity.ModelName.Contains("egg") ||
                 entity.ModelName.Contains("stone") ||
-                entity.ModelName.Contains("seaGrassBig"))
+                entity.ModelName.Contains("seaGrassBig") ||
+                entity.GetType() == typeof(Player))
             {
                 while (InCollisionWith(entity))
                 {
@@ -122,6 +145,11 @@ namespace Octopussy.Game.Elements
             else if (entity.ModelName.Contains("seaGrassCylinder"))
             {
                 this.OnSeaFlower();
+            }
+            else if (entity.GetType() == typeof(Rocket) && ((Rocket)entity).Owner != this)
+            {
+                this.OnShot();
+                ((Rocket)entity).Die();
             }
 
             actionDelay += TimeSpan.FromSeconds(ActionInterval);
@@ -174,6 +202,30 @@ namespace Octopussy.Game.Elements
             _spriteBatch.End();
         }
 
+        // ReSharper disable MemberCanBeProtected.Global
+        public void Shoot(GameTime gameTime)
+        // ReSharper restore MemberCanBeProtected.Global
+        {
+            shootDelay -= gameTime.ElapsedGameTime;
+            if (shootDelay >= TimeSpan.Zero)
+            {
+                return;
+            }
+            
+            //float vx = ((float)Math.Cos(_rotation) * (ProjectileSpeed));
+            //float vz = ((float)Math.Sin(_rotation) * (ProjectileSpeed));
+
+            _screen.ScreenManager.AudioManager.Play3DSound("sound/tu_mas", false, this);
+            _screen.AddRocket(this);
+
+            /*_screen.AddProjectile(new Projectile(new Vector3(_position.X, _position.Y + 50, _position.Z), new Vector3(-vz, 0, -vx),
+                                                _screen.explosionParticles,
+                                                _screen.explosionSmokeParticles,
+                                                _screen.projectileTrailParticles));*/
+
+            shootDelay += TimeSpan.FromSeconds(ShootInterval);
+        }
+
         public override void HandleInput(KeyboardState lastKeyboardState, GamePadState lastGamePadState,
                                          KeyboardState currentKeyboardState, GamePadState currentGamePadState)
         {
@@ -206,7 +258,7 @@ namespace Octopussy.Game.Elements
                 if ((currentKeyboardState.IsKeyDown(playerPreference.Shoot) &&
                      lastKeyboardState.IsKeyUp(playerPreference.Shoot)))
                 {
-                    Shoot();
+                    Shoot(gameTime);
                 }
             }
 
@@ -237,7 +289,7 @@ namespace Octopussy.Game.Elements
                 if ((currentKeyboardState.IsKeyDown(playerPreference.Shoot) &&
                      lastKeyboardState.IsKeyUp(playerPreference.Shoot)))
                 {
-                    Shoot();
+                    Shoot(gameTime);
                 }
             }
         }

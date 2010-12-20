@@ -33,7 +33,8 @@ namespace Octopussy.Game.Elements
         private const float ProjectileSpeed = 500;
         private const float Shininess = .3f;
         private const float TimeRotationSpeed = 0.42f;
-        private const float CollisionInterval = 0.1f;
+        private const float CollisionInterval = 0.001f;
+        private float _randomMovementRotationProbability = 0.8f;
         private float _randomMovementMinimalInterval = 0.2f;
         private float _randomMovementMaximalnInterval = 4.0f;
         
@@ -43,12 +44,12 @@ namespace Octopussy.Game.Elements
         private readonly Boolean _isUsingBumpMap;
         private readonly GameplayScreen _screen;
         private readonly string _modelName;
-        
-        private GameTime _gameTime;
+
+        protected GameTime _gameTime;
         private Model _model;
-        private Vector3 _forward;
-        private Vector3 _position;
-        private Boolean _isBoundToHeightMap;
+        protected Vector3 _forward;
+        protected Vector3 _position;
+        protected Boolean _isBoundToHeightMap;
         protected Boolean Moved;
         private TimeSpan collisionDelay = TimeSpan.Zero;
         private TimeSpan randomMovementDelay = TimeSpan.Zero;
@@ -56,17 +57,19 @@ namespace Octopussy.Game.Elements
         private float _alpha;
         private float _friction = 0.01f;
         private float _movementSpeed = 0.02f;
-        private float _rotation;
+        protected float _rotation;
         private float _rotationX;
-        private float _speed;
+        private float _rotationZ;
+        protected float _speed;
         private float _rotationSpeed = 0.005f;
         private float _maxMovementSpeed = 0.9f;
         private float _specularPower = 4.0f;
-        Matrix _orientation = Matrix.Identity;
-        private bool _canCollide;
+        protected Matrix _orientation = Matrix.Identity;
+        protected bool _canCollide;
         private BoundingSphere _boundingSphere;
         private float _collisionRadius;
         private bool _movesRandomly;
+        private float _heightOffset;
 
         /// <summary>
         /// Gets or sets which way the entity is facing.
@@ -257,6 +260,24 @@ namespace Octopussy.Game.Elements
             set { _randomMovementMaximalnInterval = value; }
         }
 
+        public float RandomMovementRotationProbability
+        {
+            get { return _randomMovementRotationProbability; }
+            set { _randomMovementRotationProbability = value; }
+        }
+
+        public float HeightOffset
+        {
+            get { return _heightOffset; }
+            set { _heightOffset = value; }
+        }
+
+        public float RotationZ
+        {
+            get { return _rotationZ; }
+            set { _rotationZ = value; }
+        }
+
 // ReSharper restore MemberCanBePrivate.Global
 
         #endregion
@@ -282,6 +303,7 @@ namespace Octopussy.Game.Elements
             _position = new Vector3(0, 0, 0);
             _rotation = 0;
             _rotationX = 0;
+            RotationZ = 0;
             _alpha = 1;
             _speed = 0;
             _scale = 1;
@@ -291,6 +313,7 @@ namespace Octopussy.Game.Elements
             MoveInTime = false;
             _movesRandomly = false;
             _isBoundToHeightMap = true;
+            HeightOffset = 0;
         }
 
         /// <summary>
@@ -374,25 +397,11 @@ namespace Octopussy.Game.Elements
         }
 
         // ReSharper disable MemberCanBeProtected.Global
-        public void Stop(GameTime gameTime)
+        public virtual void Stop(GameTime gameTime)
         // ReSharper restore MemberCanBeProtected.Global
         {
             this.Moved = true;
             _speed = 0;
-        }
-
-// ReSharper disable MemberCanBeProtected.Global
-        public void Shoot()
-// ReSharper restore MemberCanBeProtected.Global
-        {
-            float vx = ((float) Math.Cos(_rotation)*(ProjectileSpeed));
-            float vz = ((float) Math.Sin(_rotation)*(ProjectileSpeed));
-
-            _screen.ScreenManager.AudioManager.Play3DSound("sound/tu_mas", false, this);
-            _screen.AddProjectile(new Projectile(new Vector3(_position.X, _position.Y + 50, _position.Z), new Vector3(-vz, 0, -vx),
-                                                _screen.explosionParticles,
-                                                _screen.explosionSmokeParticles,
-                                                _screen.projectileTrailParticles));
         }
 
 // ReSharper disable UnusedParameter.Local
@@ -405,7 +414,7 @@ namespace Octopussy.Game.Elements
                 _rotation = 0;
         }
 
-        protected void ComputeSpeed(GameTime gameTime)
+        protected virtual void ComputeSpeed(GameTime gameTime)
         {
             var time = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             // Apply friction to speed
@@ -471,11 +480,11 @@ namespace Octopussy.Game.Elements
                 Decellerate(gameTime);
             }
 
-            if ((currentKeyboardState.IsKeyDown(Keys.Space) &&
+            /*if ((currentKeyboardState.IsKeyDown(Keys.Space) &&
                  lastKeyboardState.IsKeyUp(Keys.Space)))
             {
                 Shoot();
-            }
+            }*/
         }
 
         protected void AdjustToHeightMap(GameTime gameTime, HeightMapInfo heightMapInfo)
@@ -488,7 +497,7 @@ namespace Octopussy.Game.Elements
 
             _forward.X = ((float)Math.Sin(_rotation) * (100));
             _forward.Z = ((float)Math.Cos(_rotation) * (100));
-            _orientation = Matrix.CreateRotationY(_rotation);
+            _orientation = Matrix.CreateRotationY(_rotation + MathHelper.ToRadians(180));
             
             if (heightMapInfo.IsOnHeightmap(newPosition))
             {
@@ -498,6 +507,7 @@ namespace Octopussy.Game.Elements
                 heightMapInfo.GetHeightAndNormal(newPosition,
                     out newPosition.Y, out normal);
 
+                newPosition.Y += _heightOffset;
 
                 // As discussed in the doc, we'll use the normal of the heightmap
                 // and our desired forward direction to recalculate our orientation
@@ -520,7 +530,7 @@ namespace Octopussy.Game.Elements
             }
         }
 
-        private void UpdateBoundingSphere()
+        protected void UpdateBoundingSphere()
         {
             this._boundingSphere.Center = _position;
         }
@@ -535,7 +545,7 @@ namespace Octopussy.Game.Elements
             return entity.BoundingSphere.Intersects(this.BoundingSphere);
         }
 
-        private void UpdateCollision(GameTime gameTime, HeightMapInfo heightMapInfo)
+        protected void UpdateCollision(GameTime gameTime, HeightMapInfo heightMapInfo)
         {
             collisionDelay -= gameTime.ElapsedGameTime;
             if (collisionDelay >= TimeSpan.Zero)
@@ -545,7 +555,7 @@ namespace Octopussy.Game.Elements
 
             foreach (Entity entity in _screen.CollideableEntites)
             {
-                if (entity.BoundingSphere.Intersects(this.BoundingSphere))
+                if (entity != this && entity.BoundingSphere.Intersects(this.BoundingSphere))
                 {
                     this.OnCollision(entity, gameTime, heightMapInfo);
                 }
@@ -563,16 +573,19 @@ namespace Octopussy.Game.Elements
             }
 
             // Rotate in random direction
-            int direction = _screen.Random.Next(2);
-            for (int i = 0; i < _screen.Random.Next(20); i++)
+            if (_screen.Random.NextDouble() <= _randomMovementRotationProbability)
             {
-                if(direction == 1)
+                int direction = _screen.Random.Next(2);
+                for (int i = 0; i < _screen.Random.Next(20); i++)
                 {
-                    TurnLeft(gameTime);
-                }
-                else
-                {
-                    TurnRight(gameTime);
+                    if (direction == 1)
+                    {
+                        TurnLeft(gameTime);
+                    }
+                    else
+                    {
+                        TurnRight(gameTime);
+                    }
                 }
             }
 
@@ -683,7 +696,7 @@ namespace Octopussy.Game.Elements
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
-            Matrix worldMatrix = _orientation * Matrix.CreateScale(_scale) * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
+            Matrix worldMatrix = Matrix.CreateRotationZ(RotationZ) * _orientation * Matrix.CreateScale(_scale) * Matrix.CreateRotationX(_rotationX) * Matrix.CreateTranslation(_position);
 
             var transforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(transforms);

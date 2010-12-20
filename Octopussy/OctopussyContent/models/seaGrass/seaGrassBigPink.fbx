@@ -1866,8 +1866,8 @@ Objects:  {
             Property: "AccessMode", "enum", "",0
         }
         UseMipMap: 0
-        Filename: "textures/seaGrass_norm.tga"
-        RelativeFilename: "textures/seaGrass_norm.tga"
+        Filename: "textures/seaGrassViolet_diff.tga"
+        RelativeFilename: "textures/seaGrassViolet_diff.tga"
     }
     Texture: "Texture::file5", "TextureVideoClip" {
         Type: "TextureVideoClip"

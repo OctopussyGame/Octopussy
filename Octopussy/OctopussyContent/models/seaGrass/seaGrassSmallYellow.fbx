@@ -10,18 +10,18 @@ FBXHeaderExtension:  {
         Version: 1000
         Year: 2010
         Month: 12
-        Day: 5
-        Hour: 13
-        Minute: 52
-        Second: 16
-        Millisecond: 61
+        Day: 19
+        Hour: 19
+        Minute: 44
+        Second: 1
+        Millisecond: 897
     }
     Creator: "FBX SDK/FBX Plugins build 20061101"
     OtherFlags:  {
         FlagPLE: 0
     }
 }
-CreationTime: "2010-12-05 13:52:16:061"
+CreationTime: "2010-12-19 19:44:01:897"
 Creator: "FBX SDK/FBX Plugins build 20061101"
 
 ; Object definitions
@@ -29,7 +29,7 @@ Creator: "FBX SDK/FBX Plugins build 20061101"
 
 Definitions:  {
     Version: 100
-    Count: 13
+    Count: 15
     ObjectType: "Model" {
         Count: 9
     }
@@ -40,10 +40,10 @@ Definitions:  {
         Count: 1
     }
     ObjectType: "Texture" {
-        Count: 1
+        Count: 2
     }
     ObjectType: "Video" {
-        Count: 1
+        Count: 2
     }
     ObjectType: "GlobalSettings" {
         Count: 1
@@ -345,6 +345,54 @@ Objects:  {
              ,-0.714436054229736,0.0375940054655075,0.698690056800842,-0.697875797748566,-0.0804529786109924,-0.711685836315155
              
         }
+        LayerElementUV: 0 {
+            Version: 101
+            Name: "map1"
+            MappingInformationType: "ByPolygonVertex"
+            ReferenceInformationType: "IndexToDirect"
+            UV: 0.652930974960327,0.269425988197327,0.661777973175049,0.260138988494873,0.703755974769592,0.306486994028091,0.697721004486084
+             ,0.318168997764587,0.713652014732361,0.868252992630005,0.728299975395203,0.868252992630005,0.696141004562378
+             ,0.914601027965546,0.67256098985672,0.914601027965546,0.248567998409271,0.348060995340347,0.23972100019455,0.338773995637894
+             ,0.284512013196945,0.290030986070633,0.290547013282776,0.301712989807129,0.888400971889496,0.604939997196198
+             ,0.903048992156982,0.604939997196198,0.933804988861084,0.653683006763458,0.91968697309494,0.653683006763458,0.705157995223999
+             ,0.326317995786667,0.716176986694336,0.320098996162415,0.739292025566101,0.341777980327606,0.725850999355316
+             ,0.343374013900757,0.187558993697166,0.650645017623901,0.211138993501663,0.650645017623901,0.193513005971909
+             ,0.672324001789093,0.302967011928558,0.288100987672806,0.291947990655899,0.281881988048553,0.312640994787216
+             ,0.264825999736786,0.925291001796722,0.661831974983215,0.939409017562866,0.661831974983215,0.94421797990799,0.678888022899628
+             ,0.920481979846954,0.678888022899628,0.738633990287781,0.354981988668442,0.793381452560425,0.392848491668701
+             ,0.205184996128082,0.672324001789093,0.151898741722107,0.721924662590027,0.326082497835159,0.266422003507614
+             ,0.325423985719681,0.253217995166779,0.380073368549347,0.214190989732742,0.224823996424675,0.837022006511688
+             ,0.224823996424675,0.813286006450653,0.277996242046356,0.777704358100891,0.341381013393402,0.842633008956909
+             ,0.331409007310867,0.833320021629334,0.336786985397339,0.827561974525452,0.346758991479874,0.836875021457672
+             ,0.493932008743286,0.882360994815826,0.470351010560989,0.882360994815826,0.488932996988297,0.829550981521606
+             ,0.498093992471695,0.838108003139496,0.350959986448288,0.328640013933182,0.175786003470421,0.610105991363525
+             ,0.192911997437477,0.610105991363525,0.748009979724884,0.270698994398117,0.748175024986267,0.279559999704361
+             ,0.344918489456177,0.340024501085281,0.349006503820419,0.362231492996216,0.356862992048264,0.338162004947662
+             ,0.362103998661041,0.351778000593185,0.113828003406525,0.732475996017456,0.0967030003666878,0.732475996017456
+             ,0.0922650024294853,0.718859970569611,0.10223700106144,0.718859970569611,0.0245849993079901,0.746199011802673
+             ,0.0254875011742115,0.722130477428436,0.0190709996968508,0.755720973014832,0.0129205007106066,0.74433696269989
+             ,0.628661096096039,0.892670869827271,0.33636200428009,0.340024501085281,0.0308654997497797,0.729313015937805
+             ,0.380803883075714,0.789104640483856,0.366050988435745,0.358319014310837,0.358318984508514,0.362231492996216
+             ,0.00194500002544373,0.755720973014832,0.0265689995139837,0.785624980926514,0.0384180024266243,0.782786965370178
+             ,0.0812259986996651,0.76622599363327,0.119341999292374,0.741998016834259,0.0930760055780411,0.769063472747803
+             ,0.61692202091217,0.921935021877289,0.607389986515045,0.911728024482727,0.637843012809753,0.901142001152039,0.647374987602234
+             ,0.890936017036438,0.656392216682434,0.917390763759613,0.414483994245529,0.831508994102478,0.404511988162994
+             ,0.840821981430054,0.367567241191864,0.788262963294983,0.406552493572235,0.33101150393486,0.973310470581055,0.791465997695923
+             ,0.729045987129211,0.449631005525589,0.718363046646118,0.455951988697052,0.272996991872787,0.610105991363525
+             ,0.296732991933823,0.610105991363525,0.263354003429413,0.712405025959015,0.241732999682426,0.704756021499634
+             ,0.315030008554459,0.150920003652573,0.960412502288818,0.796028971672058,0.727791011333466,0.461472988128662
+             ,0.238620564341545,0.739861726760864,0.304672509431839,0.147684991359711,0.313773989677429,0.139078006148338
+             ,0.717994749546051,0.516579270362854,0.945767521858215,0.852720737457275,0.287633001804352,0.785454988479614
+             ,0.309253007173538,0.793103992938995,0.321784734725952,0.841608762741089,0.328316986560822,0.131226003170013
+             ,0.463192999362946,0.884482979774475,0.44157201051712,0.883675992488861,0.741717994213104,0.475012481212616,0.442154556512833
+             ,0.861065149307251,0.304608225822449,0.0899460017681122
+            UVIndex: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,32,22,23,24,25,34,26,27,28,29,30,18,31,22,32,33,34,35
+             ,36,37,38,39,3,2,17,16,15,14,27,26,11,10,24,23,40,41,42,43,19,18,30,34,25,35,44,45,46,47,11,23,48,53,21,20,49
+             ,50,17,2,51,52,66,53,70,54,53,55,56,70,57,58,59,60,61,64,62,67,63,64,61,53,48,55,70,56,69,71,63,73,72,63,61,73
+             ,58,57,76,74,57,75,76,77,78,65,79,80,81,82,83,68,43,42,84,69,56,85,29,28,86,94,19,30,87,88,89,90,91,92,35,25
+             ,97,93,88,87,95,93,97,98,88,95,99,94,86,100,98,97,109,101,102,103,92,91,96,93,98,104,105,106,108,95,87,107,1
+             ,13,9,5
+        }
         LayerElementBumpUV: 0 {
             Version: 101
             Name: "map1"
@@ -408,7 +456,7 @@ Objects:  {
             ReferenceInformationType: "IndexToDirect"
             Materials: 0
         }
-        LayerElementBumpTextures: 0 {
+        LayerElementTexture: 0 {
             Version: 101
             Name: ""
             MappingInformationType: "ByPolygon"
@@ -416,6 +464,15 @@ Objects:  {
             BlendMode: "Translucent"
             TextureAlpha: 1
             TextureId: 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        }
+        LayerElementBumpTextures: 0 {
+            Version: 101
+            Name: ""
+            MappingInformationType: "ByPolygon"
+            ReferenceInformationType: "IndexToDirect"
+            BlendMode: "Translucent"
+            TextureAlpha: 1
+            TextureId: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
         }
         Layer: 0 {
             Version: 100
@@ -428,7 +485,15 @@ Objects:  {
                 TypedIndex: 0
             }
             LayerElement:  {
+                Type: "LayerElementTexture"
+                TypedIndex: 0
+            }
+            LayerElement:  {
                 Type: "LayerElementBumpTextures"
+                TypedIndex: 0
+            }
+            LayerElement:  {
+                Type: "LayerElementUV"
                 TypedIndex: 0
             }
             LayerElement:  {
@@ -1530,16 +1595,38 @@ Objects:  {
             Property: "EmissiveFactor", "double", "",1
             Property: "AmbientColor", "ColorRGB", "",0,0,0
             Property: "AmbientFactor", "double", "",1
-            Property: "DiffuseColor", "ColorRGB", "",0.560000002384186,0.542502522468567,0.14504000544548
+            Property: "DiffuseColor", "ColorRGB", "",1,1,1
             Property: "DiffuseFactor", "double", "",0.800000011920929
             Property: "Bump", "Vector3D", "",0.5,0.5,0.5
             Property: "TransparentColor", "ColorRGB", "",0,0,0
             Property: "TransparencyFactor", "double", "",1
             Property: "Emissive", "Vector3D", "",0,0,0
             Property: "Ambient", "Vector3D", "",0,0,0
-            Property: "Diffuse", "Vector3D", "",0.448000008583069,0.434002024441988,0.116032006085396
+            Property: "Diffuse", "Vector3D", "",0.800000011920929,0.800000011920929,0.800000011920929
             Property: "Opacity", "double", "",1
         }
+    }
+    Video: "Video::file6", "Clip" {
+        Type: "Clip"
+        Properties60:  {
+            Property: "FrameRate", "double", "",0
+            Property: "LastFrame", "int", "",0
+            Property: "Width", "int", "",0
+            Property: "Height", "int", "",0
+            Property: "Path", "charptr", "", "textures/seaGrassYellow_diff.tga"
+             
+            Property: "StartFrame", "int", "",0
+            Property: "StopFrame", "int", "",0
+            Property: "PlaySpeed", "double", "",1
+            Property: "Offset", "KTime", "",0
+            Property: "InterlaceMode", "enum", "",0
+            Property: "FreeRunning", "bool", "",0
+            Property: "Loop", "bool", "",0
+            Property: "AccessMode", "enum", "",0
+        }
+        UseMipMap: 0
+        Filename: "textures/seaGrassYellow_diff.tga"
+        RelativeFilename: "textures/seaGrassYellow_diff.tga"
     }
     Video: "Video::file5", "Clip" {
         Type: "Clip"
@@ -1561,6 +1648,35 @@ Objects:  {
         UseMipMap: 0
         Filename: "textures/seaGrass_norm.tga"
         RelativeFilename: "textures/seaGrass_norm.tga"
+    }
+    Texture: "Texture::file6", "TextureVideoClip" {
+        Type: "TextureVideoClip"
+        Version: 202
+        TextureName: "Texture::file6"
+        Properties60:  {
+            Property: "Translation", "Vector", "A+",0,0,0
+            Property: "Rotation", "Vector", "A+",0,0,0
+            Property: "Scaling", "Vector", "A+",1,1,1
+            Property: "Texture alpha", "Number", "A+",1
+            Property: "TextureTypeUse", "enum", "",0
+            Property: "CurrentTextureBlendMode", "enum", "",0
+            Property: "UseMaterial", "bool", "",1
+            Property: "UseMipMap", "bool", "",0
+            Property: "CurrentMappingType", "enum", "",0
+            Property: "UVSwap", "bool", "",0
+            Property: "WrapModeU", "enum", "",0
+            Property: "WrapModeV", "enum", "",0
+            Property: "TextureRotationPivot", "Vector3D", "",0,0,0
+            Property: "TextureScalingPivot", "Vector3D", "",0,0,0
+            Property: "VideoProperty", "object", ""
+        }
+        Media: "Video::file6"
+        FileName: "textures/seaGrassYellow_diff.tga"
+        RelativeFilename: "textures/seaGrassYellow_diff.tga"
+        ModelUVTranslation: 0,0
+        ModelUVScaling: 1,1
+        Texture_Alpha_Source: "None"
+        Cropping: 0,0,0,0
     }
     Texture: "Texture::file5", "TextureVideoClip" {
         Type: "TextureVideoClip"
@@ -1629,7 +1745,11 @@ Relations:  {
     }
     Material: "Material::seaGrassYellowMaterial", "" {
     }
+    Texture: "Texture::file6", "TextureVideoClip" {
+    }
     Texture: "Texture::file5", "TextureVideoClip" {
+    }
+    Video: "Video::file6", "Clip" {
     }
     Video: "Video::file5", "Clip" {
     }
@@ -1641,7 +1761,9 @@ Relations:  {
 Connections:  {
     Connect: "OO", "Model::seaGrassSmallYellowObject", "Model::Scene"
     Connect: "OO", "Material::seaGrassYellowMaterial", "Model::seaGrassSmallYellowObject"
+    Connect: "OO", "Texture::file6", "Model::seaGrassSmallYellowObject"
     Connect: "OO", "Texture::file5", "Model::seaGrassSmallYellowObject"
+    Connect: "OO", "Video::file6", "Texture::file6"
     Connect: "OO", "Video::file5", "Texture::file5"
 }
 ;Takes and animation section
